@@ -2,7 +2,7 @@ __author__ = 'CHBAPIE'
 
 from google.appengine.ext import ndb
 from google.appengine.ext.db import Query
-from helloworld_api import AqList
+from apis import AqList
 
 import pickle
 import os
@@ -22,10 +22,7 @@ class MainPage(webapp2.RequestHandler):
     """
 
     def get(self):
-        #from_db = AqList.query()
-
-
-        from_db = AqList.query()
+        from_db = AqList.query().order(AqList.last_updated)
         #logging.info(from_db.count())
         if from_db.count() == 0:
             from_db = ''
@@ -33,12 +30,11 @@ class MainPage(webapp2.RequestHandler):
         else:
             template_values = {}
             for result in from_db.iter():
-                template_values['name'] = result.list_name
-                template_values['user'] = result.user_id
+                template_values['name'] = result.name
+                template_values['user'] = result.user
                 template_values['last_updated'] = result.last_updated
-                template_values['description'] = result.list_description
-            template_values['from_db'] = pickle.loads(result.aq_list)
-
+                template_values['description'] = result.description
+            template_values['from_db'] = pickle.loads(result.data)
 
         template = JINJA_ENVIRONMENT.get_template('display.html')
 
