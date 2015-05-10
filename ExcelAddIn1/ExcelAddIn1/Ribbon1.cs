@@ -20,7 +20,7 @@ namespace ExcelAddIn1
     {
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
-
+            //String debugging = "";
         }
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
@@ -129,102 +129,7 @@ namespace ExcelAddIn1
         private void button2_Click(object sender, RibbonControlEventArgs e)
         {
 
-            //Globals.ThisAddIn.TaskPane.Visible = ((ThisAddIn)sender).Checked;
-
-
-            //myTaskPane.Visible = true;
-
             Globals.ThisAddIn.MyTaskPane.Visible = true;
-
-            /*
-
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            Excel.Range xlRange;
-            String xlPath;
-            String xlWorkbookName;
-            String xlWorksheetName;
-            String xlDestinationCell;
-            String xlType;
-
-            xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-            xlRange = xlWorkSheet.UsedRange;
-            xlPath = xlWorkBook.Path;
-            xlWorkbookName = xlWorkBook.Name;
-            xlWorksheetName = xlWorkSheet.Name;
-            xlDestinationCell = xlRange.Cells[1, 1].Address;
-            xlType = "List";
-
-           //List<String> publishingList = new List<String>();
-
-           ArrayList publishingList = new ArrayList();
-
-            //string str;
-            int rCnt = 0;
-            int cCnt = 0;
-
-            for (rCnt = 1; rCnt <= xlRange.Rows.Count; rCnt++)
-            {
-                for (cCnt = 1; cCnt <= xlRange.Columns.Count; cCnt++)
-                {
-                    //publishingList.Add();
-                    publishingList.Add((string)(xlRange.Cells[rCnt, cCnt] as Excel.Range).Value2);
-                    //str = (string)(range.Cells[rCnt, cCnt] as Excel.Range).Value2;
-                    //MessageBox.Show(str);
-                }
-            }
-
-            Dictionary<string, dynamic> publishingData = new Dictionary<string, dynamic>();
-            publishingData.Add("aq_data", publishingList);
-            publishingData.Add("aq_workbook_path", xlPath);
-            publishingData.Add("aq_workbook", xlWorkbookName);
-            publishingData.Add("aq_worksheet", xlWorksheetName);
-            publishingData.Add("aq_destination_cell", xlDestinationCell);
-            publishingData.Add("aq_type", xlType);
-
-            //data['aq_worksheet'] = wb.ActiveSheet.Name
-            //data['aq_destination_cell'] = app.Selection.Address
-            
-            //string js = JsonConvert.SerializeObject(udemy);
-
-            var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(publishingData);
-
-            
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/List.publish");
-            httpWebRequest.ContentType = "text/json";
-            httpWebRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                MessageBox.Show(result.ToString());
-            }
-            
-
-            //MessageBox.Show((string)publishingList[0]);
-            //MessageBox.Show((string)publishingList[1]);
-            //MessageBox.Show(result.ToString());
-
-            string str;
-            str = xlRange.Value2;
-            MessageBox.Show(str);
-            string str2;
-            str2 = xlRange.Value2;
-            MessageBox.Show(str2);
-             * 
-            */
-
 
         }
 
@@ -241,6 +146,73 @@ namespace ExcelAddIn1
 
         private void button3_Click(object sender, RibbonControlEventArgs e)
         {
+
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            Excel.Range xlRange;
+            String xlWorkbookPath;
+            String xlWorkbookName;
+            String xlWorksheetName;
+            String xlDestinationCell;
+            String xlBlueberryID;
+            String xlDataOwner;
+            Boolean xlFetchConfiguration;
+
+            xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
+            xlRange = xlWorkSheet.UsedRange;
+            xlWorkbookPath = xlWorkBook.Path;
+            xlWorkbookName = xlWorkBook.Name;
+            xlWorksheetName = xlWorkSheet.Name;
+            xlDestinationCell = xlRange.Address;
+            xlBlueberryID = IDBox.Text;
+            xlDataOwner = "bartosz.piechnik@ch.abb.com";
+            xlFetchConfiguration = FetchConfigurationCheckBox.Checked;
+
+            Dictionary<string, dynamic> fetchingData = new Dictionary<string, dynamic>();
+            fetchingData.Add("aq_id", xlBlueberryID);
+            fetchingData.Add("user", xlDataOwner);
+            fetchingData.Add("workbook_path", xlWorkbookPath);
+            fetchingData.Add("workbook", xlWorkbookName);
+            fetchingData.Add("worksheet", xlWorksheetName);
+            fetchingData.Add("destination_cell", xlDestinationCell);
+            fetchingData.Add("skip_new_conf", xlFetchConfiguration);
+
+            var jsonSerializer = new JavaScriptSerializer();
+            var json = jsonSerializer.Serialize(fetchingData);
+
+            String[] splitWords = xlBlueberryID.Split('.');
+            String url = "http://localhost:8080/" + splitWords[2] + ".fetch";
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+            httpWebRequest.ContentType = "text/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
+                Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
+                Int32 dataLength = fetchedData["aq_data"].Count;
+                Excel.Range endCell = (Excel.Range)xlWorkSheet.Cells[xlRange.Row + dataLength - 1, xlRange.Column];
+                Excel.Range xlDestinationRange = xlWorkSheet.Range[xlRange, endCell];
+
+                var fetchedDataArray = new object[dataLength, 1];
+                for (var i = 0; i < dataLength; i++)
+                {
+                    fetchedDataArray[i, 0] = fetchedData["aq_data"][i];
+                }
+
+                xlDestinationRange.Value2 = fetchedDataArray;
+            }
 
         } 
     }

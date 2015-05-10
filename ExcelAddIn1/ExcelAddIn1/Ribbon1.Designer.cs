@@ -37,13 +37,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.DownloadGroup = this.Factory.CreateRibbonGroup();
+            this.IDBox = this.Factory.CreateRibbonEditBox();
+            this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
             this.button2 = this.Factory.CreateRibbonButton();
             this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
-            this.DownloadGroup = this.Factory.CreateRibbonGroup();
             this.button3 = this.Factory.CreateRibbonButton();
-            this.editBox1 = this.Factory.CreateRibbonEditBox();
-            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
@@ -58,25 +57,34 @@
             // 
             // group1
             // 
-            this.group1.Items.Add(this.button1);
             this.group1.Items.Add(this.button2);
             this.group1.Items.Add(this.toggleButton1);
             this.group1.Label = "Publish";
             this.group1.Name = "group1";
             // 
-            // button1
+            // DownloadGroup
             // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Image = global::ExcelAddIn1.Properties.Resources.blueberry_ppt_front_image;
-            this.button1.Label = "Publish";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.DownloadGroup.Items.Add(this.IDBox);
+            this.DownloadGroup.Items.Add(this.FetchConfigurationCheckBox);
+            this.DownloadGroup.Items.Add(this.button3);
+            this.DownloadGroup.Label = "Download";
+            this.DownloadGroup.Name = "DownloadGroup";
+            // 
+            // IDBox
+            // 
+            this.IDBox.Label = "Blueberry ID";
+            this.IDBox.Name = "IDBox";
+            // 
+            // FetchConfigurationCheckBox
+            // 
+            this.FetchConfigurationCheckBox.Checked = true;
+            this.FetchConfigurationCheckBox.Label = "Repetetive";
+            this.FetchConfigurationCheckBox.Name = "FetchConfigurationCheckBox";
             // 
             // button2
             // 
             this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Image = global::ExcelAddIn1.Properties.Resources.publish_icon;
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
             this.button2.Label = "Publish now";
             this.button2.Name = "button2";
             this.button2.ShowImage = true;
@@ -88,14 +96,6 @@
             this.toggleButton1.Name = "toggleButton1";
             this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton1_Click);
             // 
-            // DownloadGroup
-            // 
-            this.DownloadGroup.Items.Add(this.button3);
-            this.DownloadGroup.Items.Add(this.editBox1);
-            this.DownloadGroup.Items.Add(this.checkBox1);
-            this.DownloadGroup.Label = "Download";
-            this.DownloadGroup.Name = "DownloadGroup";
-            // 
             // button3
             // 
             this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -104,16 +104,6 @@
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
             this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
-            // 
-            // editBox1
-            // 
-            this.editBox1.Label = "Blueberry ID";
-            this.editBox1.Name = "editBox1";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Label = "Repetetive";
-            this.checkBox1.Name = "checkBox1";
             // 
             // Ribbon1
             // 
@@ -134,13 +124,12 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup DownloadGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox editBox1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox IDBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox FetchConfigurationCheckBox;
     }
 
     partial class ThisRibbonCollection
