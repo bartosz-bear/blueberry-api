@@ -142,13 +142,43 @@
         #endregion
 
         private System.Windows.Forms.TextBox NameTextBox;
+
+        public System.Windows.Forms.TextBox PublishingNameTextBox
+        {
+            get { return NameTextBox; }
+            set { NameTextBox = value; }
+        }
         private System.Windows.Forms.Label NameLabel;
+
+        public System.Windows.Forms.Label PublishingNameLabel
+        {
+            get { return NameLabel; }
+            set { NameLabel = value; }
+        }
         private System.Windows.Forms.Label DescriptionLabel;
         private System.Windows.Forms.TextBox DescriptionTextBox;
+
+        public System.Windows.Forms.TextBox PublishingDescriptionTextBox
+        {
+            get { return DescriptionTextBox; }
+            set { DescriptionTextBox = value; }
+        }
         private System.Windows.Forms.Label OrganizationLabel;
         private System.Windows.Forms.TextBox OrganizationTextBox;
+
+        public System.Windows.Forms.TextBox PublishingOrganizationTextBox
+        {
+            get { return OrganizationTextBox; }
+            set { OrganizationTextBox = value; }
+        }
         private System.Windows.Forms.Label DataOwnerLabel;
         private System.Windows.Forms.TextBox DataOwnerTextBox;
+
+        public System.Windows.Forms.TextBox PublishingDataOwnerTextBox
+        {
+            get { return DataOwnerTextBox; }
+            set { DataOwnerTextBox = value; }
+        }
         private System.Windows.Forms.Button PublishButton;
     }
 }

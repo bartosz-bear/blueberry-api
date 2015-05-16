@@ -29,9 +29,14 @@ namespace ExcelAddIn1
 
         private void PublishButton_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Dobrze");
+            ExcelAddIn1.Ribbon1.publishData();
+
+
+            /*
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
-            Excel.Range xlRange;
+            //Excel.Range xlRange;
             String xlPath;
             String xlWorkbookName;
             String xlWorksheetName;
@@ -44,7 +49,7 @@ namespace ExcelAddIn1
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-            xlRange = xlWorkSheet.UsedRange;
+            Excel.Range xlRange = (Excel.Range)Globals.ThisAddIn.Application.Selection;
             xlPath = xlWorkBook.Path;
             xlWorkbookName = xlWorkBook.Name;
             xlWorksheetName = xlWorkSheet.Name;
@@ -83,7 +88,7 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(publishingData);
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/List.publish");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost.:8080/List.publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
@@ -107,6 +112,7 @@ namespace ExcelAddIn1
             string str2;
             str2 = xlRange.Value2;
             MessageBox.Show(str2);
+            */
         }
     }
 }

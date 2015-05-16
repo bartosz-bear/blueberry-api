@@ -41,8 +41,9 @@
             this.IDBox = this.Factory.CreateRibbonEditBox();
             this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
             this.button2 = this.Factory.CreateRibbonButton();
-            this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
             this.button3 = this.Factory.CreateRibbonButton();
+            this.Refresh = this.Factory.CreateRibbonButton();
+            this.UpdateButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
@@ -58,7 +59,7 @@
             // group1
             // 
             this.group1.Items.Add(this.button2);
-            this.group1.Items.Add(this.toggleButton1);
+            this.group1.Items.Add(this.UpdateButton);
             this.group1.Label = "Publish";
             this.group1.Name = "group1";
             // 
@@ -67,6 +68,7 @@
             this.DownloadGroup.Items.Add(this.IDBox);
             this.DownloadGroup.Items.Add(this.FetchConfigurationCheckBox);
             this.DownloadGroup.Items.Add(this.button3);
+            this.DownloadGroup.Items.Add(this.Refresh);
             this.DownloadGroup.Label = "Download";
             this.DownloadGroup.Name = "DownloadGroup";
             // 
@@ -74,6 +76,7 @@
             // 
             this.IDBox.Label = "Blueberry ID";
             this.IDBox.Name = "IDBox";
+            this.IDBox.Text = null;
             // 
             // FetchConfigurationCheckBox
             // 
@@ -90,12 +93,6 @@
             this.button2.ShowImage = true;
             this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
-            // toggleButton1
-            // 
-            this.toggleButton1.Label = "toggleButton1";
-            this.toggleButton1.Name = "toggleButton1";
-            this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton1_Click);
-            // 
             // button3
             // 
             this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -104,6 +101,24 @@
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
             this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
+            // 
+            // Refresh
+            // 
+            this.Refresh.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.Refresh.Image = ((System.Drawing.Image)(resources.GetObject("Refresh.Image")));
+            this.Refresh.Label = "Refresh all";
+            this.Refresh.Name = "Refresh";
+            this.Refresh.ShowImage = true;
+            this.Refresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Refresh_Click);
+            // 
+            // UpdateButton
+            // 
+            this.UpdateButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.UpdateButton.Image = ((System.Drawing.Image)(resources.GetObject("UpdateButton.Image")));
+            this.UpdateButton.Label = "Update all";
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.ShowImage = true;
+            this.UpdateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateButton_Click);
             // 
             // Ribbon1
             // 
@@ -125,11 +140,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup DownloadGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox IDBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox FetchConfigurationCheckBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Refresh;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton UpdateButton;
     }
 
     partial class ThisRibbonCollection
