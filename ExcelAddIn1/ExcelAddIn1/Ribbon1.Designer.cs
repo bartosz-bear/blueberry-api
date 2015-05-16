@@ -37,13 +37,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.publishButton = this.Factory.CreateRibbonButton();
+            this.updateButton = this.Factory.CreateRibbonButton();
             this.DownloadGroup = this.Factory.CreateRibbonGroup();
             this.IDBox = this.Factory.CreateRibbonEditBox();
             this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
-            this.button2 = this.Factory.CreateRibbonButton();
-            this.button3 = this.Factory.CreateRibbonButton();
-            this.Refresh = this.Factory.CreateRibbonButton();
-            this.UpdateButton = this.Factory.CreateRibbonButton();
+            this.downloadButton = this.Factory.CreateRibbonButton();
+            this.refreshButton = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
@@ -58,17 +58,35 @@
             // 
             // group1
             // 
-            this.group1.Items.Add(this.button2);
-            this.group1.Items.Add(this.UpdateButton);
+            this.group1.Items.Add(this.publishButton);
+            this.group1.Items.Add(this.updateButton);
             this.group1.Label = "Publish";
             this.group1.Name = "group1";
+            // 
+            // publishButton
+            // 
+            this.publishButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.publishButton.Image = ((System.Drawing.Image)(resources.GetObject("publishButton.Image")));
+            this.publishButton.Label = "Publish";
+            this.publishButton.Name = "publishButton";
+            this.publishButton.ShowImage = true;
+            this.publishButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Publish_Click);
+            // 
+            // updateButton
+            // 
+            this.updateButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.updateButton.Image = ((System.Drawing.Image)(resources.GetObject("updateButton.Image")));
+            this.updateButton.Label = "Update";
+            this.updateButton.Name = "updateButton";
+            this.updateButton.ShowImage = true;
+            this.updateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Update_Click);
             // 
             // DownloadGroup
             // 
             this.DownloadGroup.Items.Add(this.IDBox);
             this.DownloadGroup.Items.Add(this.FetchConfigurationCheckBox);
-            this.DownloadGroup.Items.Add(this.button3);
-            this.DownloadGroup.Items.Add(this.Refresh);
+            this.DownloadGroup.Items.Add(this.downloadButton);
+            this.DownloadGroup.Items.Add(this.refreshButton);
             this.DownloadGroup.Label = "Download";
             this.DownloadGroup.Name = "DownloadGroup";
             // 
@@ -84,41 +102,23 @@
             this.FetchConfigurationCheckBox.Label = "Repetetive";
             this.FetchConfigurationCheckBox.Name = "FetchConfigurationCheckBox";
             // 
-            // button2
+            // downloadButton
             // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Label = "Publish now";
-            this.button2.Name = "button2";
-            this.button2.ShowImage = true;
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
+            this.downloadButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.downloadButton.Image = ((System.Drawing.Image)(resources.GetObject("downloadButton.Image")));
+            this.downloadButton.Label = "Download";
+            this.downloadButton.Name = "downloadButton";
+            this.downloadButton.ShowImage = true;
+            this.downloadButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Fetch_Click);
             // 
-            // button3
+            // refreshButton
             // 
-            this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Label = "Download now";
-            this.button3.Name = "button3";
-            this.button3.ShowImage = true;
-            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
-            // 
-            // Refresh
-            // 
-            this.Refresh.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.Refresh.Image = ((System.Drawing.Image)(resources.GetObject("Refresh.Image")));
-            this.Refresh.Label = "Refresh all";
-            this.Refresh.Name = "Refresh";
-            this.Refresh.ShowImage = true;
-            this.Refresh.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Refresh_Click);
-            // 
-            // UpdateButton
-            // 
-            this.UpdateButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.UpdateButton.Image = ((System.Drawing.Image)(resources.GetObject("UpdateButton.Image")));
-            this.UpdateButton.Label = "Update all";
-            this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.ShowImage = true;
-            this.UpdateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateButton_Click);
+            this.refreshButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.refreshButton.Image = ((System.Drawing.Image)(resources.GetObject("refreshButton.Image")));
+            this.refreshButton.Label = "Refresh";
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.ShowImage = true;
+            this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Refresh_Click);
             // 
             // Ribbon1
             // 
@@ -139,13 +139,13 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton publishButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup DownloadGroup;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton downloadButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox IDBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox FetchConfigurationCheckBox;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton Refresh;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton UpdateButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton updateButton;
     }
 
     partial class ThisRibbonCollection

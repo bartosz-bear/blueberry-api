@@ -47,59 +47,41 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+        <br>
+        <div class="container">
+          <h2>Available data</h2>
+            <br>
+          <p>Here you pick data you like. Just copy the ID and paste into Blueberry API Excel App</p>
+          <br>
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Organization</th>
+                <th>User</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
 
-    <div class="container" >
-
-    <div class="row">
-    <div class="col-md-4">
 
 
-      <div class="starter-template">
+            {% for d in data %}
+              <tr>
+                <td>{{ d.name }}</td>
+                <td>{{ d.bapi_id }}</td>
+                <td>{{ d.description }}</td>
+                <td>{{ d.organization }}</td>
+                <td>{{ d.user }}</td>
+                <td>{{ d.last_updated }}</td>
+              </tr>
+            {% endfor %}
 
-          <div class="panel panel-primary">
-              <div class="panel-heading">Data name</div>
-              <div class="panel-body">{{ name }}</div>
-          </div>
-
-          <div class="panel panel-danger">
-              <div class="panel-heading">ID</div>
-              <div class="panel-body">{{ id }}</div>
-          </div>
-
-          <div class="panel panel-warning">
-              <div class="panel-heading">Organization</div>
-              <div class="panel-body">{{ organization }}</div>
-          </div>
-
-          <div class="panel panel-success">
-              <div class="panel-heading">Created by</div>
-              <div class="panel-body">{{ user }}</div>
-          </div>
-
-           <div class="panel panel-info">
-              <div class="panel-heading">Last updated at</div>
-              <div class="panel-body">{{ last_updated }}</div>
-          </div>
-
-           <div class="panel panel-warning">
-              <div class="panel-heading">Data description</div>
-              <div class="panel-body">{{ description }}</div>
-          </div>
-
-           <div class="panel panel-danger">
-              <div class="panel-heading">Data view</div>
-              <div class="panel-body">{{ from_db }}</div>
-          </div>
-
-      </div>
-
-      </div>
-
-      <div class="col-md-4"></div>
-      <div class="col-md-4"></div>
-    </div>
-
-    </div><!-- /.container -->
+            </tbody>
+          </table>
+        </div>
 
 
     <!-- Bootstrap core JavaScript
@@ -109,6 +91,6 @@
     <script src="./base_files/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-  
+
 
 </body></html>

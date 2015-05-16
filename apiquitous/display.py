@@ -17,8 +17,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 class MainPage(webapp2.RequestHandler):
     """
-    Display the available lists.
-    Here we go.
+    Display the most recent list.
     """
 
     def get(self):
@@ -31,6 +30,8 @@ class MainPage(webapp2.RequestHandler):
             template_values = {}
             for result in from_db.iter():
                 template_values['name'] = result.name
+                template_values['id'] = result.bapi_id
+                template_values['organization'] = result.organization
                 template_values['user'] = result.user
                 template_values['last_updated'] = result.last_updated
                 template_values['description'] = result.description
@@ -40,6 +41,36 @@ class MainPage(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
+
+class BrowsePage(webapp2.RequestHandler):
+    """
+    Display the available lists
+    """
+
+    def get(self):
+
+        from_db = AqList.query().fetch()
+
+        template_values = {'data': from_db}
+
+        #for result in from_db.iter():
+
+
+
+        """
+        template_values['names'] = result.name
+        template_values['descriptions'] = result.description
+        template_values['ids'] = result.bapi_id
+        template_values['organizations'] = result.organization
+        template_values['users'] = result.user
+        template_values['last_updated'] = result.last_updated
+        """
+
+        template = JINJA_ENVIRONMENT.get_template('browse.html')
+
+        self.response.write(template.render(template_values))
+
 application = webapp2.WSGIApplication([
-    ('/display', MainPage)
+    ('/display', MainPage),
+    ('/browse', BrowsePage)
 ], debug=True)
