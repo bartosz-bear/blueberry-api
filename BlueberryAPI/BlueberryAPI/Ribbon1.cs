@@ -18,6 +18,11 @@ namespace ExcelAddIn1
 {
     public partial class Ribbon1
     {
+
+
+        public static string blueberryAPIurl = "http://localhost:8080/";
+        //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
+
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
             
@@ -44,7 +49,7 @@ namespace ExcelAddIn1
             for (int i = 0; i < fetchDataItemsCount; i++)
             {
                 Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                singleResult.Add("aq_id", fetchedData["names"][i]);
+                singleResult.Add("bapi_id", fetchedData["names"][i]);
                 singleResult.Add("user", fetchedData["users"][i]);
                 singleResult.Add("description", fetchedData["descriptions"][i]);
                 singleResult.Add("organization", fetchedData["organizations"][i]);
@@ -64,7 +69,7 @@ namespace ExcelAddIn1
             for (int i = 0; i < publishedDataItemsCount; i++)
             {
                 Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                singleResult.Add("aq_id", publishedData["ids"][i]);
+                singleResult.Add("bapi_id", publishedData["ids"][i]);
                 singleResult.Add("user", publishedData["users"][i]);
                 singleResult.Add("name", publishedData["names"][i]);
                 singleResult.Add("description", publishedData["descriptions"][i]);
@@ -146,7 +151,7 @@ namespace ExcelAddIn1
                 xlStartRange = (Excel.Range)xlWorkSheet.Range[xlDestinationCell];
                 xlEndRange = xlStartRange.End[Excel.XlDirection.xlDown];
                 xlRange = (Excel.Range)xlWorkSheet.Range[xlStartRange, xlEndRange];
-                xlID = singleResult["aq_id"];
+                xlID = singleResult["bapi_id"];
 
                 int rCnt = 0;
                 int cCnt = 0;
@@ -161,25 +166,23 @@ namespace ExcelAddIn1
             }
 
             Dictionary<string, dynamic> publishingData = new Dictionary<string, dynamic>();
-            publishingData.Add("aq_data", publishingList);
-            publishingData.Add("aq_workbook_path", xlPath);
-            publishingData.Add("aq_workbook", xlWorkbookName);
-            publishingData.Add("aq_worksheet", xlWorksheetName);
-            publishingData.Add("aq_destination_cell", xlDestinationCell);
-            publishingData.Add("aq_type", xlType);
-            publishingData.Add("aq_name", xlName);
-            publishingData.Add("aq_description", xlDescription);
-            publishingData.Add("aq_organization", xlOrganization);
-            publishingData.Add("aq_created_by", xlDataOwner);
-            publishingData.Add("aq_id", xlID);
-
-            var asString = string.Join(";", publishingData);
-            MessageBox.Show(asString);
+            publishingData.Add("data", publishingList);
+            publishingData.Add("workbook_path", xlPath);
+            publishingData.Add("workbook", xlWorkbookName);
+            publishingData.Add("worksheet", xlWorksheetName);
+            publishingData.Add("destination_cell", xlDestinationCell);
+            publishingData.Add("data_type", xlType);
+            publishingData.Add("name", xlName);
+            publishingData.Add("description", xlDescription);
+            publishingData.Add("organization", xlOrganization);
+            publishingData.Add("user", xlDataOwner);
+            publishingData.Add("bapi_id", xlID);
 
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(publishingData);
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:8080/List.publish");
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(blueberryAPIurl + "List.publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
@@ -228,7 +231,7 @@ namespace ExcelAddIn1
                 xlDataOwner = "bartosz.piechnik@ch.abb.com";
                 xlFetchConfiguration = FetchConfigurationCheckBox.Checked;
 
-                fetchingData.Add("aq_id", xlBlueberryID);
+                fetchingData.Add("bapi_id", xlBlueberryID);
                 fetchingData.Add("user", xlDataOwner);
                 fetchingData.Add("workbook_path", xlWorkbookPath);
                 fetchingData.Add("workbook", xlWorkbookName);
@@ -239,7 +242,7 @@ namespace ExcelAddIn1
 
             else
             {
-                fetchingData.Add("aq_id", singleResult["aq_id"]);
+                fetchingData.Add("bapi_id", singleResult["bapi_id"]);
                 fetchingData.Add("user", singleResult["user"]);
                 fetchingData.Add("workbook_path", singleResult["workbook_path"]);
                 fetchingData.Add("workbook", singleResult["workbook"]);
@@ -251,8 +254,8 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(fetchingData);
 
-            String[] splitWords = fetchingData["aq_id"].Split('.');
-            String url = "http://localhost.:8080/" + splitWords[2] + ".fetch";
+            String[] splitWords = fetchingData["bapi_id"].Split('.');
+            String url = blueberryAPIurl + splitWords[2] + ".fetch";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
@@ -298,14 +301,14 @@ namespace ExcelAddIn1
                 xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
             }
 
-            Int32 dataLength = fetchedData["aq_data"].Count;
+            Int32 dataLength = fetchedData["data"].Count;
             Excel.Range endCell = (Excel.Range)xlWorkSheet.Cells[xlRange.Row + dataLength - 1, xlRange.Column];
             Excel.Range xlDestinationRange = xlWorkSheet.Range[xlRange, endCell];
 
             var fetchedDataArray = new object[dataLength, 1];
             for (var i = 0; i < dataLength; i++)
             {
-                fetchedDataArray[i, 0] = fetchedData["aq_data"][i];
+                fetchedDataArray[i, 0] = fetchedData["data"][i];
             }
 
             xlDestinationRange.Value2 = fetchedDataArray;
@@ -330,7 +333,7 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = "http://localhost:8080/List.get_fetched";
+            String url = blueberryAPIurl + "List.get_fetched";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
@@ -373,7 +376,7 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = "http://localhost:8080/List.get_published";
+            String url = blueberryAPIurl + "List.get_published";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
@@ -393,7 +396,6 @@ namespace ExcelAddIn1
                 result = streamReader.ReadToEnd();
                 Dictionary<string, dynamic> publishedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
                 return publishedData;
-
             }
         }
 
