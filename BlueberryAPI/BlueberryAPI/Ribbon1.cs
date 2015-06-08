@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Net;
 using System.Collections.Specialized;
 using System.Runtime.InteropServices;
+using System.Data;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
@@ -25,13 +26,29 @@ namespace ExcelAddIn1
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
-            
+            MessageBox.Show("Bartosz Piechnik");
+        }
+
+        private void ThisDocument_Startup(object sender, System.EventArgs e)
+        {
+            MessageBox.Show("Bartosz");
         }
 
         /* Buttons Events */
 
         private void Publish_Click(object sender, RibbonControlEventArgs e)
         {
+            //BlueberryTaskPane publishBlueberryTaskPane;
+            //Microsoft.Office.Tools.CustomTaskPane myTaskPane;
+
+            //Excel.Application.WorkbookActivate += new Excel.AppEvents_WorkbookActivateEventHandler(
+            //    Application_WorkbookActivate);
+
+            //MessageBox.Show("Clicked 2");
+
+            //publishBlueberryTaskPane = new BlueberryTaskPane();
+            //myTaskPane = this.CustomTaskPanes.Add(
+            //    publishBlueberryTaskPane, "Publish");
 
             Globals.ThisAddIn.MyTaskPane.Visible = true;
 
@@ -49,7 +66,7 @@ namespace ExcelAddIn1
             for (int i = 0; i < fetchDataItemsCount; i++)
             {
                 Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                singleResult.Add("bapi_id", fetchedData["names"][i]);
+                singleResult.Add("bapi_id", fetchedData["bapi_ids"][i]);
                 singleResult.Add("user", fetchedData["users"][i]);
                 singleResult.Add("description", fetchedData["descriptions"][i]);
                 singleResult.Add("organization", fetchedData["organizations"][i]);
@@ -106,7 +123,11 @@ namespace ExcelAddIn1
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
 
+
             ArrayList publishingList = new ArrayList();
+
+            Dictionary<string, dynamic> dataFromExcel = new Dictionary<string, dynamic>();
+            
 
             if (singleResult == null)
             {
@@ -116,13 +137,15 @@ namespace ExcelAddIn1
                 xlWorkbookName = xlWorkBook.Name;
                 xlWorksheetName = xlWorkSheet.Name;
                 xlDestinationCell = xlRange.Cells[1, 1].Address;
-                xlType = "List";
                 xlName = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingNameTextBox.Text;
                 xlDescription = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
                 xlOrganization = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
                 xlDataOwner = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
+                dataFromExcel = measureData(xlRange);
+                xlType = dataFromExcel["data_type"];
                 xlID = xlOrganization + "." + xlName.Replace(" ", "_") + "." + xlType;
 
+                /*
                 int rCnt = 0;
                 int cCnt = 0;
 
@@ -133,12 +156,12 @@ namespace ExcelAddIn1
                         publishingList.Add((string)(xlRange.Cells[rCnt, cCnt] as Excel.Range).Value2);
                     }
                 }
+                */
             }
             else
             {
 
-                Excel.Range xlStartRange;
-                Excel.Range xlEndRange;
+
                 xlPath = singleResult["workbook_path"];
                 xlWorkbookName = singleResult["workbook"];
                 xlWorksheetName = singleResult["worksheet"];
@@ -148,11 +171,15 @@ namespace ExcelAddIn1
                 xlDescription = singleResult["description"];
                 xlOrganization = singleResult["organization"];
                 xlDataOwner = singleResult["user"];
-                xlStartRange = (Excel.Range)xlWorkSheet.Range[xlDestinationCell];
-                xlEndRange = xlStartRange.End[Excel.XlDirection.xlDown];
-                xlRange = (Excel.Range)xlWorkSheet.Range[xlStartRange, xlEndRange];
+                
+                // Here we will need a separate function which will help to establish a Range depending on the data type
+                xlRange = specifyRange(xlWorkSheet, xlDestinationCell);
                 xlID = singleResult["bapi_id"];
 
+                dataFromExcel = measureData(xlRange);
+                dataFromExcel["data_type"] = xlType;
+
+                /*
                 int rCnt = 0;
                 int cCnt = 0;
 
@@ -163,15 +190,16 @@ namespace ExcelAddIn1
                         publishingList.Add((string)(xlRange.Cells[rCnt, cCnt] as Excel.Range).Value2);
                     }
                 }
+                */
             }
 
             Dictionary<string, dynamic> publishingData = new Dictionary<string, dynamic>();
-            publishingData.Add("data", publishingList);
+            publishingData.Add("data", dataFromExcel["data"]);
             publishingData.Add("workbook_path", xlPath);
             publishingData.Add("workbook", xlWorkbookName);
             publishingData.Add("worksheet", xlWorksheetName);
             publishingData.Add("destination_cell", xlDestinationCell);
-            publishingData.Add("data_type", xlType);
+            publishingData.Add("data_type", dataFromExcel["data_type"]);
             publishingData.Add("name", xlName);
             publishingData.Add("description", xlDescription);
             publishingData.Add("organization", xlOrganization);
@@ -182,7 +210,7 @@ namespace ExcelAddIn1
             var json = jsonSerializer.Serialize(publishingData);
 
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(blueberryAPIurl + "List.publish");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(blueberryAPIurl + xlType + ".publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
@@ -283,7 +311,6 @@ namespace ExcelAddIn1
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
             Excel.Range xlRange;
-            String xlWorksheetName;
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
@@ -315,6 +342,126 @@ namespace ExcelAddIn1
         }
 
 
+        
+        public static Dictionary<string, dynamic> measureData(Excel.Range xlRange)
+        {
+            int xlRowsCount;
+            int xlColumnsCount;
+            xlRowsCount = xlRange.Rows.Count;
+            xlColumnsCount = xlRange.Columns.Count;
+
+            Dictionary<string, dynamic> dataInfo = new Dictionary<string, dynamic>();
+            dataInfo.Add("rows_count", xlRowsCount);
+            dataInfo.Add("columns_count", xlColumnsCount);
+            dataInfo.Add("data_type", labelData(xlRowsCount, xlColumnsCount));
+            dataInfo.Add("data", fromExcelToObject(xlRowsCount, xlColumnsCount, dataInfo["data_type"], xlRange));
+            return dataInfo;
+        }
+
+        public static String labelData(int xlRowsCount, int xlColumnsCount)
+        {
+            switch (xlColumnsCount)
+            {
+                case 1:
+                    if (xlRowsCount == 1)
+                    {
+                        return "Scalar";
+                    }
+                    else
+                    {
+                        return "List";
+                    }
+                case 2:
+                    return "Dictionary";
+                default:
+                    if (xlColumnsCount > 2) {
+                        return "Table";
+                    }
+                    else
+                    {
+                        return "Other";
+                    }
+            }
+        }
+        
+
+        public static dynamic fromExcelToObject(int rowsCount, int columnsCount, string dataType, Excel.Range xlRange)
+        {
+            switch (dataType)
+            {
+                case "Scalar":
+                    return xlRange.Value2;
+                case "List":
+                    ArrayList publishingList = new ArrayList();
+                    for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
+                    {
+                        for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
+                        {
+                            publishingList.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                        }
+                    }
+                    return publishingList;
+                case "Dictionary":
+                    Dictionary<string, dynamic> publishingDictionary = new Dictionary<string,dynamic>();
+                    for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
+                    {
+                        publishingDictionary.Add((dynamic)(xlRange.Cells[currentRowsCount, 1] as Excel.Range).Value2,
+                                                 (dynamic)(xlRange.Cells[currentRowsCount, 2] as Excel.Range).Value2);
+                    }
+                    return publishingDictionary;
+                case "Table":
+                    List<List<object>> publishingTable = new List<List<object>>();
+                    int columnsCountCopy = columnsCount;
+                    for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
+                    {
+                        //Type sublistType = (dynamic)(xlRange.Cells[1, currentColumnsCount] as Excel.Range).Value2.GetType();
+                        List<object> sublist = new List<object>();
+                        for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
+                        {
+                            sublist.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                        }
+                        publishingTable.Add(sublist);
+                    }
+
+                    return publishingTable;
+                default:
+                    return "Other";
+            }
+            
+
+        }
+
+        public static Excel.Range specifyRange(Excel.Worksheet xlWorkSheet, string xlDestinationCell)
+        {
+            Excel.Range xlStartRange;
+            Excel.Range xlEndRange;
+            Excel.Range xlRange;
+            xlStartRange = (Excel.Range)xlWorkSheet.Range[xlDestinationCell];
+
+            switch (xlDestinationCell)
+            {
+                case "Scalar":
+                    xlEndRange = xlStartRange;
+                    break;
+                case "List":
+                    xlEndRange = xlStartRange.End[Excel.XlDirection.xlDown];
+                    break;
+                case "Dictionary":
+                    xlEndRange = xlStartRange.End[Excel.XlDirection.xlDown].End[Excel.XlDirection.xlToRight];
+                    break;
+                case "Table":
+                    xlEndRange = xlStartRange.End[Excel.XlDirection.xlDown].End[Excel.XlDirection.xlToRight];
+                    break;
+                default:
+                    xlEndRange = xlStartRange;
+                    break;
+            }
+
+            xlRange = (Excel.Range)xlWorkSheet.Range[xlStartRange, xlEndRange];
+            return xlRange;
+        }
+
+
         private Dictionary<string, dynamic> getFetched()
         {
             String xlWorkbookPath;
@@ -333,7 +480,10 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = blueberryAPIurl + "List.get_fetched";
+            // This List.get_fetched should be abstracted to accomodate Scalar, List, Dict, etc.
+            // This function should check all different possible data structures, because a single workbook can have
+            // different data structures.
+            String url = blueberryAPIurl + "Data.get_fetched";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
@@ -358,6 +508,27 @@ namespace ExcelAddIn1
 
         }
 
+        public static Boolean isPublishRangeEmpty()
+        {
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            Excel.Range xlRange;
+
+            xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
+
+            xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
+
+            if (xlRange.Value2 == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private Dictionary<string, dynamic> getPublished()
         {
             String xlWorkbookPath;
@@ -376,7 +547,10 @@ namespace ExcelAddIn1
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = blueberryAPIurl + "List.get_published";
+            // This List.get_published should be abstracted to accomodate Scalar, List, Dict, etc.
+            // This function should check all different possible data structures, because a single workbook can have
+            // different data structures.
+            String url = blueberryAPIurl + "Data.get_published";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
@@ -417,6 +591,11 @@ namespace ExcelAddIn1
             {
                 GC.Collect();
             }
+        }
+
+        private void TestButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            MessageBox.Show("Testing");
         }
 
     }
