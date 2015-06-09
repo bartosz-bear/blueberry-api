@@ -21,7 +21,7 @@ namespace ExcelAddIn1
     {
 
 
-        public static string blueberryAPIurl = "http://localhost:8080/";
+        public static string blueberryAPIurl = "http://localhost.:8080/";
         //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
@@ -54,30 +54,6 @@ namespace ExcelAddIn1
 
         }
 
-        private void Fetch_Click(object sender, RibbonControlEventArgs e)
-        {
-            saveToExcel(fetchData());
-        }
-
-        private void Refresh_Click(object sender, RibbonControlEventArgs e)
-        {
-            Dictionary<string, dynamic> fetchedData = getFetched();
-            int fetchDataItemsCount = fetchedData["names"].Count;
-            for (int i = 0; i < fetchDataItemsCount; i++)
-            {
-                Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                singleResult.Add("bapi_id", fetchedData["bapi_ids"][i]);
-                singleResult.Add("user", fetchedData["users"][i]);
-                singleResult.Add("description", fetchedData["descriptions"][i]);
-                singleResult.Add("organization", fetchedData["organizations"][i]);
-                singleResult.Add("workbook_path", fetchedData["workbook_paths"][i]);
-                singleResult.Add("workbook", fetchedData["workbooks"][i]);
-                singleResult.Add("worksheet", fetchedData["worksheets"][i]);
-                singleResult.Add("destination_cell", fetchedData["destination_cells"][i]);
-                saveToExcel(fetchData(singleResult));
-            }
-        }
-
         private void Update_Click(object sender, RibbonControlEventArgs e)
         {
             Dictionary<string, dynamic> publishedData = getPublished();
@@ -102,8 +78,42 @@ namespace ExcelAddIn1
             }
         }
 
+        private void Fetch_Click(object sender, RibbonControlEventArgs e)
+        {
+            saveToExcel(fetchData());
+        }
+
+        private void Refresh_Click(object sender, RibbonControlEventArgs e)
+        {
+            Dictionary<string, dynamic> fetchedData = getFetched();
+            int fetchDataItemsCount = fetchedData["names"].Count;
+            for (int i = 0; i < fetchDataItemsCount; i++)
+            {
+                Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
+                singleResult.Add("bapi_id", fetchedData["bapi_ids"][i]);
+                singleResult.Add("user", fetchedData["users"][i]);
+                singleResult.Add("description", fetchedData["descriptions"][i]);
+                singleResult.Add("organization", fetchedData["organizations"][i]);
+                singleResult.Add("workbook_path", fetchedData["workbook_paths"][i]);
+                singleResult.Add("workbook", fetchedData["workbooks"][i]);
+                singleResult.Add("worksheet", fetchedData["worksheets"][i]);
+                singleResult.Add("destination_cell", fetchedData["destination_cells"][i]);
+                saveToExcel(fetchData(singleResult));
+            }
+        }
+
         /* Communication Methods */
 
+        /// <summary>
+        /// Gets data from Excel spreadsheet and send it to the BlueberryAPI cloud for persistent storage.
+        /// It works both for newly published data as activated by 'Publish' button on the Excel Add-in and
+        /// for 'Update' button which first gets a list of previously published data and updates them with
+        /// 'fresh' data.
+        /// </summary>
+        /// <param name="singleResult">singleResults helps to distinguish whether data is published 
+        /// for the first time or it has already been published. If singleResult is null then data is
+        /// published for the first time.
+        /// </param>
         public static void publishData(Dictionary<string, dynamic> singleResult = null)
         {
             Excel.Workbook xlWorkBook;
@@ -145,18 +155,6 @@ namespace ExcelAddIn1
                 xlType = dataFromExcel["data_type"];
                 xlID = xlOrganization + "." + xlName.Replace(" ", "_") + "." + xlType;
 
-                /*
-                int rCnt = 0;
-                int cCnt = 0;
-
-                for (rCnt = 1; rCnt <= xlRange.Rows.Count; rCnt++)
-                {
-                    for (cCnt = 1; cCnt <= xlRange.Columns.Count; cCnt++)
-                    {
-                        publishingList.Add((string)(xlRange.Cells[rCnt, cCnt] as Excel.Range).Value2);
-                    }
-                }
-                */
             }
             else
             {
@@ -231,7 +229,7 @@ namespace ExcelAddIn1
 
 
         }
-
+         
         private string fetchData(Dictionary<string, dynamic> singleResult = null)
         {
             Excel.Workbook xlWorkBook;
@@ -310,37 +308,88 @@ namespace ExcelAddIn1
         {
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
+            Excel.Range xlStartRange;
+            Excel.Range xlEndRange;
             Excel.Range xlRange;
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-
+            
             var jsonSerializer = new JavaScriptSerializer();
-
             Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
+            //Int32 dataLength = fetchedData.Count;
+            String[] splitWords = fetchedData["bapi_id"].Split('.');
+            string xlType = splitWords[2];
+            string serializedData = fetchedData["data"][0];
 
             if (fetchedData["destination_cell"] != null)
             {
-                xlRange = (Excel.Range)xlWorkSheet.Range[fetchedData["destination_cell"]];
+                xlStartRange = (Excel.Range)xlWorkSheet.Range[fetchedData["destination_cell"]];
             }
             else
             {
-                xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
+                //Make sure that this xlStartRange is a single range. If the user selects more than a single range, then choose the top one.
+                xlStartRange = (Excel.Range)xlWorkSheet.Application.Selection;
             }
 
-            Int32 dataLength = fetchedData["data"].Count;
-            Excel.Range endCell = (Excel.Range)xlWorkSheet.Cells[xlRange.Row + dataLength - 1, xlRange.Column];
-            Excel.Range xlDestinationRange = xlWorkSheet.Range[xlRange, endCell];
+            //Depending on the BAPI data type, data will be saved in a different way.
+            switch (xlType) {
+                case "Dictionary":
+                    { 
+                    Dictionary<string, dynamic> bapiData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(serializedData);
 
-            var fetchedDataArray = new object[dataLength, 1];
-            for (var i = 0; i < dataLength; i++)
-            {
-                fetchedDataArray[i, 0] = fetchedData["data"][i];
+                    var bapiDataKeys = bapiData.Keys.ToArray();
+                    var bapiDataValues = bapiData.Values.ToArray();
+                    Int32 dataLength = bapiData.Keys.Count;
+                    
+                    // Saving keys to excel
+                    Excel.Range xlEndRangeForKeys = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
+                    Excel.Range xlDestinationRangeForKeys = xlWorkSheet.Range[xlStartRange, xlEndRangeForKeys];
+
+                    var keysDataArray = new object[dataLength, 1];
+                    for (var i = 0; i < dataLength; i++)
+                    {
+                        keysDataArray[i, 0] = bapiDataKeys[i];
+                    }
+
+                    xlDestinationRangeForKeys.Value2 = keysDataArray;
+
+                    // Saving values to excel
+                    xlStartRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row, xlStartRange.Column + 1];
+                    Excel.Range xlEndRangeForValues = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
+                    Excel.Range xlDestinationRangeForValues = xlWorkSheet.Range[xlStartRange, xlEndRangeForValues];
+
+                    var valuesDataArray = new object[dataLength, 1];
+                    for (var i = 0; i < dataLength; i++)
+                    {
+                        valuesDataArray[i, 0] = bapiDataValues[i];
+                    }
+
+                    xlDestinationRangeForValues.Value2 = valuesDataArray;
+
+                    break;
+                    }
+                case "Table":
+                    break;
+                default:
+                    { 
+                    Int32 dataLength = fetchedData["data"].Count;
+                    xlEndRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
+                    Excel.Range xlDestinationRange = xlWorkSheet.Range[xlStartRange, xlEndRange];
+
+                    var fetchedDataArray = new object[dataLength, 1];
+                    for (var i = 0; i < dataLength; i++)
+                    {
+                        fetchedDataArray[i, 0] = fetchedData["data"][i];
+                    }
+
+                    xlDestinationRange.Value2 = fetchedDataArray;
+                    break;
+                    }
             }
 
-            xlDestinationRange.Value2 = fetchedDataArray;
+
         }
-
 
         
         public static Dictionary<string, dynamic> measureData(Excel.Range xlRange)
@@ -408,7 +457,9 @@ namespace ExcelAddIn1
                         publishingDictionary.Add((dynamic)(xlRange.Cells[currentRowsCount, 1] as Excel.Range).Value2,
                                                  (dynamic)(xlRange.Cells[currentRowsCount, 2] as Excel.Range).Value2);
                     }
-                    return publishingDictionary;
+                    var jsonSerializer = new JavaScriptSerializer();
+                    var json = jsonSerializer.Serialize(publishingDictionary);
+                    return json;
                 case "Table":
                     List<List<object>> publishingTable = new List<List<object>>();
                     int columnsCountCopy = columnsCount;

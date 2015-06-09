@@ -71,9 +71,6 @@ def publish_and_collect(request, class_):
         description = item.description
         organization = item.organization
 
-    logging.info('Bartosz')
-    logging.info(class_)
-
     class_(name=name,
            user=user,
            description=description,
