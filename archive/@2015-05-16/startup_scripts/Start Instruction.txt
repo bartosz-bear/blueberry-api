@@ -1,0 +1,35 @@
+1. Go to anaconda console
+  a. cd Scripts
+  b. activate apiquitous
+  c. ipython notebook
+2. Go to powershell
+  a. activate apiquitous
+  b. cd C:\Users\chbapie\Desktop\Bartosz\apiquitous
+  c. python api_server.py
+3. Go to C:\Users\chbapie\Desktop\Bartosz\apiquitous\startup_scripts
+  a. Right click on 'startup2.ps1' and click 'Run with powershell'
+4. Start Visual Studio
+  a. Choose a project: APIquitousAFO
+  b. Debug: Start Debugging
+5. Start PyCharm
+6. Start Sublime Text
+7. Start Fiddler
+8. Start GAE
+  a. Start powershell
+  b. activate apiquitous
+  c. cd "C:\Program Files (x86)\Google\google_appengine"
+  d. dev_appserver.py "C:\Users\chbapie\Desktop\Bartosz\blueberry-api\blueberry-api"
+
+OPTIONAL:
+http://localhost:8000/datastore
+http://localhost:8080/display
+
+DEPLOY TO GAE PROD:
+  a. Start powershell
+  b. activate apiquitous
+  c. cd "C:\Program Files (x86)\Google\google_appengine"
+  d. appcfg.py update "C:\Users\chbapie\Desktop\Bartosz\blueberry-api\blueberry-api"
+
+PROD:
+https://appengine.google.com
+blueberry-api.appspot.com

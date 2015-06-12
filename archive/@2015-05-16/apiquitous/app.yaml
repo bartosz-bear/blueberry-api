@@ -1,0 +1,33 @@
+application: apiquitous
+version: 1
+runtime: python27
+threadsafe: true
+api_version: 1
+
+handlers:
+
+# Static
+- url: /js
+  static_dir: static/js
+- url: /bootstrap
+  static_dir: static/bootstrap
+- url: /images
+  static_dir: static/images
+- url: /
+  static_files: templates/index.html
+  upload: templates/index\.html
+
+# Scripts
+- url: /display
+  script: display.application
+- url: /browse
+  script: display.application
+- url: /List.*
+  script: apis.app
+
+libraries:
+
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: latest

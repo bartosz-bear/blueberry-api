@@ -1,0 +1,37 @@
+Start Task Scheduler on Windows:
+Taskschd.msc
+
+Create a new folder
+Define a new script
+
+https://technet.microsoft.com/en-us/library/cc721931.aspx
+http://blogs.esri.com/esri/arcgis/2013/07/30/scheduling-a-scrip/
+https://social.technet.microsoft.com/Forums/en-US/d1621c70-16da-48d2-b7b0-c7f5eb8a0270/run-exe-silently
+http://bytes.com/topic/visual-basic/answers/768364-running-exe-parameters-script
+
+Set WshShell = WScript.CreateObject("WScript.Shell")
+WSHShell.Run chr(34) & "whatever .exe file + path to it" & chr(34) & " /silent",0,true
+
+ 
+
+I.e. : WSHShell.Run chr(34) & "C:\Scripts\file.exe" & chr(34) & " /silent",0,true
+
+WSHShell.Run chr(34) & "C:\Users\chbapie\Desktop\Bartosz\apiquitous\ngrok.exe" & chr(34) & " & "-subdomain=apiquitous 8001" &/silent",0,true
+
+C:\Users\chbapie\AppData\Local\Continuum\Anaconda32\envs\apiquitous\pythonw.exe
+"C:\Users\chbapie\Desktop\Bartosz\apiquitous\api_server.py"
+
+import subprocess
+subprocess.check_call(["C:\\Users\\chbapie\\Desktop\\Bartosz\\apiquitous\\", "ngrok.exe", "-subdomain=apiquitous 8001"])
+
+
+import subprocess
+import os
+
+BIN_DIR = "C:\\Users\\chbapie\\Desktop\\Bartosz\\apiquitous\\"
+
+app = 'ngrok.exe'
+appPath = os.path.join(BIN_DIR, app)
+
+commandLine = [app, '-subdomain=apiquitous 8001']
+process = subprocess.Popen(commandLine, executable=appPath)

@@ -1,0 +1,27 @@
+Fix the Startup_Addin problem.[THIS WEEKEND]
+
+Document existing code[1]
+Set up testing framework[1]
+Write unit tests to existing code[1]
+Analyze all possible variants of reading code for publishing[1]
+Rethink the Publish concept - Update one data structure only/update all data structures in the workbook[1]
+Think about all possible scenarios when think can go wrong and test them[1]
+
+saveToExcel() function has to be reorganized. saveArrayToExcel()[2]
+Implement threading/parallism for requests in order to prevent 'a hanging application'[2]
+Fix add-in loading problem[2]
+Fix visible exception pop-up when pressing Publish[2]
+Clean up the code from old comments[2]
+Do we need confirmation every single time a data is updated or only for several items?[3]
+Think how often should I refactor[3]
+Implement releaseObject garbage collector[3]
+Fix the git to make sure that all files are always pushed to bitbucket[3]
+Verify the access identifier for each class and method[3]
+
+ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
+
+DONE:
+Organize folders for the existing code
+Set up documentation application SandCastle.
+Finilize Dictionary data structure
+Table data structure

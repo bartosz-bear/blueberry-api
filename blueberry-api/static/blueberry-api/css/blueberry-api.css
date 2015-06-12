@@ -1,0 +1,9 @@
+.active-navbar-nav-li {
+    background: #AEECFB;
+    color: #04235A;
+}
+
+.inactive-navbar-nav-li {
+    background: #04235A;
+    color: #AEECFB;
+}

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="blueberryAPIurl field" Url="html/f8e20256-c30d-b545-ffb1-db14365571fc.htm" />
+  <HelpKINode Title="BlueberryTaskPane class">
+    <HelpKINode Title="BlueberryTaskPane Class" Url="html/d7a43d5a-cc5c-d880-8e40-3f617cdf2681.htm" />
+    <HelpKINode Title="about BlueberryTaskPane class" Url="html/d7a43d5a-cc5c-d880-8e40-3f617cdf2681.htm" />
+    <HelpKINode Title="constructor" Url="html/b0471e01-a282-e1be-9719-9d849010dca7.htm" />
+    <HelpKINode Title="events" Url="html/74fa0393-2bb5-9786-85e3-cb472d2896e5.htm" />
+    <HelpKINode Title="methods" Url="html/a4e30e91-a33c-a210-cec9-4317407d2709.htm" />
+    <HelpKINode Title="properties" Url="html/91bcbf4d-df70-a282-634f-542a0baa92b8.htm" />
+  </HelpKINode>
+  <HelpKINode Title="BlueberryTaskPane.BlueberryTaskPane constructor" Url="html/b0471e01-a282-e1be-9719-9d849010dca7.htm" />
+  <HelpKINode Title="BlueberryTaskPane.Dispose method" Url="html/31bcdf04-10c5-cf1d-8fd8-7d7d7606ae14.htm" />
+  <HelpKINode Title="BlueberryTaskPane.PublishingDataOwnerTextBox property" Url="html/6dff739f-20e5-dd2e-53bb-8b335830c52a.htm" />
+  <HelpKINode Title="BlueberryTaskPane.PublishingDescriptionTextBox property" Url="html/2a240622-b81a-5d5e-b05a-27d978c591aa.htm" />
+  <HelpKINode Title="BlueberryTaskPane.PublishingNameLabel property" Url="html/0ba70491-e5ab-2f45-e749-7bd2667a8fed.htm" />
+  <HelpKINode Title="BlueberryTaskPane.PublishingNameTextBox property" Url="html/22928072-39b9-01a3-3194-d5109f36d693.htm" />
+  <HelpKINode Title="BlueberryTaskPane.PublishingOrganizationTextBox property" Url="html/4f5463bf-6409-0a20-e282-26de7fb486cf.htm" />
+  <HelpKINode Title="Dispose method">
+    <HelpKINode Title="BlueberryTaskPane.Dispose Method " Url="html/31bcdf04-10c5-cf1d-8fd8-7d7d7606ae14.htm" />
+    <HelpKINode Title="Ribbon1.Dispose Method " Url="html/43e8a13f-0099-7b17-7431-739fdb961565.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ExcelAddIn1 namespace" Url="html/01dd8957-17b7-df8a-01f3-1da3756442ee.htm" />
+  <HelpKINode Title="ExcelAddIn1.BlueberryTaskPane class" Url="html/d7a43d5a-cc5c-d880-8e40-3f617cdf2681.htm" />
+  <HelpKINode Title="ExcelAddIn1.Ribbon1 class" Url="html/124e54d1-7f52-1f34-a76b-7d3d276fbed1.htm" />
+  <HelpKINode Title="ExcelAddIn1.ThisAddIn class" Url="html/af361cd8-2413-7eb1-1703-da73bd805bd7.htm" />
+  <HelpKINode Title="myTaskPane field" Url="html/81e76c63-79e3-97a3-3742-2c36494c0cb9.htm" />
+  <HelpKINode Title="MyTaskPane property" Url="html/51572a64-08c9-6eed-4edd-9e4262225543.htm" />
+  <HelpKINode Title="publishBlueberryTaskPane field" Url="html/274cb128-c265-97f9-8bb3-397ed3300f89.htm" />
+  <HelpKINode Title="PublishingDataOwnerTextBox property" Url="html/6dff739f-20e5-dd2e-53bb-8b335830c52a.htm" />
+  <HelpKINode Title="PublishingDescriptionTextBox property" Url="html/2a240622-b81a-5d5e-b05a-27d978c591aa.htm" />
+  <HelpKINode Title="PublishingNameLabel property" Url="html/0ba70491-e5ab-2f45-e749-7bd2667a8fed.htm" />
+  <HelpKINode Title="PublishingNameTextBox property" Url="html/22928072-39b9-01a3-3194-d5109f36d693.htm" />
+  <HelpKINode Title="PublishingOrganizationTextBox property" Url="html/4f5463bf-6409-0a20-e282-26de7fb486cf.htm" />
+  <HelpKINode Title="Ribbon1 class">
+    <HelpKINode Title="Ribbon1 Class" Url="html/124e54d1-7f52-1f34-a76b-7d3d276fbed1.htm" />
+    <HelpKINode Title="about Ribbon1 class" Url="html/124e54d1-7f52-1f34-a76b-7d3d276fbed1.htm" />
+    <HelpKINode Title="constructor" Url="html/fb0506a8-e16f-0a08-e250-8b03a0b73da5.htm" />
+    <HelpKINode Title="events" Url="html/51474096-fca1-214f-8278-28ab8963a9ab.htm" />
+    <HelpKINode Title="fields" Url="html/3bc7e46f-1351-26a8-30dd-207ec6962361.htm" />
+    <HelpKINode Title="methods" Url="html/8a3d2363-862f-87c9-4ea5-a3c172c0c107.htm" />
+    <HelpKINode Title="properties" Url="html/1632ad23-d027-8395-a1d8-99d29a1be520.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Ribbon1.blueberryAPIurl field" Url="html/f8e20256-c30d-b545-ffb1-db14365571fc.htm" />
+  <HelpKINode Title="Ribbon1.Dispose method" Url="html/43e8a13f-0099-7b17-7431-739fdb961565.htm" />
+  <HelpKINode Title="Ribbon1.Ribbon1 constructor" Url="html/fb0506a8-e16f-0a08-e250-8b03a0b73da5.htm" />
+  <HelpKINode Title="ThisAddIn class">
+    <HelpKINode Title="ThisAddIn Class" Url="html/af361cd8-2413-7eb1-1703-da73bd805bd7.htm" />
+    <HelpKINode Title="about ThisAddIn class" Url="html/af361cd8-2413-7eb1-1703-da73bd805bd7.htm" />
+    <HelpKINode Title="constructor" Url="html/3568b1fc-48a4-3c45-128d-2994ed2876fe.htm" />
+    <HelpKINode Title="events" Url="html/0349a076-4b11-fbee-f410-5a70d5378aa1.htm" />
+    <HelpKINode Title="fields" Url="html/7321402f-18f7-4e3c-fef8-ca6adb9cd9c0.htm" />
+    <HelpKINode Title="methods" Url="html/726c737f-6e85-373d-f154-290181394e9c.htm" />
+    <HelpKINode Title="properties" Url="html/808a84a2-0a76-7e3e-b059-72679b8696c6.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ThisAddIn.myTaskPane field" Url="html/81e76c63-79e3-97a3-3742-2c36494c0cb9.htm" />
+  <HelpKINode Title="ThisAddIn.MyTaskPane property" Url="html/51572a64-08c9-6eed-4edd-9e4262225543.htm" />
+  <HelpKINode Title="ThisAddIn.publishBlueberryTaskPane field" Url="html/274cb128-c265-97f9-8bb3-397ed3300f89.htm" />
+  <HelpKINode Title="ThisAddIn.ThisAddIn constructor" Url="html/3568b1fc-48a4-3c45-128d-2994ed2876fe.htm" />
+</HelpKI>

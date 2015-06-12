@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+
+    <!-- jquery -->
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <!-- office -->
+    <!-- <link href="../../Content/Office.css" rel="stylesheet" type="text/css" /> -->
+    <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js" type="text/javascript"></script>
+
+    <!-- To enable offline debugging using a local reference to Office.js, use:                        -->
+    <!-- <script src="../../Scripts/Office/MicrosoftAjax.js" type="text/javascript"></script>  -->
+    <!-- <script src="../../Scripts/Office/1.1/office.js" type="text/javascript"></script>  -->
+
+    <!-- bootstrap -->
+    <link href="../../Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/bootstrap-theme.css" rel="stylesheet" type="text/css" />
+    <script src="../../Scripts/bootstrap.js" type="text/javascript"></script>
+
+    <!-- app -->
+    <!-- <link href="../App.css" rel="stylesheet" type="text/css" /> -->
+    <script src="../App.js" type="text/javascript"></script>
+
+    <!-- home -->
+    <link href="Home.css" rel="stylesheet" type="text/css" />
+    <script src="Home.js" type="text/javascript"></script>
+
+    <!-- mustache -->
+    <script src="../../Scripts/mustache.js" type="text/javascript"></script>
+
+    <!-- handlebars -->
+    <script src="../../Scripts/handlebars.js" type="text/javascript"></script>
+    <script src="../../Scripts/handlebars.runtime.js" type="text/javascript"></script>
+
+    <!-- angular -->
+    <script src="../../Scripts/angular.js" type="text/javascript"></script>
+
+    <!-- BAPI -->
+    <script src="fetch.js"></script>
+    <script src="main.ctrl.js"></script>
+
+</head>
+<body ng-app="fetch" ng-controller="MainController as main">
+    <div id="content-header">
+        <div class="padding">
+            <h1>Blueberry API</h1>
+            
+        </div>
+    </div>
+    <div id="content-main">
+        <div class="padding">
+            
+                <ol class="breadcrumb">
+                    <li ng-click ="main.updateLevelsLists([])"><span class="glyphicon glyphicon-home"></span> Home</li>
+                    <li ng-repeat="item in main.level1" ng-if="main.level1Display[item]">{{item | capitalize}}</li>
+                    <li ng-repeat="item in main.publishLevel2" ng-if="main.publishLevel2Display[item]">{{item | capitalize}}</li>
+                    <li ng-repeat="item in main.fetchLevel2" ng-if="main.fetchLevel2Display[item]">{{item | capitalize}}</li>
+                </ol>
+            
+                <!--<h3>Debug: {{main.debug}}</h3>->
+
+            <!-- publishNew div-->
+            <div id="publishNew" ng-show="main.level1Display.publish && main.publishLevel2Display.new">
+                <form id="aq_publish_form">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Name</label>
+                        <input type="text" id="aq_name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputDescription1">Description</label>
+                        <textarea class="form-control" rows="3" id="aq_description" form="aq_publish_form" style="background-color:#AEECFB"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputOrganization1">Organization</label>
+                        <input type="text" id="aq_organization" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail1">Created by</label>
+                        <input type="email" id="aq_created_by" class="form-control">
+                    </div>
+                </form>
+                <button type="button" class="btn btn-danger" id="get-data-from-selection">Publish now</button><br />
+
+            </div>
+
+            <!-- publishUpdate div-->
+            <div id="publishUpdate" ng-show="main.level1Display.publish && main.publishLevel2Display.update">
+
+                <div class="bs-example" data-example-id="panel-without-body-with-table">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{main.published_ids[0]}}</div>
+                        <button ng-click="main.togglePublishedVerticalTable('one')">Show more</button>
+
+                        <!-- Table -->
+                        <table class="table" ng-show="main.tablePublishedToggle0">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.published_users[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.published_workbook_paths[0] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.published_workbooks[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.published_worksheets[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.published_destination_cells[0]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bs-example" data-example-id="panel-without-body-with-table">
+                    <div class=" panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{main.published_ids[1]}}</div>
+                        <button ng-click="main.togglePublishedVerticalTable('two')">Show more</button>
+
+                        <!-- Table -->
+                        <table class="table" ng-show="main.tablePublishedToggle1">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.published_users[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.published_workbook_paths[1] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.published_workbooks[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.published_worksheets[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.published_destination_cells[1]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bs-example" data-example-id="panel-without-body-with-table">
+                    <div class=" panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{main.published_ids[2]}}</div>
+                        <button ng-click="main.togglePublishedVerticalTable('three')">Show more</button>
+
+                        <!-- Table -->
+                        <table class="table" ng-show="main.tablePublishedToggle2">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.published_users[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.published_workbook_paths[2] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.published_workbooks[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.published_worksheets[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.published_destination_cells[2]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-danger" ng-click="main.publish_many()">Publish All</button>
+
+                <div style="height:45px;"></div>
+
+            </div>
+
+            <!-- fetchNew div-->
+            <div id="fetchNew" ng-show="main.level1Display.fetch && main.fetchLevel2Display.new">
+
+                <form id="aq_fetch_form">
+                    <div class="form-group">
+                        <label>Blueberry ID</label>
+                        <input type="text" id="aq_id" class="form-control" ng-model="main.fetchNewAQID" required>
+                    </div>
+                </form>
+                <button type="button" class="btn btn-danger" id="fetch_data" ng-click="main.makeCorsRequest2()">Fetch</button><br />
+                <!--<p>Debugging 1: {{main.debug1}}</p><br />
+                <p>Debugging 2: {{main.debug2}}</p><br />
+                <p>Debugging 3: {{main.debug3}}</p><br />
+                <p>Deb vm.fetchNewAQID: {{main.fetchNewAQID}}</p>
+                <p ng-click="main.makeCorsRequest2()">Script test</p>-->
+
+            </div>
+
+            <!-- fetchUpdate div-->
+            <div id="fetchUpdate" ng-show="main.level1Display.fetch && main.fetchLevel2Display.update">
+
+                
+
+                <br />
+                <!--
+                vm.names = text['names'];
+                vm.users = text['users'];
+                vm.workbook_paths = text['workbook_paths'];
+                vm.workbooks = text['workbooks'];
+                vm.worksheets = text['worksheets'];
+                vm.destination_cells = text['destination_cells'];
+                -->
+                <div class="bs-example" data-example-id="panel-without-body-with-table" >
+                    <div class=" panel panel-default">
+                    <!-- Default panel contents -->
+                        <div class="panel-heading" >{{main.names[0]}}</div>
+                        <button ng-click="main.toggleVerticalTable('one')">Show more</button>
+
+                    <!-- Table -->
+                        <table class="table" ng-show="main.tableToggle0">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.users[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.workbook_paths[0] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.workbooks[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.worksheets[0]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.destination_cells[0]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+                </div>
+
+                <div class="bs-example" data-example-id="panel-without-body-with-table">
+                    <div class=" panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{main.names[1]}}</div>
+                        <button ng-click="main.toggleVerticalTable('two')">Show more</button>
+
+                        <!-- Table -->
+                        <table class="table" ng-show="main.tableToggle1">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.users[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.workbook_paths[1] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.workbooks[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.worksheets[1]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.destination_cells[1]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bs-example" data-example-id="panel-without-body-with-table">
+                    <div class=" panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{main.names[2]}}</div>
+                        <button ng-click="main.toggleVerticalTable('three')">Show more</button>
+
+                        <!-- Table -->
+                        <table class="table" ng-show="main.tableToggle2">
+
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row">Owner</th>
+                                    <td>{{main.users[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook Path</th>
+                                    <td>{{main.workbook_paths[2] | limitTo: 30}}...</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Workbook</th>
+                                    <td>{{main.workbooks[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Worksheet</th>
+                                    <td>{{main.worksheets[2]}}</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Destination Cell</th>
+                                    <td>{{main.destination_cells[2]}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <button type="button" class="btn btn-danger" ng-click="main.fetch_many()">Update All</button>
+
+
+            </div>
+
+                <div id="bartosz" ng-show="main.display.bartosz">
+
+                    <script id="entry-template" type="text/x-handlebars-template">
+
+
+                        <div class="entry">
+                            <h1>{{title}}</h1>
+                            <div class="body">
+                                {{body}}
+                            </div>
+                        </div>
+
+                    </script>
+
+                    <div>
+                        <div class="container">
+
+                            <h1>{{main.title}}</h1>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </span>
+                                <input type="text" class="form-control" ng-model="main.searchInput">
+                            </div>
+                            <p>{{main.searchInput}}</p>
+
+                            <h3>A list of TV shows</h3>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="show in main.shows | filter:main.searchInput | orderBy:main.order.key:main.order.reverse"><span class="glyphicon glyphicon-star" ng-if="show.favorite"></span> {{show.title}} <span class="badge">{{show.year}}</span></li>
+                            </ul>
+                            <select class="form-control pull-right" ng-model="main.order" ng-options="order as order.title for order in main.orders"></select>
+
+                            <div class="clearfix"></div>
+                            <h3>Add a new TV Show</h3>
+                            <form name="main.addForm" class="form" ng-submit="main.addShow()">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" ng-model="main.new.title" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <input type="number" min="1900" max="2030" class="form-control" ng-model="main.new.year" required />
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <label>Favorite: <input type="checkbox" ng-model="main.new.favorite" /></label>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <p>Janusz</p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+    </div>
+    <div id="content-footer">
+            <div class="container-fluid">
+
+               <div id="footerMenu" class="row">
+
+                   <!--
+                   <div ng-repeat="n in main.currentFooterMenu">
+                       <div class="col-xs-6 col-xs-6-footer">
+                           <button type="button" class="btn btn-primary btn-block" >{{n[0] | capitalize}}</button>
+                       </div>
+                   </div>
+                    -->
+
+                   <!-- Publish button-->
+                   <div class="col-xs-6 col-xs-6-footer">                       
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="!main.level1Display.publish && !main.level1Display.fetch"
+                               ng-click="main.updateLevelsLists([1])">
+                           Publish
+                       </button>
+                   </div>
+
+                   <!-- Fetch button-->
+                   <div class="col-xs-6 col-xs-6-footer">
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="!main.level1Display.publish && !main.level1Display.fetch"
+                               ng-click="main.updateLevelsLists([2])">
+                           Fetch
+                       </button>
+                   </div>
+
+                   <!-- Publish.New button-->
+                   <div class="col-xs-6 col-xs-6-footer">
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="main.level1Display.publish"
+                               ng-click="main.updateLevelsLists([1,3])">
+                           New
+                       </button>
+                   </div>
+
+                   <!-- Publish.Update button-->
+                   <div class="col-xs-6 col-xs-6-footer">
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="main.level1Display.publish"
+                               ng-click="main.updateLevelsLists([1,4]); main.getPublished()">
+                           Update
+                       </button>
+                   </div>
+
+                   <!-- Fetch.New button-->
+                   <div class="col-xs-6 col-xs-6-footer">
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="main.level1Display.fetch"
+                               ng-click="main.updateLevelsLists([2,5])">
+                           New
+                       </button>
+                   </div>
+
+                   <!-- Fetch.Update button  -->
+                   <div class="col-xs-6 col-xs-6-footer">
+                       <button type="button" class="btn btn-primary btn-block"
+                               ng-show="main.level1Display.fetch"
+                               ng-click="main.updateLevelsLists([2,6]); main.getFetched()">
+                           Update
+                       </button>
+                   </div>
+
+
+                   <!--
+                   function falseAllItems() {
+                   vm.level1Display.publish = false;
+                   vm.level1Display.fetch = false;
+                   vm.publishLevel2Display.new = false;
+                   vm.publishLevel2Display.update = false;
+                   vm.fetchLevel2Display.new = false;
+                   vm.fetchLevel2Display.update = false;
+                   };
+                   -->
+
+
+
+
+                   <!--
+                    <div class="col-xs-6 col-xs-6-footer">
+                        <button type="button" class="btn btn-primary btn-block" ng-click="main.footerDisplay.level2 = true; main.adjustFooterHeight()">Publish</button>
+                    </div>
+                    <div class="col-xs-6 col-xs-6-footer">
+                        <button type="button" class="btn btn-primary btn-block" ng-click="main.hideAll('fetchNew')">Fetch</button>
+                     </div>
+                    -->
+               </div>
+                
+            </div>
+    </div>
+</body>
+
+
+</html>

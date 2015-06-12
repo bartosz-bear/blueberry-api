@@ -1,0 +1,20 @@
+powershell
+activate pipeline
+cd C:\Users\chbapie\Desktop\Bartosz\pipeline\transit
+python manage.py runserver
+powershell
+activate pipeline
+cd C:\Users\chbapie\AppData\Local
+./ngrok -subdomain=transit -httpauth=jarko:19711515 8000
+http://transit.ngrok.com/transit/
+Start/Google App Engine Launcher
+run edu-atoms
+http://localhost:11080/pipeline_web
+Start PyCharm(transit will append automatically)
+Open following Pycharm projects:
+
+pipeline_web(C:\Users\chbapie\Desktop\Bartosz\pipeline\pipeline web)
+transit(C:\Users\chbapie\Desktop\Bartosz\pipeline\transit)
+pipeline library(C:\Users\chbapie\Desktop\Bartosz\pipeline\transit\pipeline)
+local script(C:\Users\chbapie\Desktop\Bartosz\Reports\Daily\PnL)
+

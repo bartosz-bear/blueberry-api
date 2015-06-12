@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpTOC>
+
+  <HelpTOCNode Id="7a456791-216f-4224-a220-3c4afc6e77f1" Title="ExcelAddIn1" Url="html/01dd8957-17b7-df8a-01f3-1da3756442ee.htm">
+    <HelpTOCNode Id="162fe9fd-327d-4458-8dee-056684b6c05b" Title="BlueberryTaskPane Class" Url="html/d7a43d5a-cc5c-d880-8e40-3f617cdf2681.htm">
+      <HelpTOCNode Title="BlueberryTaskPane Constructor " Url="html/b0471e01-a282-e1be-9719-9d849010dca7.htm" />
+      <HelpTOCNode Id="75dc433a-66a3-4d9e-9811-7f9b24ad00a2" Title="BlueberryTaskPane Methods" Url="html/a4e30e91-a33c-a210-cec9-4317407d2709.htm">
+        <HelpTOCNode Id="39557aa0-9940-431b-b93d-85104bc183ab" Title="Dispose Method " Url="html/31bcdf04-10c5-cf1d-8fd8-7d7d7606ae14.htm">
+          <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/41662cbb-bed5-a992-07c6-7c61f94ccfa0.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="b8007e62-043e-40d5-bf93-2ee1c3195835" Title="BlueberryTaskPane Properties" Url="html/91bcbf4d-df70-a282-634f-542a0baa92b8.htm">
+        <HelpTOCNode Title="PublishingDataOwnerTextBox Property " Url="html/6dff739f-20e5-dd2e-53bb-8b335830c52a.htm" />
+        <HelpTOCNode Title="PublishingDescriptionTextBox Property " Url="html/2a240622-b81a-5d5e-b05a-27d978c591aa.htm" />
+        <HelpTOCNode Title="PublishingNameLabel Property " Url="html/0ba70491-e5ab-2f45-e749-7bd2667a8fed.htm" />
+        <HelpTOCNode Title="PublishingNameTextBox Property " Url="html/22928072-39b9-01a3-3194-d5109f36d693.htm" />
+        <HelpTOCNode Title="PublishingOrganizationTextBox Property " Url="html/4f5463bf-6409-0a20-e282-26de7fb486cf.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Title="BlueberryTaskPane Events" Url="html/74fa0393-2bb5-9786-85e3-cb472d2896e5.htm" />
+    </HelpTOCNode>
+    <HelpTOCNode Id="2173eb2b-a3b9-4c18-a5e0-9c44306f0808" Title="Ribbon1 Class" Url="html/124e54d1-7f52-1f34-a76b-7d3d276fbed1.htm">
+      <HelpTOCNode Title="Ribbon1 Constructor " Url="html/fb0506a8-e16f-0a08-e250-8b03a0b73da5.htm" />
+      <HelpTOCNode Id="dd12a82c-9e6a-499f-93fd-1e64495e6d3e" Title="Ribbon1 Fields" Url="html/3bc7e46f-1351-26a8-30dd-207ec6962361.htm">
+        <HelpTOCNode Title="blueberryAPIurl Field" Url="html/f8e20256-c30d-b545-ffb1-db14365571fc.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="eb2edd8a-de94-4bf8-98c2-94d3bc2b6e99" Title="Ribbon1 Methods" Url="html/8a3d2363-862f-87c9-4ea5-a3c172c0c107.htm">
+        <HelpTOCNode Id="a6fdc923-6b89-4ad1-85ab-0e8967bc4ea6" Title="Dispose Method " Url="html/43e8a13f-0099-7b17-7431-739fdb961565.htm">
+          <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/43020e90-5cfc-d8c8-d2f7-54ffa5c9c64d.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Title="Ribbon1 Properties" Url="html/1632ad23-d027-8395-a1d8-99d29a1be520.htm" />
+      <HelpTOCNode Title="Ribbon1 Events" Url="html/51474096-fca1-214f-8278-28ab8963a9ab.htm" />
+    </HelpTOCNode>
+    <HelpTOCNode Id="56f8b069-9fb1-4379-959c-14982b29e41f" Title="ThisAddIn Class" Url="html/af361cd8-2413-7eb1-1703-da73bd805bd7.htm">
+      <HelpTOCNode Title="ThisAddIn Constructor " Url="html/3568b1fc-48a4-3c45-128d-2994ed2876fe.htm" />
+      <HelpTOCNode Id="d07e8a19-d081-4a0a-98bb-a09c9b5f0cfa" Title="ThisAddIn Fields" Url="html/7321402f-18f7-4e3c-fef8-ca6adb9cd9c0.htm">
+        <HelpTOCNode Title="myTaskPane Field" Url="html/81e76c63-79e3-97a3-3742-2c36494c0cb9.htm" />
+        <HelpTOCNode Title="publishBlueberryTaskPane Field" Url="html/274cb128-c265-97f9-8bb3-397ed3300f89.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Title="ThisAddIn Methods" Url="html/726c737f-6e85-373d-f154-290181394e9c.htm" />
+      <HelpTOCNode Id="e0ce86de-025b-4979-bc3f-9e205f96c751" Title="ThisAddIn Properties" Url="html/808a84a2-0a76-7e3e-b059-72679b8696c6.htm">
+        <HelpTOCNode Title="MyTaskPane Property " Url="html/51572a64-08c9-6eed-4edd-9e4262225543.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Title="ThisAddIn Events" Url="html/0349a076-4b11-fbee-f410-5a70d5378aa1.htm" />
+    </HelpTOCNode>
+  </HelpTOCNode>
+</HelpTOC>
