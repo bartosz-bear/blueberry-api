@@ -260,6 +260,9 @@
   <ItemGroup>
     <None Include="Resources\publish-icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\update_three_arrows_icon.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

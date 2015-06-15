@@ -79,5 +79,15 @@ namespace ExcelAddIn1.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap update_three_arrows_icon {
+            get {
+                object obj = ResourceManager.GetObject("update_three_arrows_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

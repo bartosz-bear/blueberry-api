@@ -17,14 +17,12 @@ namespace ExcelAddIn1.Controllers.Helpers
             Excel.Worksheet xlWorkSheet;
             Excel.Range xlStartRange;
             Excel.Range xlEndRange;
-            //Excel.Range xlRange;
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
 
             var jsonSerializer = new JavaScriptSerializer();
             Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
-            //Int32 dataLength = fetchedData.Count;
             String[] splitWords = fetchedData["bapi_id"].Split('.');
             string xlType = splitWords[2];
             string serializedData = fetchedData["data"][0];
@@ -42,6 +40,20 @@ namespace ExcelAddIn1.Controllers.Helpers
             //Depending on the BAPI data type, data will be saved in a different way.
             switch (xlType)
             {
+                case "Scalar":
+                    {
+                        List<object> bapiData = new List<object>(); 
+                        bapiData.Add(jsonSerializer.Deserialize<object>(serializedData));
+                        //bapiData.Add(serializedData);
+                        saveArrayToExcel(bapiData, xlWorkSheet, xlStartRange, 0);
+                        break;
+                    }
+                case "List":
+                    {
+                        List<object> bapiData = jsonSerializer.Deserialize<List<object>>(serializedData);
+                        saveArrayToExcel(bapiData, xlWorkSheet, xlStartRange, 0);
+                        break;
+                    }
                 case "Dictionary":
                     {
                         Dictionary<string, dynamic> bapiData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(serializedData);
@@ -51,6 +63,7 @@ namespace ExcelAddIn1.Controllers.Helpers
                         Int32 dataLength = bapiData.Keys.Count;
 
                         // Saving keys to excel
+                        // TODO: Refactor this to use saveArrayToExcel 
                         Excel.Range xlEndRangeForKeys = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
                         Excel.Range xlDestinationRangeForKeys = xlWorkSheet.Range[xlStartRange, xlEndRangeForKeys];
 
@@ -79,8 +92,6 @@ namespace ExcelAddIn1.Controllers.Helpers
                     }
                 case "Table":
                     {
-                        List<List<object>> publishingTable = new List<List<object>>();
-                        //Dictionary<string, dynamic> bapiData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(serializedData);
                         List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedData);
                         Int32 numOfListsInATable = bapiData.Count - 1;
                         for (var i = 0; i <= numOfListsInATable; i++)
@@ -88,21 +99,13 @@ namespace ExcelAddIn1.Controllers.Helpers
                             List<object> currentBAPIDataArray = bapiData[i];
                             int offset = i;
                             saveArrayToExcel(currentBAPIDataArray, xlWorkSheet, xlStartRange, offset);
-
-
-                            //var fetchedDataArray = new object[currentArrayLength, 1];
-                            //for (var j = 0; j < currentArrayLength; i++)
-                            //{
-                            //    fetchedDataArray[i, 0] = fetchedData["data"][i];
-                            //}
-
-                            //xlDestinationRange.Value2 = fetchedDataArray;
                         }
 
                             break;
                     }
                 default:
                     {
+                        /*
                         Int32 dataLength = fetchedData["data"].Count;
                         xlEndRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
                         Excel.Range xlDestinationRange = xlWorkSheet.Range[xlStartRange, xlEndRange];
@@ -115,6 +118,8 @@ namespace ExcelAddIn1.Controllers.Helpers
 
                         xlDestinationRange.Value2 = fetchedDataArray;
                         break;
+                         */
+                        break;
                     }
             }
 
@@ -124,18 +129,17 @@ namespace ExcelAddIn1.Controllers.Helpers
         {
             Int32 dataLength = arrayToBeSaved.Count;
 
-            // Saving keys to excel
             xlStartRange = xlWorkSheet.Cells[xlStartRange.Row, xlStartRange.Column + offset];
             Excel.Range xlEndRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
             Excel.Range xlDestinationRange = xlWorkSheet.Range[xlStartRange, xlEndRange];
 
-            var keysDataArray = new object[dataLength, 1];
+            var dataArray = new object[dataLength, 1];
             for (var i = 0; i < dataLength; i++)
             {
-                keysDataArray[i, 0] = arrayToBeSaved[i];
+                dataArray[i, 0] = arrayToBeSaved[i];
             }
 
-            xlDestinationRange.Value2 = keysDataArray;
+            xlDestinationRange.Value2 = dataArray;
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using System.Net;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -17,7 +20,10 @@ namespace ExcelAddIn1.Controllers.Helpers
             switch (dataType)
             {
                 case "Scalar":
-                    return xlRange.Value2;
+                    var jsonScalarSerializer = new JavaScriptSerializer();
+                    var jsonScalar = jsonScalarSerializer.Serialize(xlRange.Value2);
+
+                    return jsonScalar;
                 case "List":
                     ArrayList publishingList = new ArrayList();
                     for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
@@ -27,7 +33,11 @@ namespace ExcelAddIn1.Controllers.Helpers
                             publishingList.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
                         }
                     }
-                    return publishingList;
+
+                    var jsonListSerializer = new JavaScriptSerializer();
+                    var jsonList = jsonListSerializer.Serialize(publishingList);
+
+                    return jsonList;
                 case "Dictionary":
                     Dictionary<string, dynamic> publishingDictionary = new Dictionary<string, dynamic>();
                     for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
@@ -141,17 +151,8 @@ namespace ExcelAddIn1.Controllers.Helpers
             return xlRange;
         }
 
-        public static Boolean isPublishRangeEmpty()
+        public static Boolean isPublishRangeEmpty(Excel.Range xlRange)
         {
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            Excel.Range xlRange;
-
-            xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-
-            xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
-
             if (xlRange.Value2 == null)
             {
                 return true;
@@ -161,5 +162,125 @@ namespace ExcelAddIn1.Controllers.Helpers
                 return false;
             }
         }
+
+        public static Boolean isAnyBlueberryTaskPaneFieldEmpty(string xlName, string xlDescription, string xlOrganization, string xlDataOwner)
+        {
+
+            if (string.IsNullOrEmpty(xlName) || string.IsNullOrEmpty(xlDescription) ||
+                string.IsNullOrEmpty(xlOrganization) || string.IsNullOrEmpty(xlDataOwner))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static Boolean isIDUsed(string xlName, string xlOrganization, string xlDataOwner, Excel.Range xlRange)
+        {
+
+            string xlID = xlOrganization.Replace(" ", "_") + "." + xlName.Replace(" ", "_") + "." + labelData(xlRange.Rows.Count, xlRange.Columns.Count);
+
+            Dictionary<string, dynamic> requestData = new Dictionary<string, dynamic>();
+            requestData.Add("bapi_id", xlID);
+            requestData.Add("user", xlDataOwner);
+
+            var jsonSerializer = new JavaScriptSerializer();
+            var json = jsonSerializer.Serialize(requestData);
+
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + "Data.is_id_used");
+            httpWebRequest.ContentType = "text/json";
+            httpWebRequest.Method = "POST";
+
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+
+                //Dictionary<string, bool> validations = new Dictionary<string, bool>();
+                Dictionary<string, bool> deserializedID = jsonSerializer.Deserialize<Dictionary<string, bool>>(result);
+
+                return deserializedID["response"];
+            }
+
+        }
+
+        public static Boolean areInputsSpecialCharactersFree(string xlName, string xlDescription, string xlOrganization, string xlDataOwner)
+        {
+
+            var regexItem = new Regex(@"^[\w\s-]{1,80}$");
+            List<string> items = new List<string>();
+            items.Add(xlName);
+            items.Add(xlOrganization);
+
+            foreach (string i in items)
+            {
+                if (regexItem.IsMatch(i)) {
+                    continue;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        public static String validatePublishingInputs()
+        {
+
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            Excel.Range xlRange;
+
+            xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
+
+            xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
+
+            string xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
+            string xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
+            string xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
+            string xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
+
+            Dictionary<string, bool> validations = new Dictionary<string, bool>();
+            Dictionary<string, string> errorMessages = new Dictionary<string, string>();
+
+            errorMessages.Add("isPublishRangeEmpty", "Range which you are trying to publish is empty. Choose some data and try again.");
+            errorMessages.Add("isAnyBlueberryTaskPaneFieldEmpty", "One of the input forms ('Name', 'Description', 'Organization', 'Data Owner')" +
+                                                                    " is empty. Please complete all fields before submitting.");
+            errorMessages.Add("isIDUsed", "This 'Name' has already been used within this 'Organization' by a different user. Please change one or both of" +
+                                          " them and try again.");
+            errorMessages.Add("areInputsSpecialCharactersFree", "'Name' and 'Organization' should not have any of the following characters: '/*-+@&$#%.,\\\"'" +
+                                                                " and it should be less than 80 characters.");
+
+            validations.Add("isPublishRangeEmpty", isPublishRangeEmpty(xlRange));
+            validations.Add("isAnyBlueberryTaskPaneFieldEmpty", isAnyBlueberryTaskPaneFieldEmpty(xlName, xlDescription, xlOrganization, xlDataOwner));
+            validations.Add("isIDUsed", isIDUsed(xlName, xlOrganization, xlDataOwner, xlRange));
+            validations.Add("areInputsSpecialCharactersFree", areInputsSpecialCharactersFree(xlName, xlDescription, xlOrganization, xlDataOwner));
+
+            foreach (KeyValuePair<string, bool> item in validations)
+            {
+                if (item.Value)
+                {
+                    string itemKey = item.Key;
+                    return errorMessages[itemKey];
+                }
+                    
+            }
+            return "Pass";
+        }
+
     }
 }

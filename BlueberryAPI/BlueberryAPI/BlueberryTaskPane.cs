@@ -31,6 +31,17 @@ namespace ExcelAddIn1
 
         private void PublishButton_Click(object sender, EventArgs e)
         {
+            string validationResult = PublishingHelpers.validatePublishingInputs();
+            if (validationResult == "Pass")
+            {
+                Publishing.publishData();
+            }
+            else
+            {
+                MessageBox.Show(validationResult);
+            }
+
+            /*
             if (PublishingHelpers.isPublishRangeEmpty())
             {
                 MessageBox.Show("Range which you are trying to publish is empty. Choose some data and try again.");
@@ -38,6 +49,31 @@ namespace ExcelAddIn1
             else
             {
                 Publishing.publishData();
+            }
+             */
+        }
+
+        private void BAPINameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Determine if the TextBox has a digit character.
+            string text = PublishingNameTextBox.Text;
+            bool hasDigit = false;
+            foreach (char letter in text)
+            {
+                if (char.IsDigit(letter))
+                {
+                    hasDigit = true;
+                    break;
+                }
+            }
+            // Call SetError or Clear on the ErrorProvider.
+            if (!hasDigit)
+            {
+                errorProvider1.SetError(BAPINameTextBox, "Needs to contain a digit");
+            }
+            else
+            {
+                errorProvider1.Clear();
             }
         }
     }

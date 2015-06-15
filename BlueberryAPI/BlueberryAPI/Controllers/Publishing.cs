@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 using PublishingHelpers = ExcelAddIn1.Controllers.Helpers.PublishingHelpers;
-using BlueberryRibbon = ExcelAddIn1.Ribbon1;
+using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
 
 namespace ExcelAddIn1.Controllers
 {
@@ -60,13 +60,13 @@ namespace ExcelAddIn1.Controllers
                 xlWorkbookName = xlWorkBook.Name;
                 xlWorksheetName = xlWorkSheet.Name;
                 xlDestinationCell = xlRange.Cells[1, 1].Address;
-                xlName = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingNameTextBox.Text;
-                xlDescription = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
-                xlOrganization = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
-                xlDataOwner = Globals.ThisAddIn.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
+                xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
+                xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
+                xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
+                xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
                 dataFromExcel = PublishingHelpers.measureData(xlRange, "noType");
                 xlType = dataFromExcel["data_type"];
-                xlID = xlOrganization + "." + xlName.Replace(" ", "_") + "." + xlType;
+                xlID = xlOrganization.Replace(" ", "_") + "." + xlName.Replace(" ", "_") + "." + xlType;
 
             }
             else
@@ -89,19 +89,6 @@ namespace ExcelAddIn1.Controllers
 
                 dataFromExcel = PublishingHelpers.measureData(xlRange, xlType);
                 dataFromExcel["data_type"] = xlType;
-
-                /*
-                int rCnt = 0;
-                int cCnt = 0;
-
-                for (rCnt = 1; rCnt <= xlRange.Rows.Count; rCnt++)
-                {
-                    for (cCnt = 1; cCnt <= xlRange.Columns.Count; cCnt++)
-                    {
-                        publishingList.Add((string)(xlRange.Cells[rCnt, cCnt] as Excel.Range).Value2);
-                    }
-                }
-                */
             }
 
             Dictionary<string, dynamic> publishingData = new Dictionary<string, dynamic>();
@@ -121,7 +108,7 @@ namespace ExcelAddIn1.Controllers
             var json = jsonSerializer.Serialize(publishingData);
 
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Ribbon1.blueberryAPIurl + xlType + ".publish");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + xlType + ".publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
@@ -160,9 +147,6 @@ namespace ExcelAddIn1.Controllers
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            // This List.get_published should be abstracted to accomodate Scalar, List, Dict, etc.
-            // This function should check all different possible data structures, because a single workbook can have
-            // different data structures.
             String url = BlueberryRibbon.blueberryAPIurl + "Data.get_published";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);

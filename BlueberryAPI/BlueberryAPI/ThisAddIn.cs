@@ -18,21 +18,30 @@ namespace ExcelAddIn1
         //private Microsoft.Office.Tools.CustomTaskPane taskPaneValue;
 
 
-        public BlueberryTaskPane publishBlueberryTaskPane;
-        public Microsoft.Office.Tools.CustomTaskPane myTaskPane;
+        //public BlueberryTaskPane publishBlueberryTaskPane;
+        //public Microsoft.Office.Tools.CustomTaskPane myTaskPane;
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            this.Application.WorkbookActivate += new Excel.AppEvents_WorkbookActivateEventHandler(
-                Application_WorkbookActivate);
+            //this.Application.WorkbookActivate += new Excel.AppEvents_WorkbookActivateEventHandler(
+            //    Application_WorkbookActivate);
 
-            MessageBox.Show("Happening");
+            //MessageBox.Show("Happening");
 
+
+
+            /*
             publishBlueberryTaskPane = new BlueberryTaskPane();
             myTaskPane = this.CustomTaskPanes.Add(
                 publishBlueberryTaskPane, "Publish");
-            publishBlueberryTaskPane.Visible = true;
+            //publishBlueberryTaskPane.Visible = true;
             myTaskPane.VisibleChanged += new EventHandler(myTaskPane_VisibleChanged);
+
+
+            */
+
+
+            //myTaskPane.VisibleChanged += new EventHandler(Ribbon1.Publish_Click);
             //MessageBox.Show("You can see it");
             
             //taskPaneValue.VisibleChanged +=
@@ -40,7 +49,7 @@ namespace ExcelAddIn1
         }
 
 
-
+        /*
         void Application_WorkbookActivate(Excel.Workbook Wb)
         {
             myTaskPane.Visible = true;
@@ -49,14 +58,16 @@ namespace ExcelAddIn1
             //else
             //    myTaskPane.Visible = false;
         }
-
+         */
+        /*
         private void myTaskPane_VisibleChanged(object sender, System.EventArgs e)
         {
-            //Globals.Ribbons.Ribbon1.toggleButton1.Checked = myTaskPane.Visible;
+            //Globals.Ribbons.ManageTaskPaneRibbon.toggleButton1.Checked = myTaskPane.Visible;
             //myTaskPane.Visible = true;
             MessageBox.Show("Clicked 2");
+            //Globals.ThisAddIn.myTaskPane.Visible = true;
         }
-
+        
         public Microsoft.Office.Tools.CustomTaskPane MyTaskPane
         {
             get
@@ -68,7 +79,7 @@ namespace ExcelAddIn1
                 myTaskPane = value;
             }
         }
-
+        */
         /*
 
         private void taskPaneValue_VisibleChanged(object sender, System.EventArgs e)

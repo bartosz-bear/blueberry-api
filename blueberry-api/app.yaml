@@ -37,6 +37,8 @@ handlers:
   script: apis.app
 - url: /Table.*
   script: apis.app
+- url: /Sorting.*
+  script: micro_services.app
 
 libraries:
 - name: jinja2

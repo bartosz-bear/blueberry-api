@@ -26,4 +26,4 @@ DEPLOY TO GAE PROD:
 
 PROD:
 https://appengine.google.com
-blueberry-api.appspot.com
+blueberry-api.appspot.com/Sorting.get_published

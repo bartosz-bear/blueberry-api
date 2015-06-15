@@ -1,27 +1,60 @@
-Fix the Startup_Addin problem.[THIS WEEKEND]
+WEEKEND PLAN:
+Think about all possible scenarios when think can go wrong and test them[1]
+Create example of a microservice[2]
 
+POTENTIAL PROBLEMS:
+A) One of the items in 'Publish' task pane is not entered
+B) A very long string is entered in 'Description'
+C) 'Data owner' is not an email
+
+TESTS:
+Publish  
+  Scalar
+    1) A selected cell is empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, formulas)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+  
+  List
+    1)   
+
+GENERAL:
+1) A web-server is not responding
+2) Enter different data type (int, double, string, dates, formulas)
+3) Name or organization has spaces or dots or some other wrong characters.
+
+Think about xlID in 'Publishing' the same formatting as for xlName be aplied for xlOrganization?[1]
+Create an installer[1]
+Change the name of the platform to RC Bay[1]
 Document existing code[1]
 Set up testing framework[1]
 Write unit tests to existing code[1]
-Analyze all possible variants of reading code for publishing[1]
 Rethink the Publish concept - Update one data structure only/update all data structures in the workbook[1]
-Think about all possible scenarios when think can go wrong and test them[1]
+Implement a button to open the Blueberry Platform
 
 saveToExcel() function has to be reorganized. saveArrayToExcel()[2]
 Implement threading/parallism for requests in order to prevent 'a hanging application'[2]
-Fix add-in loading problem[2]
 Fix visible exception pop-up when pressing Publish[2]
 Clean up the code from old comments[2]
+
 Do we need confirmation every single time a data is updated or only for several items?[3]
 Think how often should I refactor[3]
 Implement releaseObject garbage collector[3]
-Fix the git to make sure that all files are always pushed to bitbucket[3]
 Verify the access identifier for each class and method[3]
+Error messages should be more 'juicy'. Currently all of them look exactly the same.[3]
+
+LONG-TERM:
+Analyze all possible variants of reading code for publishing
 
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+When the list is imported it is pasted in a format [1,33,5,44,3]
+When you click 'Publish' on BlueberryTaskPane, the same operations are performed twice[1]
 Organize folders for the existing code
 Set up documentation application SandCastle.
 Finilize Dictionary data structure
 Table data structure
+Fix the git to make sure that all files are always pushed to bitbucket[3]
+Fix add-in loading problem[2]

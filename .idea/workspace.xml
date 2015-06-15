@@ -4,7 +4,28 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea364494-a488-46d7-b0da-14c04ed0c63c" name="Default" comment="" />
+    <list default="true" id="ea364494-a488-46d7-b0da-14c04ed0c63c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/blueberry-api/micro_services.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Blueberry API.csproj" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Blueberry API.csproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.Designer.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.Designer.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.resx" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.resx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Fetching.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Fetching.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/FetchingHelpers.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/FetchingHelpers.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Publishing.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Publishing.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/PublishingHelpers.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/PublishingHelpers.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Properties/Resources.Designer.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Properties/Resources.Designer.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Properties/Resources.resx" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Properties/Resources.resx" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.Designer.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.Designer.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/startup_scripts/Start Instruction.txt" afterPath="$PROJECT_DIR$/startup_scripts/Start Instruction.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/ThisAddIn.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/ThisAddIn.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blueberry-api/apis.py" afterPath="$PROJECT_DIR$/blueberry-api/apis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blueberry-api/app.yaml" afterPath="$PROJECT_DIR$/blueberry-api/app.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blueberry-api/index.yaml" afterPath="$PROJECT_DIR$/blueberry-api/index.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="apiquitous.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,16 +57,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="publish_configurations.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/blueberry-api/templates/publish_configurations.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1802">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -59,8 +70,8 @@
       <file leaf-file-name="index.yaml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/index.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="935">
-              <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1122">
+              <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -89,8 +100,8 @@
       <file leaf-file-name="app.yaml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/app.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.84" vertical-offset="0" max-vertical-offset="850">
-              <caret line="38" column="18" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="884">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -99,18 +110,18 @@
       <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="271" max-vertical-offset="1632">
+            <state vertical-scroll-proportion="0.0" vertical-offset="833" max-vertical-offset="1666">
               <caret line="49" column="27" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apis.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="apis.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/apis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8863905" vertical-offset="5303" max-vertical-offset="6188">
-              <caret line="356" column="32" selection-start-line="356" selection-start-column="32" selection-end-line="356" selection-end-column="32" />
+            <state vertical-scroll-proportion="188.32143" vertical-offset="6055" max-vertical-offset="6902">
+              <caret line="46" column="38" selection-start-line="46" selection-start-column="35" selection-end-line="46" selection-end-column="38" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -118,14 +129,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apis_funcs.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="micro_services.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/blueberry-api/micro_services.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1003">
+              <caret line="50" column="11" selection-start-line="50" selection-start-column="11" selection-end-line="50" selection-end-column="11" />
+              <folding>
+                <element signature="e#25#54#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="apis_funcs.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2448">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding>
-                <element signature="e#24#67#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.38134593" vertical-offset="0" max-vertical-offset="2329">
+              <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -165,17 +186,18 @@
         <option value="$PROJECT_DIR$/blueberry-api/templates/browse.html" />
         <option value="$PROJECT_DIR$/blueberry-api/index.yaml" />
         <option value="$PROJECT_DIR$/blueberry-api/apis_funcs.py" />
-        <option value="$PROJECT_DIR$/blueberry-api/apis.py" />
         <option value="$PROJECT_DIR$/blueberry-api/models.py" />
         <option value="$PROJECT_DIR$/blueberry-api/app.yaml" />
+        <option value="$PROJECT_DIR$/blueberry-api/micro_services.py" />
+        <option value="$PROJECT_DIR$/blueberry-api/apis.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1696" />
-    <option name="height" value="1026" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -470,14 +492,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14636752" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20386007" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28714436" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.73735726" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -550,14 +572,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/blueberry-api/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1615">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/index.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="731">
@@ -626,7 +640,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="816" max-vertical-offset="1802">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -876,7 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="816" max-vertical-offset="1802">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -898,8 +910,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/index.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="221" max-vertical-offset="935">
-          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="1122">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -920,14 +932,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueberry-api/app.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.84" vertical-offset="0" max-vertical-offset="850">
-          <caret line="38" column="18" selection-start-line="38" selection-start-column="18" selection-end-line="38" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="271" max-vertical-offset="1632">
@@ -936,23 +940,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
+    <entry file="file://$PROJECT_DIR$/blueberry-api/app.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2448">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="884">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blueberry-api/micro_services.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1003">
+          <caret line="50" column="11" selection-start-line="50" selection-start-column="11" selection-end-line="50" selection-end-column="11" />
           <folding>
-            <element signature="e#24#67#0" expanded="true" />
+            <element signature="e#25#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/apis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8863905" vertical-offset="5303" max-vertical-offset="6188">
-          <caret line="356" column="32" selection-start-line="356" selection-start-column="32" selection-end-line="356" selection-end-column="32" />
+        <state vertical-scroll-proportion="188.32143" vertical-offset="6055" max-vertical-offset="6902">
+          <caret line="46" column="38" selection-start-line="46" selection-start-column="35" selection-end-line="46" selection-end-column="38" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38134593" vertical-offset="0" max-vertical-offset="2329">
+          <caret line="26" column="41" selection-start-line="26" selection-start-column="41" selection-end-line="26" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>

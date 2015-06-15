@@ -4,6 +4,7 @@ from protorpc import remote
 from protorpc.wsgi import service
 
 from google.appengine.api.users import User
+from google.appengine.ext import ndb
 
 import models
 from models import BAPIList, BAPIScalar, BAPIDictionary, FetchConfigurations, PublishConfigurations
@@ -136,6 +137,22 @@ class GetFetchedResponse(messages.Message):
     bapi_ids = messages.StringField(9, repeated=True)
 
 
+class IsIDUsedRequest(messages.Message):
+    """
+    Request object which delivers data needed to get all IDs for a particular user.
+    """
+    bapi_id = messages.StringField(1)
+    user = messages.StringField(2)
+
+
+class IsIDUsedResponse(messages.Message):
+    """
+    Response object which returns a Boolean value indicating whether a particular ID was used by any user other
+    than the one which has sent the request.
+    """
+    response = messages.BooleanField(1)
+
+
 class Data(remote.Service):
     """
     A RPC Service which handles all requests related to all data structures.
@@ -209,6 +226,31 @@ class Data(remote.Service):
 
         return GetFetchedResponse(**{x: fetched_items_dict[y]
                                        for x, y in zip(self.fetched_args_keys, list(fetched_items_dict))})
+
+    @remote.method(IsIDUsedRequest, IsIDUsedResponse)
+    def is_id_used(self, request):
+        """
+        Check if a requested ID was already used by a different user than the requesting one.
+        """
+        is_id_used = PublishConfigurations.query(ndb.AND(PublishConfigurations.bapi_id == request.bapi_id,
+                                                 PublishConfigurations.user != User(request.user))).count()
+
+        logging.info('STAAAAAAAAAAAAAART')
+        logging.info(is_id_used)
+        logging.info('request_bapi_id', request.bapi_id)
+        logging.info('request_user', request.user)
+        #aaa = PublishConfigurations.query(PublishConfigurations.bapi_id == request.bapi_id, PublishConfigurations.user != User(request.user))
+        #logging.info(aaa)
+
+        if is_id_used > 0:
+            response = True
+        else:
+            response = False
+
+        logging.info('ENNNNNNNNNNNNNNNNND')
+        logging.info(response)
+
+        return IsIDUsedResponse(response=response)
 
 
 class Scalar(remote.Service):

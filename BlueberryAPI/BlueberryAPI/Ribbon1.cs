@@ -20,42 +20,41 @@ using FetchingHelpers = ExcelAddIn1.Controllers.Helpers.FetchingHelpers;
 
 namespace ExcelAddIn1
 {
-    public partial class Ribbon1
+    public partial class BlueberryRibbon
     {
 
 
         public static string blueberryAPIurl = "http://localhost.:8080/";
         //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
 
+        public BlueberryTaskPane publishBlueberryTaskPane;
+        public Microsoft.Office.Tools.CustomTaskPane myTaskPane;
+
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
-            MessageBox.Show("Bartosz Piechnik");
         }
 
         private void ThisDocument_Startup(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Bartosz");
         }
 
         /* Buttons Events */
 
         private void Publish_Click(object sender, RibbonControlEventArgs e)
         {
-            //BlueberryTaskPane publishBlueberryTaskPane;
-            //Microsoft.Office.Tools.CustomTaskPane myTaskPane;
 
-            //Excel.Application.WorkbookActivate += new Excel.AppEvents_WorkbookActivateEventHandler(
-            //    Application_WorkbookActivate);
-
-            //MessageBox.Show("Clicked 2");
-
-            //publishBlueberryTaskPane = new BlueberryTaskPane();
-            //myTaskPane = this.CustomTaskPanes.Add(
-            //    publishBlueberryTaskPane, "Publish");
-
-            Globals.ThisAddIn.MyTaskPane.Visible = true;
+            publishBlueberryTaskPane = new BlueberryTaskPane();
+            myTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(publishBlueberryTaskPane, "Publish");
+            myTaskPane.VisibleChanged += new EventHandler(myTaskPane_VisibleChanged);
+            myTaskPane.Visible = true;
 
         }
+
+        private void myTaskPane_VisibleChanged(object sender, System.EventArgs e)
+        {
+
+        }
+
 
         private void Update_Click(object sender, RibbonControlEventArgs e)
         {
@@ -106,7 +105,6 @@ namespace ExcelAddIn1
         }
 
         /* Garbage collections methods */
-
         private void releaseObject(object obj)
         {
             try
@@ -128,6 +126,11 @@ namespace ExcelAddIn1
         private void TestButton_Click(object sender, RibbonControlEventArgs e)
         {
             MessageBox.Show("Testing");
+        }
+
+        private void Update_Click_1(object sender, RibbonControlEventArgs e)
+        {
+
         }
 
     }

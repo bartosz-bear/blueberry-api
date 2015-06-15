@@ -10,7 +10,7 @@ using Microsoft.Office.Tools;
 using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
 using BlueberryTaskPane = ExcelAddIn1.BlueberryTaskPane;
-using BlueberryRibbon = ExcelAddIn1.Ribbon1;
+using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
 
 namespace ExcelAddIn1.Controllers
 {
@@ -110,9 +110,6 @@ namespace ExcelAddIn1.Controllers
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            // This List.get_fetched should be abstracted to accomodate Scalar, List, Dict, etc.
-            // This function should check all different possible data structures, because a single workbook can have
-            // different data structures.
             String url = BlueberryRibbon.blueberryAPIurl + "Data.get_fetched";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);

@@ -53,3 +53,8 @@ indexes:
   - name: bapi_id
   - name: last_updated
     direction: desc
+
+- kind: PublishConfigurations
+  properties:
+  - name: bapi_id
+  - name: user

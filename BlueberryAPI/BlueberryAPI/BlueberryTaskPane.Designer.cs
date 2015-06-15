@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.NameTextBox = new System.Windows.Forms.TextBox();
+            this.components = new System.ComponentModel.Container();
+            this.BAPINameTextBox = new System.Windows.Forms.TextBox();
             this.NameLabel = new System.Windows.Forms.Label();
             this.DescriptionLabel = new System.Windows.Forms.Label();
             this.DescriptionTextBox = new System.Windows.Forms.TextBox();
@@ -37,14 +38,17 @@
             this.DataOwnerLabel = new System.Windows.Forms.Label();
             this.DataOwnerTextBox = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
-            // NameTextBox
+            // BAPINameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(12, 31);
-            this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(122, 20);
-            this.NameTextBox.TabIndex = 0;
+            this.BAPINameTextBox.Location = new System.Drawing.Point(12, 31);
+            this.BAPINameTextBox.Name = "BAPINameTextBox";
+            this.BAPINameTextBox.Size = new System.Drawing.Size(122, 20);
+            this.BAPINameTextBox.TabIndex = 0;
+            this.BAPINameTextBox.TextChanged += new System.EventHandler(this.BAPINameTextBox_TextChanged);
             // 
             // NameLabel
             // 
@@ -118,6 +122,10 @@
             this.PublishButton.UseVisualStyleBackColor = true;
             this.PublishButton.Click += new System.EventHandler(this.PublishButton_Click);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // BlueberryTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -131,9 +139,10 @@
             this.Controls.Add(this.DescriptionTextBox);
             this.Controls.Add(this.DescriptionLabel);
             this.Controls.Add(this.NameLabel);
-            this.Controls.Add(this.NameTextBox);
+            this.Controls.Add(this.BAPINameTextBox);
             this.Name = "BlueberryTaskPane";
             this.Size = new System.Drawing.Size(150, 282);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -141,12 +150,12 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox NameTextBox;
+        private System.Windows.Forms.TextBox BAPINameTextBox;
 
         public System.Windows.Forms.TextBox PublishingNameTextBox
         {
-            get { return NameTextBox; }
-            set { NameTextBox = value; }
+            get { return BAPINameTextBox; }
+            set { BAPINameTextBox = value; }
         }
         private System.Windows.Forms.Label NameLabel;
 
@@ -180,5 +189,6 @@
             set { DataOwnerTextBox = value; }
         }
         private System.Windows.Forms.Button PublishButton;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace ExcelAddIn1
 {
-    partial class Ribbon1 : Microsoft.Office.Tools.Ribbon.RibbonBase
+    partial class BlueberryRibbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public Ribbon1()
+        public BlueberryRibbon()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
@@ -34,31 +34,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon1));
-            this.tab1 = this.Factory.CreateRibbonTab();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BlueberryRibbon));
+            this.BluberryTab = this.Factory.CreateRibbonTab();
+            this.ArgumentsGroup = this.Factory.CreateRibbonGroup();
+            this.IDBox = this.Factory.CreateRibbonEditBox();
+            this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.publishButton = this.Factory.CreateRibbonButton();
             this.updateButton = this.Factory.CreateRibbonButton();
             this.DownloadGroup = this.Factory.CreateRibbonGroup();
-            this.IDBox = this.Factory.CreateRibbonEditBox();
-            this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
             this.downloadButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.Other = this.Factory.CreateRibbonGroup();
             this.TestButton = this.Factory.CreateRibbonButton();
-            this.tab1.SuspendLayout();
+            this.BluberryTab.SuspendLayout();
+            this.ArgumentsGroup.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
             this.Other.SuspendLayout();
             // 
-            // tab1
+            // BluberryTab
             // 
-            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group1);
-            this.tab1.Groups.Add(this.DownloadGroup);
-            this.tab1.Groups.Add(this.Other);
-            this.tab1.Label = "Blueberry API";
-            this.tab1.Name = "tab1";
+            this.BluberryTab.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.BluberryTab.Groups.Add(this.ArgumentsGroup);
+            this.BluberryTab.Groups.Add(this.group1);
+            this.BluberryTab.Groups.Add(this.DownloadGroup);
+            this.BluberryTab.Groups.Add(this.Other);
+            this.BluberryTab.Label = "Blueberry API";
+            this.BluberryTab.Name = "BluberryTab";
+            // 
+            // ArgumentsGroup
+            // 
+            this.ArgumentsGroup.Items.Add(this.IDBox);
+            this.ArgumentsGroup.Items.Add(this.FetchConfigurationCheckBox);
+            this.ArgumentsGroup.Label = "Arguments";
+            this.ArgumentsGroup.Name = "ArgumentsGroup";
+            // 
+            // IDBox
+            // 
+            this.IDBox.Label = "Blueberry ID";
+            this.IDBox.Name = "IDBox";
+            this.IDBox.SizeString = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+            this.IDBox.Text = null;
+            // 
+            // FetchConfigurationCheckBox
+            // 
+            this.FetchConfigurationCheckBox.Checked = true;
+            this.FetchConfigurationCheckBox.Label = "Repetitive";
+            this.FetchConfigurationCheckBox.Name = "FetchConfigurationCheckBox";
             // 
             // group1
             // 
@@ -87,24 +110,10 @@
             // 
             // DownloadGroup
             // 
-            this.DownloadGroup.Items.Add(this.IDBox);
-            this.DownloadGroup.Items.Add(this.FetchConfigurationCheckBox);
             this.DownloadGroup.Items.Add(this.downloadButton);
             this.DownloadGroup.Items.Add(this.refreshButton);
             this.DownloadGroup.Label = "Download";
             this.DownloadGroup.Name = "DownloadGroup";
-            // 
-            // IDBox
-            // 
-            this.IDBox.Label = "Blueberry ID";
-            this.IDBox.Name = "IDBox";
-            this.IDBox.Text = null;
-            // 
-            // FetchConfigurationCheckBox
-            // 
-            this.FetchConfigurationCheckBox.Checked = true;
-            this.FetchConfigurationCheckBox.Label = "Repetitive";
-            this.FetchConfigurationCheckBox.Name = "FetchConfigurationCheckBox";
             // 
             // downloadButton
             // 
@@ -138,14 +147,16 @@
             this.TestButton.ShowImage = true;
             this.TestButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TestButton_Click);
             // 
-            // Ribbon1
+            // BlueberryRibbon
             // 
-            this.Name = "Ribbon1";
+            this.Name = "BlueberryRibbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.BluberryTab);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
+            this.BluberryTab.ResumeLayout(false);
+            this.BluberryTab.PerformLayout();
+            this.ArgumentsGroup.ResumeLayout(false);
+            this.ArgumentsGroup.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
             this.DownloadGroup.ResumeLayout(false);
@@ -157,7 +168,7 @@
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab BluberryTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton publishButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup DownloadGroup;
@@ -168,13 +179,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton updateButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Other;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton TestButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup ArgumentsGroup;
     }
 
     partial class ThisRibbonCollection
     {
-        internal Ribbon1 Ribbon1
+        internal BlueberryRibbon Ribbon1
         {
-            get { return this.GetRibbon<Ribbon1>(); }
+            get { return this.GetRibbon<BlueberryRibbon>(); }
         }
     }
 }
