@@ -23,7 +23,6 @@ namespace ExcelAddIn1
     public partial class BlueberryRibbon
     {
 
-
         public static string blueberryAPIurl = "http://localhost.:8080/";
         //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
 
@@ -82,7 +81,15 @@ namespace ExcelAddIn1
 
         private void Fetch_Click(object sender, RibbonControlEventArgs e)
         {
-            FetchingHelpers.saveToExcel(Fetching.fetchData());
+            if (FetchingHelpers.validateIDpreFetch())
+            {
+                string fetchedData = Fetching.fetchData();
+                if (FetchingHelpers.validateIDPostFetch(fetchedData))
+                {
+                    FetchingHelpers.saveToExcel(fetchedData);
+                }
+            }
+
         }
 
         private void Refresh_Click(object sender, RibbonControlEventArgs e)
@@ -125,12 +132,13 @@ namespace ExcelAddIn1
 
         private void TestButton_Click(object sender, RibbonControlEventArgs e)
         {
-            MessageBox.Show("Testing");
+            //MessageBox.Show("Testing");
         }
 
-        private void Update_Click_1(object sender, RibbonControlEventArgs e)
-        {
 
+        private void GoToWebPlatformButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://blueberry-api.appspot.com/display");
         }
 
     }

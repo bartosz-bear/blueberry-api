@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Net;
@@ -14,8 +15,21 @@ using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
 
 namespace ExcelAddIn1.Controllers
 {
+    /// <summary>
+    /// Fetching class is used to make requests to Blubeberry cloud and fetch BAPI data structures
+    /// stored in the Blueberry datastore.
+    /// </summary>
     class Fetching
     {
+        /// <summary>
+        /// fetchData() method makes a request to Blueberry cloud and retrieves a serialized data.
+        /// Depending whether data is fetched for the first time or it has been previously fetched
+        /// the method populates fetchingData dictionary with data from the active Excel spreadsheet
+        /// or from FetchedConfigurations Blueberry cloud datastore class.
+        /// </summary>
+        /// <param name="singleResult">If data is fetched for the first time then this parameter is null,
+        /// otherwise it will be a single record from FetchConfigurations class.</param>
+        /// <returns></returns>
         public static string fetchData(Dictionary<string, dynamic> singleResult = null)
         {
             Excel.Workbook xlWorkBook;
@@ -30,6 +44,7 @@ namespace ExcelAddIn1.Controllers
             Boolean xlFetchConfiguration;
             Dictionary<string, dynamic> fetchingData = new Dictionary<string, dynamic>();
 
+            // Data is fetched for the first time.
             if (singleResult == null)
             {
                 xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
@@ -52,6 +67,7 @@ namespace ExcelAddIn1.Controllers
                 fetchingData.Add("skip_new_conf", !xlFetchConfiguration);
             }
 
+            // Data has been fetched before.
             else
             {
                 fetchingData.Add("bapi_id", singleResult["bapi_id"]);
@@ -63,12 +79,13 @@ namespace ExcelAddIn1.Controllers
                 fetchingData.Add("skip_new_conf", true);
             }
 
+            // Serializing data and a HTTP request to Blueberry datastore.
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(fetchingData);
 
             String[] splitWords = fetchingData["bapi_id"].Split('.');
             String url = BlueberryRibbon.blueberryAPIurl + splitWords[2] + ".fetch";
-
+            
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
@@ -90,8 +107,11 @@ namespace ExcelAddIn1.Controllers
             }
         }
 
-
-
+        /// <summary>
+        /// getFeched() makes a HTTP request to a Blueberry cloud and returns a list of all
+        /// BAPI data structures which have been previously fetched in the current workbook.
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<string, dynamic> getFetched()
         {
             String xlWorkbookPath;
@@ -105,7 +125,6 @@ namespace ExcelAddIn1.Controllers
             Dictionary<string, dynamic> activeWorkbookInfo = new Dictionary<string, dynamic>();
             activeWorkbookInfo.Add("workbook_path", xlWorkbookPath);
             activeWorkbookInfo.Add("workbook", xlWorkbookName);
-
 
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);
@@ -130,7 +149,6 @@ namespace ExcelAddIn1.Controllers
                 result = streamReader.ReadToEnd();
                 Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
                 return fetchedData;
-
             }
 
         }

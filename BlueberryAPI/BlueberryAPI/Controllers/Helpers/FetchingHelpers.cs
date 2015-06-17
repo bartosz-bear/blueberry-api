@@ -4,13 +4,24 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelAddIn1.Controllers.Helpers
 {
+    /// <summary>
+    /// FetchingHelpers is a class container for all supporting methods necessary in 'Fetching' class.
+    /// </summary>
     class FetchingHelpers
     {
+        /// <summary>
+        /// saveToExcel() method is a high level method which takes a single, serialized string containing
+        /// description and actual BAPI data structures which needs to be saved to Excel. According to the actual
+        /// data typeThis method calls another
+        /// method saveArrayToExcel() which is responsible only for the actual load to excel.
+        /// </summary>
+        /// <param name="result"></param>
         public static void saveToExcel(string result)
         {
             Excel.Workbook xlWorkBook;
@@ -33,7 +44,6 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
             else
             {
-                //Make sure that this xlStartRange is a single range. If the user selects more than a single range, then choose the top one.
                 xlStartRange = (Excel.Range)xlWorkSheet.Application.Selection;
             }
 
@@ -56,39 +66,17 @@ namespace ExcelAddIn1.Controllers.Helpers
                     }
                 case "Dictionary":
                     {
-                        Dictionary<string, dynamic> bapiData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(serializedData);
-
-                        var bapiDataKeys = bapiData.Keys.ToArray();
-                        var bapiDataValues = bapiData.Values.ToArray();
-                        Int32 dataLength = bapiData.Keys.Count;
-
-                        // Saving keys to excel
-                        // TODO: Refactor this to use saveArrayToExcel 
-                        Excel.Range xlEndRangeForKeys = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
-                        Excel.Range xlDestinationRangeForKeys = xlWorkSheet.Range[xlStartRange, xlEndRangeForKeys];
-
-                        var keysDataArray = new object[dataLength, 1];
-                        for (var i = 0; i < dataLength; i++)
+                        List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedData);
+                        Int32 numOfListsInATable = bapiData.Count - 1;
+                        for (var i = 0; i <= numOfListsInATable; i++)
                         {
-                            keysDataArray[i, 0] = bapiDataKeys[i];
+                            List<object> currentBAPIDataArray = bapiData[i];
+                            int offset = i;
+                            saveArrayToExcel(currentBAPIDataArray, xlWorkSheet, xlStartRange, offset);
                         }
-
-                        xlDestinationRangeForKeys.Value2 = keysDataArray;
-
-                        // Saving values to excel
-                        xlStartRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row, xlStartRange.Column + 1];
-                        Excel.Range xlEndRangeForValues = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
-                        Excel.Range xlDestinationRangeForValues = xlWorkSheet.Range[xlStartRange, xlEndRangeForValues];
-
-                        var valuesDataArray = new object[dataLength, 1];
-                        for (var i = 0; i < dataLength; i++)
-                        {
-                            valuesDataArray[i, 0] = bapiDataValues[i];
-                        }
-
-                        xlDestinationRangeForValues.Value2 = valuesDataArray;
 
                         break;
+
                     }
                 case "Table":
                     {
@@ -105,26 +93,20 @@ namespace ExcelAddIn1.Controllers.Helpers
                     }
                 default:
                     {
-                        /*
-                        Int32 dataLength = fetchedData["data"].Count;
-                        xlEndRange = (Excel.Range)xlWorkSheet.Cells[xlStartRange.Row + dataLength - 1, xlStartRange.Column];
-                        Excel.Range xlDestinationRange = xlWorkSheet.Range[xlStartRange, xlEndRange];
-
-                        var fetchedDataArray = new object[dataLength, 1];
-                        for (var i = 0; i < dataLength; i++)
-                        {
-                            fetchedDataArray[i, 0] = fetchedData["data"][i];
-                        }
-
-                        xlDestinationRange.Value2 = fetchedDataArray;
-                        break;
-                         */
                         break;
                     }
             }
 
         }
 
+        /// <summary>
+        /// saveArrayToExcel saves an array of values to Excel range. In case offset is higher than zero, data
+        /// will pasted in a range shifted to the 'offset' columns.
+        /// </summary>
+        /// <param name="arrayToBeSaved"></param>
+        /// <param name="xlWorkSheet"></param>
+        /// <param name="xlStartRange"></param>
+        /// <param name="offset">Defines how many columns to the right should be range by shifted to.</param>
         public static void saveArrayToExcel(List<object> arrayToBeSaved, Excel.Worksheet xlWorkSheet, Excel.Range xlStartRange, Int32 offset)
         {
             Int32 dataLength = arrayToBeSaved.Count;
@@ -140,6 +122,62 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
 
             xlDestinationRange.Value2 = dataArray;
+        }
+
+        /// <summary>
+        /// It's a validation method which checks two Blueberry ID against two criterias: 1) Does the Blueberry ID has
+        /// two dots. 2) Does a word after last dot is one of BAPI data types?
+        /// </summary>
+        /// <returns>Returns true if both criteria are satisfied.</returns>
+        public static bool validateIDpreFetch()
+        {
+            string xlBlueberryID = Globals.Ribbons.Ribbon1.IDBox.Text;
+            String[] splitWords;
+            splitWords = xlBlueberryID.Split('.');
+            
+            // Validate whether the Blueberry ID has two dots
+            try
+            {
+                var trying = splitWords[2];
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
+                return false;
+            }
+
+            // Validate whether a word after the last dot is one of BAPI data types defined in the acceptableDataTypes
+            string xlDataType = splitWords[2];
+            string[] acceptableDataTypes = { "Scalar", "List", "Dictionary", "Table" };
+
+            if (!acceptableDataTypes.Contains(xlDataType))
+            {
+                MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// It's a validation method to check whether the BAPI ID was found in Bluberry cloud datastore
+        /// </summary>
+        /// <param name="fetchedData">fetchedData represents a response from request to Blueberry cloud.
+        /// If they key "info" returns "Incorrect BAPI ID" it indicates that the Blueberry ID was not found in Blueberry cloud.</param>
+        /// <returns></returns>
+        public static bool validateIDPostFetch(string fetchedData)
+        {
+            // Validate whether the BAPI ID was found in Bluberry cloud datastore
+            var jsonSerializer = new JavaScriptSerializer();
+            Dictionary<string, dynamic> responseData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(fetchedData);
+            
+            if (responseData.ContainsKey("info")) {
+                if ((string)responseData["info"] == "Incorrect BAPI ID")
+                {
+                    MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

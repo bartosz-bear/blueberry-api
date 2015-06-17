@@ -14,11 +14,14 @@ using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
 
 namespace ExcelAddIn1.Controllers
 {
+    /// <summary>
+    /// Publishing class it the container for methods responsible for publishing data to BlueberryAPI cloud.
+    /// </summary>
     class Publishing
     {
 
         /// <summary>
-        /// Gets data from Excel spreadsheet and send it to the BlueberryAPI cloud for persistent storage.
+        /// Gets data from Excel spreadsheet and send it to the Blueberry cloud for persistent storage.
         /// It works both for newly published data as activated by 'Publish' button on the Excel Add-in and
         /// for 'Update' button which first gets a list of previously published data and updates them with
         /// 'fresh' data.
@@ -45,16 +48,12 @@ namespace ExcelAddIn1.Controllers
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-
-
             ArrayList publishingList = new ArrayList();
-
             Dictionary<string, dynamic> dataFromExcel = new Dictionary<string, dynamic>();
-
 
             if (singleResult == null)
             {
-
+                // Publishing data for the first time. Arguments are populated from BlueberryTaskPane.
                 xlRange = (Excel.Range)Globals.ThisAddIn.Application.Selection;
                 xlPath = xlWorkBook.Path;
                 xlWorkbookName = xlWorkBook.Name;
@@ -64,15 +63,15 @@ namespace ExcelAddIn1.Controllers
                 xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
                 xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
                 xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
-                dataFromExcel = PublishingHelpers.measureData(xlRange, "noType");
+                dataFromExcel = PublishingHelpers.measureData(xlRange);
                 xlType = dataFromExcel["data_type"];
                 xlID = xlOrganization.Replace(" ", "_") + "." + xlName.Replace(" ", "_") + "." + xlType;
 
             }
             else
             {
-
-
+                // Data has been published before. Arguments not related to data are populated from PublishConfigurations
+                // class which is stored in the BlueberryAPI cloud.
                 xlPath = singleResult["workbook_path"];
                 xlWorkbookName = singleResult["workbook"];
                 xlWorksheetName = singleResult["worksheet"];
@@ -83,14 +82,14 @@ namespace ExcelAddIn1.Controllers
                 xlOrganization = singleResult["organization"];
                 xlDataOwner = singleResult["user"];
 
-                // Here we will need a separate function which will help to establish a Range depending on the data type
+                // Use specifyRange() and measureData() methods to retrieve the full Excel Range of data. 
                 xlRange = PublishingHelpers.specifyRange(xlWorkSheet, xlDestinationCell, xlType);
                 xlID = singleResult["bapi_id"];
-
                 dataFromExcel = PublishingHelpers.measureData(xlRange, xlType);
                 dataFromExcel["data_type"] = xlType;
             }
 
+            // Collect all arguments in a Dictionary to be easily converted to JSON format
             Dictionary<string, dynamic> publishingData = new Dictionary<string, dynamic>();
             publishingData.Add("data", dataFromExcel["data"]);
             publishingData.Add("workbook_path", xlPath);
@@ -104,14 +103,13 @@ namespace ExcelAddIn1.Controllers
             publishingData.Add("user", xlDataOwner);
             publishingData.Add("bapi_id", xlID);
 
+            // Serialize and send data via HTTP POST request
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(publishingData);
-
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + xlType + ".publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
-
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -128,7 +126,11 @@ namespace ExcelAddIn1.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Send a request to Blueberry cloud in order to retrieve a list of previously published data.
+        /// It retrieves all previously published data in the current workbook.
+        /// </summary>
+        /// <returns>Returns a dictionary with information such as ID, name, description</returns>
         public static Dictionary<string, dynamic> getPublished()
         {
             String xlWorkbookPath;
@@ -142,7 +144,6 @@ namespace ExcelAddIn1.Controllers
             Dictionary<string, dynamic> activeWorkbookInfo = new Dictionary<string, dynamic>();
             activeWorkbookInfo.Add("workbook_path", xlWorkbookPath);
             activeWorkbookInfo.Add("workbook", xlWorkbookName);
-
 
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(activeWorkbookInfo);

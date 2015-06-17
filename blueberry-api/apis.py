@@ -7,7 +7,7 @@ from google.appengine.api.users import User
 from google.appengine.ext import ndb
 
 import models
-from models import BAPIList, BAPIScalar, BAPIDictionary, FetchConfigurations, PublishConfigurations
+from models import BAPIList, BAPIScalar, BAPIDictionary, BAPITable, FetchConfigurations, PublishConfigurations
 import apis_funcs
 
 import logging
@@ -88,6 +88,7 @@ class FetchResponse(messages.Message):
     worksheet = messages.StringField(7)
     destination_cell = messages.StringField(8)
     data = messages.StringField(9, repeated=True)
+    info = messages.StringField(10)
 
 
 class GetPublishedRequest(messages.Message):
@@ -276,8 +277,17 @@ class Scalar(remote.Service):
         Fetch method receives a request from a client and returns a BAPI Scalar.
         """
 
+
+
+        #logging.info("Aint' work")
+        #return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
+
+        #pdb.set_trace()
+
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
+        if not apis_funcs.is_ID_valid(request, class_):
+            return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
 
         queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 

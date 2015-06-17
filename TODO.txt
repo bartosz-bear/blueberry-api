@@ -1,11 +1,9 @@
 WEEKEND PLAN:
-Think about all possible scenarios when think can go wrong and test them[1]
-Create example of a microservice[2]
 
 POTENTIAL PROBLEMS:
-A) One of the items in 'Publish' task pane is not entered
-B) A very long string is entered in 'Description'
 C) 'Data owner' is not an email
+
+Try to input incorrect Blueberry ID[1]
 
 TESTS:
 Publish  
@@ -24,25 +22,34 @@ GENERAL:
 2) Enter different data type (int, double, string, dates, formulas)
 3) Name or organization has spaces or dots or some other wrong characters.
 
-Think about xlID in 'Publishing' the same formatting as for xlName be aplied for xlOrganization?[1]
+
 Create an installer[1]
-Change the name of the platform to RC Bay[1]
+Implement user accounts on GAE and Excel-Add-In[1]
+Check all data types are represented as actual data types.[1]
 Document existing code[1]
+fromExcelToObject - see if it's possible to store all data as list of lists.
 Set up testing framework[1]
 Write unit tests to existing code[1]
-Rethink the Publish concept - Update one data structure only/update all data structures in the workbook[1]
-Implement a button to open the Blueberry Platform
 
+Document Python code[2]
 saveToExcel() function has to be reorganized. saveArrayToExcel()[2]
 Implement threading/parallism for requests in order to prevent 'a hanging application'[2]
 Fix visible exception pop-up when pressing Publish[2]
 Clean up the code from old comments[2]
+Create example of a microservice[2]
+Possibly abstract the HTTP request in C#[2]
+Implement the most efficient way of saving data to excel[2]
+Refactor validatePublishingInputs() - pass variables defined inside the method as as arguments.[2]
+Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just enter the type parameter as 
+an argument to saveArrayToExcel() method.  
 
+Implement all code in the asynchronous manner[3]
 Do we need confirmation every single time a data is updated or only for several items?[3]
 Think how often should I refactor[3]
 Implement releaseObject garbage collector[3]
 Verify the access identifier for each class and method[3]
 Error messages should be more 'juicy'. Currently all of them look exactly the same.[3]
+Make the timing filter more adjusted to the locale of each computer[3]
 
 LONG-TERM:
 Analyze all possible variants of reading code for publishing
@@ -50,6 +57,15 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+Display dates correctly -2H
+Currently the /Display only shows lists -> it should show all data types[1]
+Change the name of the platform to RC Bay[1]
+Implement a button to open the Blueberry Platform
+Rethink the Publish concept - Update one data structure only/update all data structures in the workbook[1]
+Think about xlID in 'Publishing' the same formatting as for xlName be aplied for xlOrganization?[1]
+Think about all possible scenarios when think can go wrong and test them[1]
+A very long string is entered in 'Description'
+One of the items in 'Publish' task pane is not entered
 When the list is imported it is pasted in a format [1,33,5,44,3]
 When you click 'Publish' on BlueberryTaskPane, the same operations are performed twice[1]
 Organize folders for the existing code

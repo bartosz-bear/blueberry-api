@@ -47,11 +47,14 @@
             this.refreshButton = this.Factory.CreateRibbonButton();
             this.Other = this.Factory.CreateRibbonGroup();
             this.TestButton = this.Factory.CreateRibbonButton();
+            this.WebPlatformGroup = this.Factory.CreateRibbonGroup();
+            this.GoToWebPlatformButton = this.Factory.CreateRibbonButton();
             this.BluberryTab.SuspendLayout();
             this.ArgumentsGroup.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
             this.Other.SuspendLayout();
+            this.WebPlatformGroup.SuspendLayout();
             // 
             // BluberryTab
             // 
@@ -59,6 +62,7 @@
             this.BluberryTab.Groups.Add(this.ArgumentsGroup);
             this.BluberryTab.Groups.Add(this.group1);
             this.BluberryTab.Groups.Add(this.DownloadGroup);
+            this.BluberryTab.Groups.Add(this.WebPlatformGroup);
             this.BluberryTab.Groups.Add(this.Other);
             this.BluberryTab.Label = "Blueberry API";
             this.BluberryTab.Name = "BluberryTab";
@@ -147,6 +151,21 @@
             this.TestButton.ShowImage = true;
             this.TestButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TestButton_Click);
             // 
+            // WebPlatformGroup
+            // 
+            this.WebPlatformGroup.Items.Add(this.GoToWebPlatformButton);
+            this.WebPlatformGroup.Label = "Web Platform";
+            this.WebPlatformGroup.Name = "WebPlatformGroup";
+            // 
+            // GoToWebPlatformButton
+            // 
+            this.GoToWebPlatformButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.GoToWebPlatformButton.Image = ((System.Drawing.Image)(resources.GetObject("GoToWebPlatformButton.Image")));
+            this.GoToWebPlatformButton.Label = "Go to Web Platform";
+            this.GoToWebPlatformButton.Name = "GoToWebPlatformButton";
+            this.GoToWebPlatformButton.ShowImage = true;
+            this.GoToWebPlatformButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GoToWebPlatformButton_Click);
+            // 
             // BlueberryRibbon
             // 
             this.Name = "BlueberryRibbon";
@@ -163,6 +182,8 @@
             this.DownloadGroup.PerformLayout();
             this.Other.ResumeLayout(false);
             this.Other.PerformLayout();
+            this.WebPlatformGroup.ResumeLayout(false);
+            this.WebPlatformGroup.PerformLayout();
 
         }
 
@@ -180,6 +201,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Other;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton TestButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup ArgumentsGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup WebPlatformGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton GoToWebPlatformButton;
     }
 
     partial class ThisRibbonCollection

@@ -41,16 +41,6 @@ namespace ExcelAddIn1
                 MessageBox.Show(validationResult);
             }
 
-            /*
-            if (PublishingHelpers.isPublishRangeEmpty())
-            {
-                MessageBox.Show("Range which you are trying to publish is empty. Choose some data and try again.");
-            }
-            else
-            {
-                Publishing.publishData();
-            }
-             */
         }
 
         private void BAPINameTextBox_TextChanged(object sender, EventArgs e)

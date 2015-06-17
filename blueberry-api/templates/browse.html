@@ -38,7 +38,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://getbootstrap.com/examples/starter-template/#" style="background: #04235A; color: #AEECFB;">Blueberry API</a>
+          <a class="navbar-brand" href="/display" style="background: #04235A; color: #AEECFB;">Risk Control</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -54,7 +54,7 @@
         <div class="container">
           <h2>Available data</h2>
             <br>
-          <p>Here you pick data you like. Just copy the ID and paste into Blueberry API Excel App</p>
+          <p>Here you pick data you like. Just copy the ID and paste into Excel Add-In.</p>
           <br>
             <table class="table">
             <thead>
@@ -78,7 +78,8 @@
                 <td>{{ d.description }}</td>
                 <td>{{ d.organization }}</td>
                 <td>{{ d.user }}</td>
-                <td>{{ d.last_updated.strftime('%Y-%m-%d %H:%M') }}</td>
+                <!--<td>{{ d.last_updated.strftime('%x') }}</td>-->
+                <td>{{ d.last_updated | time_minus_2 }}</td>
               </tr>
             {% endfor %}
 

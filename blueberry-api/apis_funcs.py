@@ -6,6 +6,7 @@ from models import FetchConfigurations, PublishConfigurations
 
 import pickle
 import logging
+import pdb
 
 from collections import OrderedDict
 
@@ -108,6 +109,8 @@ def query_and_configure(request, class_, data_type):
                             description=queried_list.description
                             ).put()
 
+
+
     queried_list_pickled = pickle.loads(queried_list.data)
 
     logging.info('Checking pickled data: ')
@@ -137,3 +140,16 @@ def query_configurations(request, published_args_keys, published_args_values, cl
             configurations_dict[j].append(eval(k))
 
     return configurations_dict
+
+def is_ID_valid(request, class_):
+    """
+    Validates whether the BAPI ID exists.
+    :return:
+    """
+    jan = class_.query(class_.bapi_id == request.bapi_id).count()
+    logging.info(jan)
+    if class_.query(class_.bapi_id == request.bapi_id).count() > 0:
+        return True
+    else:
+        return False
+

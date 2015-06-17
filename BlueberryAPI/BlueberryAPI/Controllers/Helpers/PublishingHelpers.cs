@@ -12,9 +12,22 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelAddIn1.Controllers.Helpers
 {
+    /// <summary>
+    /// PublishingHelpers is a class container for all supporting methods necessary in 'Publishing' class.
+    /// </summary>
     class PublishingHelpers
     {
-
+        /// <summary>
+        /// fromExcelToObject() method takes an Excel range, fetches data from Excel, converts it to C# object and serialize it to JSON.
+        /// There are four data types which can be fetched from Excel and converted to JSON objects:  Scalar (one Excel cell), List (several
+        /// Excel cells in one column), Dictionary (several Excel cells in two columns, typically the first column represents keys and
+        /// the second column represents values), Table (several Excel cells in several columns).
+        /// </summary>
+        /// <param name="rowsCount"></param>
+        /// <param name="columnsCount"></param>
+        /// <param name="dataType"></param>
+        /// <param name="xlRange"></param>
+        /// <returns>Returns serialized JSON object which represents an Excel range.</returns>
         public static dynamic fromExcelToObject(int rowsCount, int columnsCount, string dataType, Excel.Range xlRange)
         {
             switch (dataType)
@@ -22,8 +35,8 @@ namespace ExcelAddIn1.Controllers.Helpers
                 case "Scalar":
                     var jsonScalarSerializer = new JavaScriptSerializer();
                     var jsonScalar = jsonScalarSerializer.Serialize(xlRange.Value2);
-
                     return jsonScalar;
+
                 case "List":
                     ArrayList publishingList = new ArrayList();
                     for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
@@ -33,28 +46,32 @@ namespace ExcelAddIn1.Controllers.Helpers
                             publishingList.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
                         }
                     }
-
                     var jsonListSerializer = new JavaScriptSerializer();
                     var jsonList = jsonListSerializer.Serialize(publishingList);
-
                     return jsonList;
+
                 case "Dictionary":
-                    Dictionary<string, dynamic> publishingDictionary = new Dictionary<string, dynamic>();
-                    for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
+                    List<List<object>> publishingDictionary = new List<List<object>>();
+                    int columnsCountCopyForDict = columnsCount;
+                    for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
                     {
-                        publishingDictionary.Add((dynamic)(xlRange.Cells[currentRowsCount, 1] as Excel.Range).Value2,
-                                                 (dynamic)(xlRange.Cells[currentRowsCount, 2] as Excel.Range).Value2);
+                        List<object> sublist = new List<object>();
+                        for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
+                        {
+                            sublist.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                        }
+                        publishingDictionary.Add(sublist);
                     }
+
                     var jsonDictSerializer = new JavaScriptSerializer();
                     var jsonDict = jsonDictSerializer.Serialize(publishingDictionary);
-
                     return jsonDict;
+
                 case "Table":
                     List<List<object>> publishingTable = new List<List<object>>();
                     int columnsCountCopy = columnsCount;
                     for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
                     {
-                        //Type sublistType = (dynamic)(xlRange.Cells[1, currentColumnsCount] as Excel.Range).Value2.GetType();
                         List<object> sublist = new List<object>();
                         for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
                         {
@@ -64,14 +81,26 @@ namespace ExcelAddIn1.Controllers.Helpers
                     }
                     var jsonTableSerializer = new JavaScriptSerializer();
                     var jsonTable = jsonTableSerializer.Serialize(publishingTable);
-
                     return jsonTable;
+
                 default:
                     return "Other";
             }
         }
 
-        public static Dictionary<string, dynamic> measureData(Excel.Range xlRange, String xlDataType)
+        /// <summary>
+        /// measureData() creates a dictionary which serves as a meta-data about the Range which was 
+        /// passed as an argument. It also contains data fetched from Excel in a serialized JSON format.
+        /// </summary>
+        /// <param name="xlRange">Excel Range to be described and measured.</param>
+        /// <param name="xlDataType">xlDataType is either one of the BAPI data types (eg.Scalar, List, etc)
+        /// or the argument is not passed at all. In the second case the default argument is is "noType" which
+        /// means that the data type should be infered from the size of the Range using labelData() method.</param>
+        /// <returns> The dictionary provides information 1) number of rows, 2) number of columns
+        /// 3) type of data (Scalar, List etc). The last key points to a JSON serialized object fetched from
+        /// the Excel range which was passed as argument.
+        /// </returns>
+        public static Dictionary<string, dynamic> measureData(Excel.Range xlRange, String xlDataType="noType")
         {
             int xlRowsCount;
             int xlColumnsCount;
@@ -94,6 +123,13 @@ namespace ExcelAddIn1.Controllers.Helpers
             return dataInfo;
         }
 
+        /// <summary>
+        /// labelData() returns one of the BAPI data types. The type depends on the number or rows and columns
+        /// of the Range passed.
+        /// </summary>
+        /// <param name="xlRowsCount"></param>
+        /// <param name="xlColumnsCount"></param>
+        /// <returns>Returns a string indicating what BAPI data type the passed Range is.</returns>
         public static String labelData(int xlRowsCount, int xlColumnsCount)
         {
             switch (xlColumnsCount)
@@ -121,6 +157,14 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
         }
 
+        /// <summary>
+        /// specifyRange() calculates an Excel Range where the top left cell would be the initial destination cell - 
+        /// xlDestinationCell. The bottom right cell of the Range depends on the BAPI data type.
+        /// </summary>
+        /// <param name="xlWorkSheet"></param>
+        /// <param name="xlDestinationCell"></param>
+        /// <param name="xlType"></param>
+        /// <returns>Returns a new Excel Range indicating where data should be fetched from or saved to.</returns>
         public static Excel.Range specifyRange(Excel.Worksheet xlWorkSheet, string xlDestinationCell, string xlType)
         {
             Excel.Range xlStartRange;
@@ -151,6 +195,11 @@ namespace ExcelAddIn1.Controllers.Helpers
             return xlRange;
         }
 
+        /// <summary>
+        /// It's a validation method to make sure that the user is not publishing an empty data.
+        /// </summary>
+        /// <param name="xlRange"></param>
+        /// <returns></returns>
         public static Boolean isPublishRangeEmpty(Excel.Range xlRange)
         {
             if (xlRange.Value2 == null)
@@ -163,6 +212,15 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
         }
 
+        /// <summary>
+        /// It's a validation method to make sure that all fields in the BlueberryTaskPane are not-empty. It checks 'Name',
+        /// 'Description', 'Organization' and 'Data owner'.
+        /// </summary>
+        /// <param name="xlName"></param>
+        /// <param name="xlDescription"></param>
+        /// <param name="xlOrganization"></param>
+        /// <param name="xlDataOwner"></param>
+        /// <returns></returns>
         public static Boolean isAnyBlueberryTaskPaneFieldEmpty(string xlName, string xlDescription, string xlOrganization, string xlDataOwner)
         {
 
@@ -177,6 +235,17 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
         }
 
+        /// <summary>
+        /// It's a validation method to check whether a particular combination of a 'Name', 'Organization' and BAPI data type
+        /// has not been used before. The combination of these three parameters is used to create a BAPI ID. Using existing BAPI ID
+        /// by the same 'Data Owner' is acceptable. Using existing BAPI ID created by a different 'Data Owner' is not acceptable.
+        /// In order to find out which BAPI ID has already been used this method sends a HTTP request to the Blueberry API /Data.is_id_used.
+        /// </summary>
+        /// <param name="xlName"></param>
+        /// <param name="xlOrganization"></param>
+        /// <param name="xlDataOwner"></param>
+        /// <param name="xlRange"></param>
+        /// <returns>If BAPI ID is existing and was used by a different 'Data Ownder' returns 'True'. Otherwise returns 'False'.</returns>
         public static Boolean isIDUsed(string xlName, string xlOrganization, string xlDataOwner, Excel.Range xlRange)
         {
 
@@ -189,11 +258,9 @@ namespace ExcelAddIn1.Controllers.Helpers
             var jsonSerializer = new JavaScriptSerializer();
             var json = jsonSerializer.Serialize(requestData);
 
-
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + "Data.is_id_used");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
-
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
@@ -206,8 +273,6 @@ namespace ExcelAddIn1.Controllers.Helpers
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
-
-                //Dictionary<string, bool> validations = new Dictionary<string, bool>();
                 Dictionary<string, bool> deserializedID = jsonSerializer.Deserialize<Dictionary<string, bool>>(result);
 
                 return deserializedID["response"];
@@ -215,6 +280,15 @@ namespace ExcelAddIn1.Controllers.Helpers
 
         }
 
+        /// <summary>
+        /// It's a validation method which checks that none of the following characters '/*-+@&$#%.,\" have
+        /// been used in any of the BlueberryTaskBane fields.
+        /// </summary>
+        /// <param name="xlName"></param>
+        /// <param name="xlDescription"></param>
+        /// <param name="xlOrganization"></param>
+        /// <param name="xlDataOwner"></param>
+        /// <returns>If all of the fields are free of all of the special characters the method returns 'False'.</returns>
         public static Boolean areInputsSpecialCharactersFree(string xlName, string xlDescription, string xlOrganization, string xlDataOwner)
         {
 
@@ -237,6 +311,10 @@ namespace ExcelAddIn1.Controllers.Helpers
 
         }
 
+        /// <summary>
+        /// It's a validation methods handler which runs all validation methods defined inside the method.
+        /// </summary>
+        /// <returns></returns>
         public static String validatePublishingInputs()
         {
 
