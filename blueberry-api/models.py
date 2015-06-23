@@ -2,6 +2,8 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api.users import User
 
+import webapp2_extras.appengine.auth.models as auth_models
+
 DEFAULT_USER = User('bartosz.piechnik@ch.abb.com')
 
 
@@ -91,3 +93,17 @@ class PublishConfigurations(ndb.Model):
     worksheet = ndb.StringProperty(required=True)
     destination_cell = ndb.StringProperty(required=True)
     data_type = ndb.StringProperty(required=True)
+
+class User(ndb.Model):
+    """
+    Class for storing User information.
+    """
+    username = ndb.StringProperty()
+    password = ndb.StringProperty()
+
+
+class BAPIUser(auth_models.User):
+    """
+    User class inherited from webapp2 extras.
+    """
+    email = ndb.StringProperty()

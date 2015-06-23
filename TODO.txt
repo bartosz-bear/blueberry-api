@@ -24,13 +24,22 @@ GENERAL:
 
 
 Create an installer[1]
+
 Implement user accounts on GAE and Excel-Add-In[1]
+https://groups.google.com/forum/#!topic/google-protorpc-discuss/GHJAwtFX_nY
+https://gist.github.com/jeremydw/16c263da7e1833f763c0
+https://docs.djangoproject.com/en/1.8/topics/http/middleware/
+https://docs.djangoproject.com/en/1.8/ref/middleware/#django.contrib.auth.middleware.AuthenticationMiddleware
+http://gosurob.com/post/20024043690/gaewebapp2accounts
+https://github.com/dound/gae-sessions
+
 Check all data types are represented as actual data types.[1]
-Document existing code[1]
 fromExcelToObject - see if it's possible to store all data as list of lists.
 Set up testing framework[1]
 Write unit tests to existing code[1]
 
+Replace all CDNs in HTML[2]
+Clean up all scripts and unecessary stuff in HTML[2]
 Document Python code[2]
 saveToExcel() function has to be reorganized. saveArrayToExcel()[2]
 Implement threading/parallism for requests in order to prevent 'a hanging application'[2]
@@ -57,6 +66,7 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+Document existing code[1]
 Display dates correctly -2H
 Currently the /Display only shows lists -> it should show all data types[1]
 Change the name of the platform to RC Bay[1]

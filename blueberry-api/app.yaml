@@ -39,9 +39,23 @@ handlers:
   script: apis.app
 - url: /Sorting.*
   script: micro_services.app
+- url: /login
+  script: users.app
+- url: /logout
+  script: users.app
+- url: /logging
+  script: users.app
+- url: /register
+  script: users.app
+- url: /logging_testing
+  script: users.app
+- url: /test
+  script: users.app
 
 libraries:
 - name: jinja2
   version: latest
 - name: pycrypto
+  version: latest
+- name: webapp2
   version: latest

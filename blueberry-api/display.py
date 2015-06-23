@@ -4,7 +4,6 @@ from google.appengine.ext import ndb
 from google.appengine.ext.db import Query
 from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations
 
-
 import pickle
 import os
 import webapp2
@@ -143,10 +142,23 @@ class FetchConfigurationsPage(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
+
+class LoggingPage(webapp2.RequestHandler):
+    """
+    Displays log-in template.
+    """
+
+    def get(self):
+
+        template = JINJA_ENVIRONMENT.get_template('templates/log_in.html')
+
+        self.response.write(template.render())
+
 application = webapp2.WSGIApplication([
     ('/display', MainPage),
     ('/browse', BrowsePage),
     ('/publish_configurations', PublishConfigurationsPage),
-    ('/fetch_configurations', FetchConfigurationsPage)
+    ('/fetch_configurations', FetchConfigurationsPage),
+    ('/login', LoggingPage)
 ], debug=True)
 
