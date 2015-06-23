@@ -21,6 +21,9 @@
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="./base_files/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
 
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -47,6 +50,10 @@
             <li><a href="/browse" class="inactive-navbar-nav-li">Browse data</a></li>
             <li><a href="/publish_configurations" class="inactive-navbar-nav-li">Publish Configurations</a></li>
             <li><a href="/fetch_configurations" class="inactive-navbar-nav-li">Fetch Configurations</a></li>
+          </ul>
+          <ul class="nav navbar-nav" style="float:right">
+              <li class="navbar-right"><a id="login-logout" onclick="logout()">Log in</a></li>
+            <li class="navbar-right"><a href="/register" >Register</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -105,11 +112,49 @@
 
     </div><!-- /.container -->
 
+    <script>
+
+
+        $( document ).ready(function() {
+
+            var auth_cookie = getCookie("auth");
+            if (auth_cookie) {
+                document.getElementById("login-logout").innerHTML = "Log out";
+                document.getElementById("login-logout").href = "/display";
+            }
+            else {
+                document.getElementById("login-logout").innerHTML = "Log in";
+                document.getElementById("login-logout").href = "/login";
+            }
+        });
+
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+            }
+            return "";
+        }
+
+        function logout () {
+            var auth_cookie = getCookie("auth");
+            if (auth_cookie) {
+                $.get('/logout');
+                document.cookie = "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            }
+        }
+
+    </script>
+
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="./base_files/jquery.min.js"></script>
+
     <script src="./base_files/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>

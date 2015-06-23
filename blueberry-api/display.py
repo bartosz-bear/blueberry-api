@@ -1,23 +1,33 @@
 __author__ = 'CHBAPIE'
 
-from google.appengine.ext import ndb
-from google.appengine.ext.db import Query
-from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations
-
-import pickle
 import os
+import pickle
+from datetime import timedelta
+
 import webapp2
 import jinja2
-import logging
-import pdb
+
 import models
-from datetime import timedelta
+from google.appengine.ext import ndb
+from google.appengine.ext.db import Query
+from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations, BAPIUser
+from users import BaseHandler, login_required
+
+import pdb
+import logging
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+config = {}
+config['webapp2_extras.sessions'] = {
+    'secret_key': 'MG1VKMXtBpKG'
+}
+config['webapp2_extras.auth'] = {
+    'user_model': BAPIUser
+}
 
 
 def remove_duplicates(query):
@@ -69,11 +79,11 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-class BrowsePage(webapp2.RequestHandler):
+class BrowsePage(BaseHandler):
     """
     Display the available lists
     """
-
+    @login_required
     def get(self):
 
         classes = [getattr(models, i) for i in 'BAPIScalar', 'BAPIList', 'BAPIDictionary', 'BAPITable']
@@ -87,11 +97,11 @@ class BrowsePage(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
-class PublishConfigurationsPage(webapp2.RequestHandler):
+class PublishConfigurationsPage(BaseHandler):
     """
     Display the available lists
     """
-
+    @login_required
     def get(self):
 
         from_db = PublishConfigurations.query().fetch()
@@ -104,29 +114,17 @@ class PublishConfigurationsPage(webapp2.RequestHandler):
             template_values = {}
             for result in from_db:
                 template_values['data'] = from_db
-                """
-                template_values['id'] = result.bapi_id
-                template_values['user'] = result.user
-                template_values['name'] = result.name
-                template_values['description'] = result.description
-                template_values['workbook_path'] = result.workbook_path
-                template_values['workbook'] = result.workbook
-                template_values['worksheet'] = result.worksheet
-                template_values['destination_cell'] = result.destination_cell
-                template_values['data_type'] = result.data_type
-                """
-
 
         template = JINJA_ENVIRONMENT.get_template('templates/publish_configurations.html')
 
         self.response.write(template.render(template_values))
 
 
-class FetchConfigurationsPage(webapp2.RequestHandler):
+class FetchConfigurationsPage(BaseHandler):
     """
     Display lists which have been fetched in the past and are expected to be fetched in the future.
     """
-
+    @login_required
     def get(self):
 
         from_db = FetchConfigurations.query().fetch()
@@ -143,22 +141,10 @@ class FetchConfigurationsPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-class LoggingPage(webapp2.RequestHandler):
-    """
-    Displays log-in template.
-    """
-
-    def get(self):
-
-        template = JINJA_ENVIRONMENT.get_template('templates/log_in.html')
-
-        self.response.write(template.render())
-
 application = webapp2.WSGIApplication([
     ('/display', MainPage),
     ('/browse', BrowsePage),
     ('/publish_configurations', PublishConfigurationsPage),
-    ('/fetch_configurations', FetchConfigurationsPage),
-    ('/login', LoggingPage)
-], debug=True)
+    ('/fetch_configurations', FetchConfigurationsPage)
+], debug=True, config=config)
 
