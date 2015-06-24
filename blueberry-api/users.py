@@ -2,14 +2,19 @@ __author__ = 'CHBAPIE'
 
 import os
 import sys
+import json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib'))
 
+from webob.multidict import MultiDict
 import webapp2
 from webapp2_extras import sessions, auth
 from webapp2_extras import jinja2 as jinja2
 from wtforms import Form, TextField, PasswordField, validators
 
 from models import BAPIUser
+
+import pdb
+import logging
 
 config = {}
 config['webapp2_extras.sessions'] = {
@@ -142,6 +147,8 @@ class LoginHandler(BaseHandler):
         self.render_response("login.html", form=LoginForm())
 
     def post(self):
+        # Check if the request comes from a browser or from Excel.
+        # Potential risk exists here that this handler can be exploited. Some security measure should be applied here.
         form = LoginForm(self.request.POST)
         error = None
         if form.validate():
@@ -149,9 +156,14 @@ class LoginHandler(BaseHandler):
                 self.auth.get_user_by_password(
                     "auth:"+form.email.data,
                     form.password.data)
+                # If self.request.user_agent is None then it's a request coming from Excel Add-in, otherwise
+                # the request is coming from a browser.
+                if not self.request.user_agent:
+                    return self.response.write('temp')
                 return self.redirect('/display')
             except (auth.InvalidAuthIdError, auth.InvalidPasswordError):
                 error = "Invalid Error/Password"
+
         self.render_response("login.html",
                              form=form,
                              error=error)

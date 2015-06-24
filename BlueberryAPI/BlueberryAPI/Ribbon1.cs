@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
 using System.Net;
@@ -130,15 +131,67 @@ namespace ExcelAddIn1
             }
         }
 
+        private void GoToWebPlatformButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://blueberry-api.appspot.com/display");
+        }
+
+        private void LogInButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            string username = usernameBox.Text;
+            string password = passwordBox.Text;
+            LogInButton.Visible = false;
+            usernameBox.Visible = false;
+            passwordBox.Visible = false;
+            LogOutButton.Visible = true;
+
+            var request = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + "login");
+
+            var postData = "email=" + username;
+            postData += "&password=" + password;
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+            string sessionCookieValueTemp = response.Headers["Set-Cookie"].Split(';')[0];
+            Dictionary<string, string> sessionCookie = new Dictionary<string, string>();
+            sessionCookie.Add("auth", Regex.Split(sessionCookieValueTemp, "auth=")[1]);
+
+            GlobalVariables.sessionID = sessionCookie;
+
+            usernameBox.Text = "";
+            passwordBox.Text = "";
+            
+        }
+
         private void TestButton_Click(object sender, RibbonControlEventArgs e)
         {
             //MessageBox.Show("Testing");
         }
 
-
-        private void GoToWebPlatformButton_Click(object sender, RibbonControlEventArgs e)
+        private void LogOutButton_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://blueberry-api.appspot.com/display");
+            LogInButton.Visible = true;
+            usernameBox.Visible = true;
+            passwordBox.Visible = true;
+            LogOutButton.Visible = false;
+
+            string url = "https://www.example.com/scriptname.php?var1=hello";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            Stream resStream = response.GetResponseStream();
+
         }
 
     }

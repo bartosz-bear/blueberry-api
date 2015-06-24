@@ -40,21 +40,27 @@
             this.IDBox = this.Factory.CreateRibbonEditBox();
             this.FetchConfigurationCheckBox = this.Factory.CreateRibbonCheckBox();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.DownloadGroup = this.Factory.CreateRibbonGroup();
+            this.WebPlatformGroup = this.Factory.CreateRibbonGroup();
+            this.Other = this.Factory.CreateRibbonGroup();
+            this.LoginGroup = this.Factory.CreateRibbonGroup();
             this.publishButton = this.Factory.CreateRibbonButton();
             this.updateButton = this.Factory.CreateRibbonButton();
-            this.DownloadGroup = this.Factory.CreateRibbonGroup();
             this.downloadButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
-            this.Other = this.Factory.CreateRibbonGroup();
-            this.TestButton = this.Factory.CreateRibbonButton();
-            this.WebPlatformGroup = this.Factory.CreateRibbonGroup();
             this.GoToWebPlatformButton = this.Factory.CreateRibbonButton();
+            this.LogInButton = this.Factory.CreateRibbonButton();
+            this.LogOutButton = this.Factory.CreateRibbonButton();
+            this.TestButton = this.Factory.CreateRibbonButton();
+            this.usernameBox = this.Factory.CreateRibbonEditBox();
+            this.passwordBox = this.Factory.CreateRibbonEditBox();
             this.BluberryTab.SuspendLayout();
             this.ArgumentsGroup.SuspendLayout();
             this.group1.SuspendLayout();
             this.DownloadGroup.SuspendLayout();
-            this.Other.SuspendLayout();
             this.WebPlatformGroup.SuspendLayout();
+            this.Other.SuspendLayout();
+            this.LoginGroup.SuspendLayout();
             // 
             // BluberryTab
             // 
@@ -63,6 +69,7 @@
             this.BluberryTab.Groups.Add(this.group1);
             this.BluberryTab.Groups.Add(this.DownloadGroup);
             this.BluberryTab.Groups.Add(this.WebPlatformGroup);
+            this.BluberryTab.Groups.Add(this.LoginGroup);
             this.BluberryTab.Groups.Add(this.Other);
             this.BluberryTab.Label = "Blueberry API";
             this.BluberryTab.Name = "BluberryTab";
@@ -94,6 +101,34 @@
             this.group1.Label = "Publish";
             this.group1.Name = "group1";
             // 
+            // DownloadGroup
+            // 
+            this.DownloadGroup.Items.Add(this.downloadButton);
+            this.DownloadGroup.Items.Add(this.refreshButton);
+            this.DownloadGroup.Label = "Download";
+            this.DownloadGroup.Name = "DownloadGroup";
+            // 
+            // WebPlatformGroup
+            // 
+            this.WebPlatformGroup.Items.Add(this.GoToWebPlatformButton);
+            this.WebPlatformGroup.Label = "Web Platform";
+            this.WebPlatformGroup.Name = "WebPlatformGroup";
+            // 
+            // Other
+            // 
+            this.Other.Items.Add(this.TestButton);
+            this.Other.Label = "Other";
+            this.Other.Name = "Other";
+            // 
+            // LoginGroup
+            // 
+            this.LoginGroup.Items.Add(this.usernameBox);
+            this.LoginGroup.Items.Add(this.passwordBox);
+            this.LoginGroup.Items.Add(this.LogInButton);
+            this.LoginGroup.Items.Add(this.LogOutButton);
+            this.LoginGroup.Label = "Login";
+            this.LoginGroup.Name = "LoginGroup";
+            // 
             // publishButton
             // 
             this.publishButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -111,13 +146,6 @@
             this.updateButton.Name = "updateButton";
             this.updateButton.ShowImage = true;
             this.updateButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Update_Click);
-            // 
-            // DownloadGroup
-            // 
-            this.DownloadGroup.Items.Add(this.downloadButton);
-            this.DownloadGroup.Items.Add(this.refreshButton);
-            this.DownloadGroup.Label = "Download";
-            this.DownloadGroup.Name = "DownloadGroup";
             // 
             // downloadButton
             // 
@@ -137,11 +165,33 @@
             this.refreshButton.ShowImage = true;
             this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Refresh_Click);
             // 
-            // Other
+            // GoToWebPlatformButton
             // 
-            this.Other.Items.Add(this.TestButton);
-            this.Other.Label = "Other";
-            this.Other.Name = "Other";
+            this.GoToWebPlatformButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.GoToWebPlatformButton.Image = ((System.Drawing.Image)(resources.GetObject("GoToWebPlatformButton.Image")));
+            this.GoToWebPlatformButton.Label = "Go to Web Platform";
+            this.GoToWebPlatformButton.Name = "GoToWebPlatformButton";
+            this.GoToWebPlatformButton.ShowImage = true;
+            this.GoToWebPlatformButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GoToWebPlatformButton_Click);
+            // 
+            // LogInButton
+            // 
+            this.LogInButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.LogInButton.Image = ((System.Drawing.Image)(resources.GetObject("LogInButton.Image")));
+            this.LogInButton.Label = "Log in";
+            this.LogInButton.Name = "LogInButton";
+            this.LogInButton.ShowImage = true;
+            this.LogInButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.LogInButton_Click);
+            // 
+            // LogOutButton
+            // 
+            this.LogOutButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.LogOutButton.Image = ((System.Drawing.Image)(resources.GetObject("LogOutButton.Image")));
+            this.LogOutButton.Label = "Log out";
+            this.LogOutButton.Name = "LogOutButton";
+            this.LogOutButton.ShowImage = true;
+            this.LogOutButton.Visible = false;
+            this.LogOutButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.LogOutButton_Click);
             // 
             // TestButton
             // 
@@ -151,20 +201,15 @@
             this.TestButton.ShowImage = true;
             this.TestButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.TestButton_Click);
             // 
-            // WebPlatformGroup
+            // usernameBox
             // 
-            this.WebPlatformGroup.Items.Add(this.GoToWebPlatformButton);
-            this.WebPlatformGroup.Label = "Web Platform";
-            this.WebPlatformGroup.Name = "WebPlatformGroup";
+            this.usernameBox.Label = "username";
+            this.usernameBox.Name = "usernameBox";
             // 
-            // GoToWebPlatformButton
+            // passwordBox
             // 
-            this.GoToWebPlatformButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.GoToWebPlatformButton.Image = ((System.Drawing.Image)(resources.GetObject("GoToWebPlatformButton.Image")));
-            this.GoToWebPlatformButton.Label = "Go to Web Platform";
-            this.GoToWebPlatformButton.Name = "GoToWebPlatformButton";
-            this.GoToWebPlatformButton.ShowImage = true;
-            this.GoToWebPlatformButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GoToWebPlatformButton_Click);
+            this.passwordBox.Label = "password";
+            this.passwordBox.Name = "passwordBox";
             // 
             // BlueberryRibbon
             // 
@@ -180,10 +225,12 @@
             this.group1.PerformLayout();
             this.DownloadGroup.ResumeLayout(false);
             this.DownloadGroup.PerformLayout();
-            this.Other.ResumeLayout(false);
-            this.Other.PerformLayout();
             this.WebPlatformGroup.ResumeLayout(false);
             this.WebPlatformGroup.PerformLayout();
+            this.Other.ResumeLayout(false);
+            this.Other.PerformLayout();
+            this.LoginGroup.ResumeLayout(false);
+            this.LoginGroup.PerformLayout();
 
         }
 
@@ -203,6 +250,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup ArgumentsGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup WebPlatformGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton GoToWebPlatformButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup LoginGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton LogInButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton LogOutButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox usernameBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox passwordBox;
     }
 
     partial class ThisRibbonCollection
