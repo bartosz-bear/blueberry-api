@@ -23,25 +23,17 @@ GENERAL:
 3) Name or organization has spaces or dots or some other wrong characters.
 
 
+Deploy to production[1]
 Create an installer[1]
 
-Implement user accounts in Excel-Add-In[1]
-https://groups.google.com/forum/#!topic/google-protorpc-discuss/GHJAwtFX_nY
-https://gist.github.com/jeremydw/16c263da7e1833f763c0
-https://docs.djangoproject.com/en/1.8/topics/http/middleware/
-https://docs.djangoproject.com/en/1.8/ref/middleware/#django.contrib.auth.middleware.AuthenticationMiddleware
-http://gosurob.com/post/20024043690/gaewebapp2accounts
-https://github.com/dound/gae-sessions
-
 Check all data types are represented as actual data types.[1]
-fromExcelToObject - see if it's possible to store all data as list of lists.
 Set up testing framework[1]
 Write unit tests to existing code[1]
+Create accounts in Prod for BP, MW, OL
 
+Implement active nav-bar script[2]
 Make the password ****** in Excel Add-in[2]
-If user is not logged-in -> implement redirectior to the requested page after login[2]
-Replace all CDNs in HTML[2]
-Clean up all scripts and unecessary stuff in HTML[2]
+If user is not logged-in -> implement redirection to the requested page after login[2]
 Document Python code[2]
 saveToExcel() function has to be reorganized. saveArrayToExcel()[2]
 Implement threading/parallism for requests in order to prevent 'a hanging application'[2]
@@ -54,7 +46,7 @@ Refactor validatePublishingInputs() - pass variables defined inside the method a
 Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just enter the type parameter as 
 an argument to saveArrayToExcel() method.  
 
-Think whether checking the user_agent[None in case of Excel is a good method to validate the source][3]
+fromExcelToObject - see if it's possible to store all data as list of lists[3]
 Implement all code in the asynchronous manner[3]
 Do we need confirmation every single time a data is updated or only for several items?[3]
 Think how often should I refactor[3]
@@ -70,7 +62,14 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
-Implement user accounts on GAE[1]
+Think whether checking the user_agent[None in case of Excel is a good method to validate the source][3]
+Clean up all scripts and unecessary stuff in HTML[2]
+Replace all CDNs in HTML[2]
+Create a common JS file[2]
+Use jijnja2 inheritance to avoid multiple html editing for different html pages[2]
+Implement handler for wrong username or password[1]
+Implement users management in Excel Add-in[1]
+Implement users management on GAE[1]
 Document existing code[1]
 Display dates correctly -2H
 Currently the /Display only shows lists -> it should show all data types[1]
@@ -89,3 +88,10 @@ Finilize Dictionary data structure
 Table data structure
 Fix the git to make sure that all files are always pushed to bitbucket[3]
 Fix add-in loading problem[2]
+
+Useful links:
+http://gosurob.com/post/20024043690/gaewebapp2accounts
+https://github.com/dound/gae-sessions
+
+Debugging JS:
+https://developer.chrome.com/devtools/docs/javascript-debugging

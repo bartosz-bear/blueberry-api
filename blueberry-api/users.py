@@ -159,14 +159,18 @@ class LoginHandler(BaseHandler):
                 # If self.request.user_agent is None then it's a request coming from Excel Add-in, otherwise
                 # the request is coming from a browser.
                 if not self.request.user_agent:
-                    return self.response.write('temp')
-                return self.redirect('/display')
+                    self.response.headers['Content-Type'] = 'application/json'
+                    return self.response.write(json.dumps(self.user))
+                self.redirect('/display')
             except (auth.InvalidAuthIdError, auth.InvalidPasswordError):
-                error = "Invalid Error/Password"
-
-        self.render_response("login.html",
-                             form=form,
-                             error=error)
+                error = "Invalid username or password"
+                # If self.request.user_agent is None then it's a request coming from Excel Add-in, otherwise
+                # the request is coming from a browser.
+                if not self.request.user_agent:
+                    return self.response
+                self.render_response("login.html",
+                                     form=form,
+                                     error=error)
 
 
 class LogoutHandler(BaseHandler):
@@ -176,6 +180,8 @@ class LogoutHandler(BaseHandler):
     @login_required
     def get(self):
         self.auth.unset_session()
+        if not self.request.user_agent:
+            return self.response.write('OK')
         self.redirect('/login')
 
 

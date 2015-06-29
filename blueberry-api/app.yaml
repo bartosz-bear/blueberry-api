@@ -7,16 +7,8 @@ api_version: 1
 handlers:
 
 # Static
-- url: /js
-  static_dir: static/js
-- url: /css
-  static_dir: static/css
-- url: /bootstrap
-  static_dir: static/bootstrap
-- url: /images
-  static_dir: static/images
-- url: /base_files
-  static_dir: base_files
+- url: /static
+  static_dir: static
 
 # Scripts
 - url: /display
@@ -37,20 +29,16 @@ handlers:
   script: apis.app
 - url: /Table.*
   script: apis.app
-- url: /Sorting.*
-  script: micro_services.app
 - url: /login
   script: users.app
 - url: /logout
   script: users.app
-- url: /logging
-  script: users.app
 - url: /register
   script: users.app
-- url: /logging_testing
-  script: users.app
-- url: /test
-  script: users.app
+
+- url: /Sorting.*
+  script: micro_services.app
+
 
 libraries:
 - name: jinja2

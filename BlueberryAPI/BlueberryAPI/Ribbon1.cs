@@ -140,12 +140,8 @@ namespace ExcelAddIn1
         {
             string username = usernameBox.Text;
             string password = passwordBox.Text;
-            LogInButton.Visible = false;
-            usernameBox.Visible = false;
-            passwordBox.Visible = false;
-            LogOutButton.Visible = true;
 
-            var request = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + "login");
+            var request = (HttpWebRequest)WebRequest.Create(GlobalVariables.blueberryAPIurl + "login");
 
             var postData = "email=" + username;
             postData += "&password=" + password;
@@ -155,17 +151,27 @@ namespace ExcelAddIn1
             request.ContentType = "application/x-www-form-urlencoded";
             request.ContentLength = data.Length;
 
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(data, 0, data.Length);
-            }
-
             var response = (HttpWebResponse)request.GetResponse();
-            string sessionCookieValueTemp = response.Headers["Set-Cookie"].Split(';')[0];
-            Dictionary<string, string> sessionCookie = new Dictionary<string, string>();
-            sessionCookie.Add("auth", Regex.Split(sessionCookieValueTemp, "auth=")[1]);
+            var responseStream = response.GetResponseStream();
 
-            GlobalVariables.sessionID = sessionCookie;
+            // If the user was authenticated, the response will have a session ID inside "Set-Cookie" header.
+            if (response.Headers["Set-Cookie"] == null)
+            {
+                MessageBox.Show("Invalid username or password");
+            }
+            else
+            {
+                string sessionCookieValueTemp = response.Headers["Set-Cookie"].Split(';')[0];
+                Dictionary<string, string> sessionCookie = new Dictionary<string, string>();
+                sessionCookie.Add("auth", Regex.Split(sessionCookieValueTemp, "auth=")[1]);
+
+                GlobalVariables.sessionData = sessionCookie;
+
+                LogInButton.Visible = false;
+                usernameBox.Visible = false;
+                passwordBox.Visible = false;
+                LogOutButton.Visible = true;
+            }
 
             usernameBox.Text = "";
             passwordBox.Text = "";
@@ -184,13 +190,16 @@ namespace ExcelAddIn1
             passwordBox.Visible = true;
             LogOutButton.Visible = false;
 
-            string url = "https://www.example.com/scriptname.php?var1=hello";
+            string url = GlobalVariables.blueberryAPIurl + "logout";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
+            request.Method = "GET";
+            request.Headers.Add("Cookie", "auth=" + GlobalVariables.sessionData["auth"]);
+
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            Stream resStream = response.GetResponseStream();
+            GlobalVariables.sessionData.Remove("auth");
 
         }
 
