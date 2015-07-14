@@ -161,7 +161,7 @@ class LoginHandler(BaseHandler):
                 if not self.request.user_agent:
                     self.response.headers['Content-Type'] = 'application/json'
                     return self.response.write(json.dumps(self.user))
-                self.redirect('/display')
+                self.redirect('/')
             except (auth.InvalidAuthIdError, auth.InvalidPasswordError):
                 error = "Invalid username or password"
                 # If self.request.user_agent is None then it's a request coming from Excel Add-in, otherwise

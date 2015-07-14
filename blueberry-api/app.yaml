@@ -11,6 +11,8 @@ handlers:
   static_dir: static
 
 # Scripts
+- url: /
+  script: display.application
 - url: /display
   script: display.application
 - url: /browse

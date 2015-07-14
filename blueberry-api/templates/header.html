@@ -3,14 +3,27 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" style="background: #04235A; color: #AEECFB;">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="/display" style="background: #04235A; color: #AEECFB;">Risk Control</a>
+          <a class="navbar-brand" href="/" style="background: #04235A; color: #AEECFB;">Risk Control</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/display" class="inactive-navbar-nav-li">Home</a></li>
-            <li><a href="/browse" class="inactive-navbar-nav-li">Browse data</a></li>
-            <li><a href="/publish_configurations" class="inactive-navbar-nav-li">Publish Configurations</a></li>
-            <li><a href="/fetch_configurations" class="inactive-navbar-nav-li">Fetch Configurations</a></li>
+            <li>
+                <a href="/browse" class="inactive-navbar-nav-li">
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> Browse data
+                </a>
+            </li>
+
+            <li>
+                <a href="/publish_configurations" class="inactive-navbar-nav-li">
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Publish Configurations
+                </a>
+            </li>
+
+              <li>
+                <a href="/fetch_configurations" class="inactive-navbar-nav-li">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Fetch Configurations
+                </a>
+              </li>
           </ul>
           <ul class="nav navbar-nav" style="float:right">
               <li class="navbar-right"><a id="login-logout" onclick="logout()">Log in</a></li>

@@ -3,7 +3,9 @@
             var auth_cookie = getCookie("auth");
             if (auth_cookie) {
                 document.getElementById("login-logout").innerHTML = "Log out";
-                document.getElementById("login-logout").href = "/display";
+                document.getElementById("login-logout").href = "/";
+                document.getElementById("index_login_info").style.visibility = "hidden";;
+
             }
             else {
                 document.getElementById("login-logout").innerHTML = "Log in";

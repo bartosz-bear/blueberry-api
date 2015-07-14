@@ -18,14 +18,14 @@
 
       <div class="starter-template">
 
-          <div class="panel panel-primary">
-              <div class="panel-heading">Data name</div>
-              <div class="panel-body">{{ name }}</div>
-          </div>
-
           <div class="panel panel-danger">
               <div class="panel-heading">ID</div>
               <div class="panel-body">{{ id }}</div>
+          </div>
+
+          <div class="panel panel-primary">
+              <div class="panel-heading">Data name</div>
+              <div class="panel-body">{{ name }}</div>
           </div>
 
           <div class="panel panel-warning">
@@ -40,7 +40,7 @@
 
            <div class="panel panel-info">
               <div class="panel-heading">Last updated at</div>
-              <div class="panel-body">{{ last_updated.strftime('%Y-%m-%d %H:%M') }}</div>
+              <div class="panel-body">{{ last_updated | time_minus_2 if last_updated != None else datetime.datetime(2014,1,1) }}</div>
           </div>
 
            <div class="panel panel-warning">

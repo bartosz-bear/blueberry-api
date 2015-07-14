@@ -22,7 +22,7 @@ DEPLOY TO GAE PROD:
   a. Start powershell
   b. activate apiquitous
   c. cd "C:\Program Files (x86)\Google\google_appengine"
-  d. appcfg.py update "C:\Users\chbapie\Desktop\Bartosz\blueberry-api\blueberry-api"
+  d. appcfg.py update "C:\Users\chbapie\Desktop\Bartosz\blueberry-api\blueberry-api" --oauth2 "" ""
 
 PROD:
 https://appengine.google.com

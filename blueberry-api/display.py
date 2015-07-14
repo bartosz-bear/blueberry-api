@@ -11,7 +11,9 @@ import models
 from google.appengine.ext import ndb
 from google.appengine.ext.db import Query
 from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations, BAPIUser
+from google.appengine.api.users import User, get_current_user
 from users import BaseHandler, login_required
+from constants import BAPI_DATA_TYPES
 
 import pdb
 import logging
@@ -53,12 +55,27 @@ def time_minus_2(value):
 
 JINJA_ENVIRONMENT.filters['time_minus_2'] = time_minus_2
 
+
+class IndexPage(webapp2.RequestHandler):
+    """
+    Displays the home page.
+    """
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/index.html')
+        self.response.write(template.render())
+
 class MainPage(webapp2.RequestHandler):
     """
     Display the most recent list.
     """
 
     def get(self):
+
+        """
+        data_summary = {}
+        for i in BAPI_DATA_TYPES:
+            data_summary[i] =
+        """
         from_db = BAPIList.query().order(BAPIList.last_updated)
         if from_db.count() == 0:
             from_db = ''
@@ -73,6 +90,7 @@ class MainPage(webapp2.RequestHandler):
                 template_values['last_updated'] = result.last_updated
                 template_values['description'] = result.description
             template_values['from_db'] = pickle.loads(result.data)
+
 
         template = JINJA_ENVIRONMENT.get_template('templates/display.html')
 
@@ -103,8 +121,11 @@ class PublishConfigurationsPage(BaseHandler):
     """
     @login_required
     def get(self):
-
+        user_email = BAPIUser.get_by_id(self.user['user_id']).email
+        a = get_current_user()
+        #from_db = PublishConfigurations.query(PublishConfigurations.user == User(email=user_email, _user_id=str(self.user['user_id']))).fetch()
         from_db = PublishConfigurations.query().fetch()
+        pdb.set_trace()
         logging.info("Bartosz")
         logging.info(len(from_db))
         if len(from_db) == 0:
@@ -142,6 +163,7 @@ class FetchConfigurationsPage(BaseHandler):
 
 
 application = webapp2.WSGIApplication([
+    ('/', IndexPage),
     ('/display', MainPage),
     ('/browse', BrowsePage),
     ('/publish_configurations', PublishConfigurationsPage),

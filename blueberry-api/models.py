@@ -94,6 +94,8 @@ class PublishConfigurations(ndb.Model):
     destination_cell = ndb.StringProperty(required=True)
     data_type = ndb.StringProperty(required=True)
 
+
+# Is this class really necessary?
 class User(ndb.Model):
     """
     Class for storing User information.
@@ -107,3 +109,17 @@ class BAPIUser(auth_models.User):
     User class inherited from webapp2 extras.
     """
     email = ndb.StringProperty()
+
+"""
+
+Possibly this can be used later to optimize query on /display
+
+class BAPICounts(ndb.Model):
+    ""
+    Model responsible for counting number of items in each of the fundamental BAPI data types.
+    ""
+    bapi_scalar_count = ndb.IntegerProperty()
+    bapi_list_count = ndb.IntegerProperty()
+    bapi_dictionary_count = ndb.IntegerProperty()
+    bapi_table_count = ndb.IntegerProperty()
+"""

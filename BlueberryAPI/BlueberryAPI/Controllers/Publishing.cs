@@ -8,9 +8,11 @@ using System.Net;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using PublishingHelpers = ExcelAddIn1.Controllers.Helpers.PublishingHelpers;
 using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
+using ExcelAddIn1.Utils;
 
 namespace ExcelAddIn1.Controllers
 {
@@ -105,25 +107,32 @@ namespace ExcelAddIn1.Controllers
 
             // Serialize and send data via HTTP POST request
             var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(publishingData);
+            var data = jsonSerializer.Serialize(publishingData);
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + xlType + ".publish");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(GlobalVariables.blueberryAPIurl + xlType + ".publish");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            object[] httpResponseArgs = new object[] { "StreamReaderProperty" };
+            BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                MessageBox.Show(result.ToString());
-            }
+            dynamic response = httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(publishDataHandleResponse),
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(publishDataReturnResponse));
+        }
+
+        private static dynamic publishDataHandleResponse(object[] args)
+        {
+            var serializer = new JavaScriptSerializer();
+            StreamReader streamReader = (StreamReader)args[0];
+            string result = streamReader.ReadToEnd();
+            Dictionary<string, dynamic> deserializedResult = serializer.Deserialize<Dictionary<string, dynamic>>(result);
+            MessageBox.Show(deserializedResult["response"]);
+            return false;
+        }
+
+        private static dynamic publishDataReturnResponse()
+        {
+            return true;
         }
 
         /// <summary>
@@ -146,29 +155,35 @@ namespace ExcelAddIn1.Controllers
             activeWorkbookInfo.Add("workbook", xlWorkbookName);
 
             var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(activeWorkbookInfo);
+            var data = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = BlueberryRibbon.blueberryAPIurl + "Data.get_published";
+            String url = GlobalVariables.blueberryAPIurl + "Data.get_published";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            object[] httpResponseArgs = new object[] { "StreamReaderProperty" };
+            BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                string result;
-                result = streamReader.ReadToEnd();
-                Dictionary<string, dynamic> publishedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
-                return publishedData;
-            }
+            return (dynamic)httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(getPublishedHandleResponse),
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(getPublishedHandleExceptions));
+
+        }
+
+        private static dynamic getPublishedHandleResponse(object[] args)
+        {
+            var serializer = new JavaScriptSerializer();
+            StreamReader streamReader = (StreamReader)args[0];
+            string result = streamReader.ReadToEnd();
+            Dictionary<string, dynamic> deserializedResult = serializer.Deserialize<Dictionary<string, dynamic>>(result);
+            return deserializedResult;
+        }
+
+        private static dynamic getPublishedHandleExceptions()
+        {
+            MessageBox.Show("Please connect to Internet.");
+            return new Dictionary<string, dynamic>();
         }
 
     }

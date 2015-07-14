@@ -3,7 +3,7 @@ WEEKEND PLAN:
 POTENTIAL PROBLEMS:
 C) 'Data owner' is not an email
 
-Try to input incorrect Blueberry ID[1]
+
 
 TESTS:
 Publish  
@@ -18,19 +18,33 @@ Publish
     1)   
 
 GENERAL:
-1) A web-server is not responding
+1) A web-server is not responding - most likely 502 Exception
 2) Enter different data type (int, double, string, dates, formulas)
 3) Name or organization has spaces or dots or some other wrong characters.
+4) Enter Update or Refresh when there is nothing to be Updated or Refreshed
+5) None of the functionalities should be available unless the user is logged in
 
+PROD:
+- the application doesn't display anything if there is no items in the datastore[1]
 
-Deploy to production[1]
+Remove the user from BlueberryTaskPane - get the user from GlobalVariables - LoggedInUser[1]
 Create an installer[1]
-
+Pay extra attention to 'Update' maximum length. Sometimes it tries to get over 1mln rows[1]
+Make changes to the information display according to the user email address[1]
+Blueberry ID should be more visible than other data - red color[1]
 Check all data types are represented as actual data types.[1]
 Set up testing framework[1]
 Write unit tests to existing code[1]
-Create accounts in Prod for BP, MW, OL
+Create accounts in Prod for BP, MW, OL[1]
+Disallow to create a Publish Task Pane twice.[1]
+Have one confirmation for 'Update' only.[1]
+Close TaskPane after Publishing. First check whether a new one wouldn't be created in case the old one is hidden[1].
 
+
+Ribbon1.cs -> Should Encoding.ASCII.GetBytes - should it rather encode to UTF, to ensure correct processing to foreign email addresses and passwords[2]
+Register - already used email notification[2]
+The prototype queries all BAPI datatypes when /display - maybe it makes sense to optimize this[2]
+After register - move to /display[2]
 Implement active nav-bar script[2]
 Make the password ****** in Excel Add-in[2]
 If user is not logged-in -> implement redirection to the requested page after login[2]
@@ -44,8 +58,11 @@ Possibly abstract the HTTP request in C#[2]
 Implement the most efficient way of saving data to excel[2]
 Refactor validatePublishingInputs() - pass variables defined inside the method as as arguments.[2]
 Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just enter the type parameter as 
-an argument to saveArrayToExcel() method.  
+an argument to saveArrayToExcel() method.[2]
+Create samples for all URLs in case users have no access yet[2]
 
+
+Remove Utils class[3]
 fromExcelToObject - see if it's possible to store all data as list of lists[3]
 Implement all code in the asynchronous manner[3]
 Do we need confirmation every single time a data is updated or only for several items?[3]
@@ -55,6 +72,7 @@ Verify the access identifier for each class and method[3]
 Error messages should be more 'juicy'. Currently all of them look exactly the same.[3]
 Make the timing filter more adjusted to the locale of each computer[3]
 Make the color grey like in /login screen[3]
+Refactor validatePublishingInputs() - most likely use some version of eval()[3]
 
 LONG-TERM:
 Analyze all possible variants of reading code for publishing
@@ -62,6 +80,16 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+Try to input incorrect Blueberry ID[1]
+Empty BlueberryID validation[1]
+Write error hanlder for 500[1]
+Pop up when uploading '{response:} - make it more user friendly[1]
+When some of the items 'Publish' task pane are not filled up, its still possible to make a request[1]
+Remove 'needs to contain a digit" in 'Publish taskpane'[1]
+Sometimes when trying to log-in the system hangs with Stream postStream = request.GetRequestStream() - WebException problem[1]
+Notification that the user should be logged in before sending publish/download/etc in Excel add-in[1]
+Deploy to production[1]
+Make the home page[http://blueberry-api.appspot.com/][1]
 Think whether checking the user_agent[None in case of Excel is a good method to validate the source][3]
 Clean up all scripts and unecessary stuff in HTML[2]
 Replace all CDNs in HTML[2]

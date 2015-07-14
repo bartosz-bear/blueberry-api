@@ -48,7 +48,6 @@
             this.BAPINameTextBox.Name = "BAPINameTextBox";
             this.BAPINameTextBox.Size = new System.Drawing.Size(122, 20);
             this.BAPINameTextBox.TabIndex = 0;
-            this.BAPINameTextBox.TextChanged += new System.EventHandler(this.BAPINameTextBox_TextChanged);
             // 
             // NameLabel
             // 

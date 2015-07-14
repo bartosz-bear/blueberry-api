@@ -19,6 +19,7 @@ using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using PublishingHelpers = ExcelAddIn1.Controllers.Helpers.PublishingHelpers;
 using Publishing = ExcelAddIn1.Controllers.Publishing;
+using ExcelAddIn1.Utils;
 
 namespace ExcelAddIn1
 {
@@ -31,6 +32,7 @@ namespace ExcelAddIn1
 
         private void PublishButton_Click(object sender, EventArgs e)
         {
+            if (!UserManagement.userLogged()) { return; }
             string validationResult = PublishingHelpers.validatePublishingInputs();
             if (validationResult == "Pass")
             {
@@ -41,30 +43,6 @@ namespace ExcelAddIn1
                 MessageBox.Show(validationResult);
             }
 
-        }
-
-        private void BAPINameTextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Determine if the TextBox has a digit character.
-            string text = PublishingNameTextBox.Text;
-            bool hasDigit = false;
-            foreach (char letter in text)
-            {
-                if (char.IsDigit(letter))
-                {
-                    hasDigit = true;
-                    break;
-                }
-            }
-            // Call SetError or Clear on the ErrorProvider.
-            if (!hasDigit)
-            {
-                errorProvider1.SetError(BAPINameTextBox, "Needs to contain a digit");
-            }
-            else
-            {
-                errorProvider1.Clear();
-            }
         }
     }
 }

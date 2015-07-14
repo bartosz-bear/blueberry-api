@@ -2,13 +2,18 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Web.Script.Serialization;
+using System.Web.UI;
 using System.Net;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
+using Ciloci.Flee;
+using System.Windows.Forms;
+using ExcelAddIn1.Utils;
 
 namespace ExcelAddIn1.Controllers.Helpers
 {
@@ -256,28 +261,33 @@ namespace ExcelAddIn1.Controllers.Helpers
             requestData.Add("user", xlDataOwner);
 
             var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(requestData);
+            var data = jsonSerializer.Serialize(requestData);
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(BlueberryRibbon.blueberryAPIurl + "Data.is_id_used");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(GlobalVariables.blueberryAPIurl + "Data.is_id_used");
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            // Send an HTTP request to Blueberry Cloud to verify whether the ID has been used before.
+            object[] httpResponseArgs = new object[] { "StreamReaderProperty" };
+            BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                Dictionary<string, bool> deserializedID = jsonSerializer.Deserialize<Dictionary<string, bool>>(result);
+            return (bool)httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(isIDUsedHandleResponse),
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(isIDUsedReturnResponse));
+        }
 
-                return deserializedID["response"];
-            }
+        private static dynamic isIDUsedHandleResponse(object[] args)
+        {
+            var serializer = new JavaScriptSerializer();
+            StreamReader streamReader = (StreamReader)args[0];
+            string result = streamReader.ReadToEnd();
+            Dictionary<string, bool> isIDUsedResponse = serializer.Deserialize<Dictionary<string, bool>>(result);
+            return isIDUsedResponse["response"];
+        }
 
+        private static dynamic isIDUsedReturnResponse()
+        {
+            MessageBox.Show("Please connect to Internet.");
+            return false;
         }
 
         /// <summary>
@@ -332,31 +342,33 @@ namespace ExcelAddIn1.Controllers.Helpers
             string xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
             string xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
 
-            Dictionary<string, bool> validations = new Dictionary<string, bool>();
-            Dictionary<string, string> errorMessages = new Dictionary<string, string>();
+            OrderedDictionary errorMessages = new OrderedDictionary();
 
             errorMessages.Add("isPublishRangeEmpty", "Range which you are trying to publish is empty. Choose some data and try again.");
             errorMessages.Add("isAnyBlueberryTaskPaneFieldEmpty", "One of the input forms ('Name', 'Description', 'Organization', 'Data Owner')" +
                                                                     " is empty. Please complete all fields before submitting.");
+            errorMessages.Add("areInputsSpecialCharactersFree", "'Name' and 'Organization' should not have any of the following characters: '/*-+@&$#%.,\\\"'" +
+                                                                " and it should be less than 80 characters.");           
             errorMessages.Add("isIDUsed", "This 'Name' has already been used within this 'Organization' by a different user. Please change one or both of" +
                                           " them and try again.");
-            errorMessages.Add("areInputsSpecialCharactersFree", "'Name' and 'Organization' should not have any of the following characters: '/*-+@&$#%.,\\\"'" +
-                                                                " and it should be less than 80 characters.");
 
-            validations.Add("isPublishRangeEmpty", isPublishRangeEmpty(xlRange));
-            validations.Add("isAnyBlueberryTaskPaneFieldEmpty", isAnyBlueberryTaskPaneFieldEmpty(xlName, xlDescription, xlOrganization, xlDataOwner));
-            validations.Add("isIDUsed", isIDUsed(xlName, xlOrganization, xlDataOwner, xlRange));
-            validations.Add("areInputsSpecialCharactersFree", areInputsSpecialCharactersFree(xlName, xlDescription, xlOrganization, xlDataOwner));
-
-            foreach (KeyValuePair<string, bool> item in validations)
+            if (isPublishRangeEmpty(xlRange))
             {
-                if (item.Value)
-                {
-                    string itemKey = item.Key;
-                    return errorMessages[itemKey];
-                }
-                    
+                return (string)errorMessages["isPublishRangeEmpty"];
             }
+            if (isAnyBlueberryTaskPaneFieldEmpty(xlName, xlDescription, xlOrganization, xlDataOwner))
+            {
+                return (string)errorMessages["isAnyBlueberryTaskPaneFieldEmpty"];
+            }
+            if (areInputsSpecialCharactersFree(xlName, xlDescription, xlOrganization, xlDataOwner))
+            {
+                return (string)errorMessages["areInputsSpecialCharactersFree"];
+            }
+            if (isIDUsed(xlName, xlOrganization, xlDataOwner, xlRange))
+            {
+                return (string)errorMessages["isIDUsed"];
+            }
+
             return "Pass";
         }
 

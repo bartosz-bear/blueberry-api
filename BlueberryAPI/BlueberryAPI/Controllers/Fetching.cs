@@ -12,6 +12,7 @@ using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
 using BlueberryTaskPane = ExcelAddIn1.BlueberryTaskPane;
 using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
+using ExcelAddIn1.Utils;
 
 namespace ExcelAddIn1.Controllers
 {
@@ -81,30 +82,34 @@ namespace ExcelAddIn1.Controllers
 
             // Serializing data and a HTTP request to Blueberry datastore.
             var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(fetchingData);
+            var data = jsonSerializer.Serialize(fetchingData);
 
             String[] splitWords = fetchingData["bapi_id"].Split('.');
-            String url = BlueberryRibbon.blueberryAPIurl + splitWords[2] + ".fetch";
+            String url = GlobalVariables.blueberryAPIurl + splitWords[2] + ".fetch";
             
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            object[] httpResponseArgs = new object[] { "StreamReaderProperty" };
+            BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                string result;
-                result = streamReader.ReadToEnd();
-                return result;
+            return httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(fetchDataHandleResponse),
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(fetchDataHandleExceptions));
 
-            }
+        }
+
+        private static dynamic fetchDataHandleResponse(object[] args)
+        {
+            var serializer = new JavaScriptSerializer();
+            StreamReader streamReader = (StreamReader)args[0];
+            return streamReader.ReadToEnd();
+        }
+
+        private static dynamic fetchDataHandleExceptions()
+        {
+            MessageBox.Show("Please connect to Internet.");
+            return "";
         }
 
         /// <summary>
@@ -127,30 +132,33 @@ namespace ExcelAddIn1.Controllers
             activeWorkbookInfo.Add("workbook", xlWorkbookName);
 
             var jsonSerializer = new JavaScriptSerializer();
-            var json = jsonSerializer.Serialize(activeWorkbookInfo);
+            var data = jsonSerializer.Serialize(activeWorkbookInfo);
 
-            String url = BlueberryRibbon.blueberryAPIurl + "Data.get_fetched";
+            String url = GlobalVariables.blueberryAPIurl + "Data.get_fetched";
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.ContentType = "text/json";
             httpWebRequest.Method = "POST";
 
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
+            object[] httpResponseArgs = new object[] { "StreamReaderProperty" };
+            BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                string result;
-                result = streamReader.ReadToEnd();
-                Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
-                return fetchedData;
-            }
+            return httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(getFetchedHandleResponse),
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(getFetchedHandleExceptions));
+        }
 
+        private static dynamic getFetchedHandleResponse(object[] args)
+        {
+            var serializer = new JavaScriptSerializer();
+            StreamReader streamReader = (StreamReader)args[0];
+            string result = streamReader.ReadToEnd();
+            return serializer.Deserialize<Dictionary<string, dynamic>>(result);
+        }
+
+        private static dynamic getFetchedHandleExceptions()
+        {
+            MessageBox.Show("Please connect to Internet.");
+            return new Dictionary<string, dynamic>();
         }
     }
 }
