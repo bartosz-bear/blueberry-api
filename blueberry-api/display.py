@@ -122,12 +122,7 @@ class PublishConfigurationsPage(BaseHandler):
     @login_required
     def get(self):
         user_email = BAPIUser.get_by_id(self.user['user_id']).email
-        a = get_current_user()
-        #from_db = PublishConfigurations.query(PublishConfigurations.user == User(email=user_email, _user_id=str(self.user['user_id']))).fetch()
-        from_db = PublishConfigurations.query().fetch()
-        pdb.set_trace()
-        logging.info("Bartosz")
-        logging.info(len(from_db))
+        from_db = PublishConfigurations.query(PublishConfigurations.user == user_email).fetch()
         if len(from_db) == 0:
             from_db = ''
             template_values = {}
@@ -147,8 +142,8 @@ class FetchConfigurationsPage(BaseHandler):
     """
     @login_required
     def get(self):
-
-        from_db = FetchConfigurations.query().fetch()
+        user_email = BAPIUser.get_by_id(self.user['user_id']).email
+        from_db = FetchConfigurations.query(FetchConfigurations.user == user_email).fetch()
         if len(from_db) == 0:
             from_db = ''
             template_values = {}

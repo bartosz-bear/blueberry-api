@@ -47,7 +47,7 @@ def publish_and_collect(request, class_):
     if is_published == 0:
         # In case this is the first 'Publish' for this id, create a 'PublishConfiguration'.
         name = request.name
-        user = User(request.user)
+        user = request.user
         description = request.description
         organization = request.organization
         data_type = request.data_type
@@ -91,14 +91,11 @@ def query_and_configure(request, class_, data_type):
     queried_list = class_.query(
         class_.bapi_id == request.bapi_id).order(-class_.last_updated).get()
 
-    logging.info('Checking queried list:')
-    logging.info(queried_list)
-
     # Check if the 'Fetch' request is a one-off or a repetitive request.
     # In case it's a repetitive, save it to the Datastore.
     if not request.skip_new_conf:
         FetchConfigurations(name=queried_list.name,
-                            user=User(request.user),
+                            user=request.user,
                             data_type=data_type,
                             bapi_id=request.bapi_id,
                             workbook_path=request.workbook_path,

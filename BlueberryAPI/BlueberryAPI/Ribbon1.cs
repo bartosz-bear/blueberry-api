@@ -18,6 +18,8 @@ using Microsoft.Office.Tools;
 using Publishing = ExcelAddIn1.Controllers.Publishing;
 using Fetching = ExcelAddIn1.Controllers.Fetching;
 using FetchingHelpers = ExcelAddIn1.Controllers.Helpers.FetchingHelpers;
+using PublishingHelpers = ExcelAddIn1.Controllers.Helpers.PublishingHelpers;
+using PublishingValidators = ExcelAddIn1.Controllers.Validators.PublishingValidators;
 using Spring.Aop.Framework;
 using ExcelAddIn1.Utils;
 using System.Reflection;
@@ -42,10 +44,22 @@ namespace ExcelAddIn1
         private void Publish_Click(object sender, RibbonControlEventArgs e)
         {
             if (!UserManagement.userLogged()) { return; }
+            if (PublishingHelpers.blueberryTaskPaneExists())
+            {
+                if (!PublishingHelpers.blueberryTaskPaneVisible())
+                {
+                    PublishingHelpers.showBlueberryTaskPane();
+                    return;
+                }
+                MessageBox.Show("Please use the control panel on the right hand side.");
+              return;
+            }
             publishBlueberryTaskPane = new BlueberryTaskPane();
-            myTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(publishBlueberryTaskPane, "Publish");
+            string currentWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook.Name;
+            myTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(publishBlueberryTaskPane, "Publish" + currentWorkbook);
             myTaskPane.VisibleChanged += new EventHandler(myTaskPane_VisibleChanged);
             myTaskPane.Visible = true;
+            
         }
 
         private void myTaskPane_VisibleChanged(object sender, System.EventArgs e)
@@ -58,27 +72,11 @@ namespace ExcelAddIn1
         {
             if (!UserManagement.userLogged()) { return; }
             Dictionary<string, dynamic> publishedData = Publishing.getPublished();
+            if (!PublishingHelpers.validateUpdateRanges(publishedData)) { MessageBox.Show("One or some of the ranges to be updated are empty"); return; }
 
             try
             {
-                int publishedDataItemsCount = publishedData["ids"].Count;
-                for (int i = 0; i < publishedDataItemsCount; i++)
-                {
-                    Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                    singleResult.Add("bapi_id", publishedData["ids"][i]);
-                    singleResult.Add("user", publishedData["users"][i]);
-                    singleResult.Add("name", publishedData["names"][i]);
-                    singleResult.Add("description", publishedData["descriptions"][i]);
-                    singleResult.Add("organization", publishedData["organizations"][i]);
-                    singleResult.Add("workbook_path", publishedData["workbook_paths"][i]);
-                    singleResult.Add("workbook", publishedData["workbooks"][i]);
-                    singleResult.Add("worksheet", publishedData["worksheets"][i]);
-                    singleResult.Add("destination_cell", publishedData["destination_cells"][i]);
-                    singleResult.Add("data_type", publishedData["data_types"][i]);
-
-                    Publishing.publishData(singleResult);
-
-                }
+                MessageBox.Show(PublishingHelpers.publishSeveral(publishedData));
             }
             catch (KeyNotFoundException ex)
             {
@@ -204,7 +202,7 @@ namespace ExcelAddIn1
             return httpWebResponse.Headers["Set-Cookie"];
         }
 
-        private static dynamic LogInButton_ClickHandleExceptions()
+        private static dynamic LogInButton_ClickHandleExceptions(object[] args)
         {
             MessageBox.Show("Please connect to Internet.");
             return null;

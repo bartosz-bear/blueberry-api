@@ -207,6 +207,7 @@
     <Compile Include="Controllers\Helpers\FetchingHelpers.cs" />
     <Compile Include="Controllers\Helpers\PublishingHelpers.cs" />
     <Compile Include="Controllers\Publishing.cs" />
+    <Compile Include="Controllers\Validators\PublishingValidators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

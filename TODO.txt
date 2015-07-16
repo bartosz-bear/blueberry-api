@@ -1,46 +1,69 @@
-WEEKEND PLAN:
-
-POTENTIAL PROBLEMS:
-C) 'Data owner' is not an email
-
-
-
 TESTS:
-Publish  
+Publish and Download
   Scalar
     1) A selected cell is empty[PASS]
     2) One of the items in 'Publish' task pane is not entered[PASS]
     3) Name or ID already exists[but created by a different user][PASS]
-    4) Enter different data types (int, double, string, dates, formulas)[PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas)[PASS]
     5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
   
   List
-    1)   
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive list(over 50000 rows)[PASS]
+
+  Dictionary
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive dict(over 30000 rows)[PASS][FAIL on bigger range - RequestTooLargeError on GAE side for bigger arrays]
+
+  Table
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS][FAIL for TEST 8 - Missing Values. AttributeError: 'NoneType' object has no attribute 'name'
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive table(over 20k rows in 3 columns)[PASS]  
+
+Update and Refresh(possibly seperate tests)
+
+  Scalar
+    1) Cell value is of different type[PASS]
+    2) Cell is empty[PASS]
+    3) 
+
+MAKE TESTS FOR ALL THINGS LIKE: There is a Publish/Fetch configuration but data is missing in the db.
 
 GENERAL:
-1) A web-server is not responding - most likely 502 Exception
-2) Enter different data type (int, double, string, dates, formulas)
-3) Name or organization has spaces or dots or some other wrong characters.
-4) Enter Update or Refresh when there is nothing to be Updated or Refreshed
-5) None of the functionalities should be available unless the user is logged in
+1) Enter Update or Refresh when there is nothing to be Updated or Refreshed
+2) None of the functionalities should be available unless the user is logged in
+
 
 PROD:
 - the application doesn't display anything if there is no items in the datastore[1]
 
-Remove the user from BlueberryTaskPane - get the user from GlobalVariables - LoggedInUser[1]
+What is going to happen when trying to 'Update' or 'Refresh' when there is no items in the datastore[1]
+Allow deletion of items on Blueberry[1]
+Handle situation when a sheet in a workbook was deleted and 'Refresh' has no destination place[1]
+Record demo and put it on the landing page[1]
+set maxJsonLength or at least do Exception Handling[1]
+Handling corner situation[no items, one item, massive number of items]
+
+Sort all data according to Last Updated[1]
 Create an installer[1]
 Pay extra attention to 'Update' maximum length. Sometimes it tries to get over 1mln rows[1]
-Make changes to the information display according to the user email address[1]
-Blueberry ID should be more visible than other data - red color[1]
-Check all data types are represented as actual data types.[1]
+Perform tests on real files and data[1]
 Set up testing framework[1]
 Write unit tests to existing code[1]
-Create accounts in Prod for BP, MW, OL[1]
-Disallow to create a Publish Task Pane twice.[1]
-Have one confirmation for 'Update' only.[1]
-Close TaskPane after Publishing. First check whether a new one wouldn't be created in case the old one is hidden[1].
+Create accounts in Prod for BP, MW, OL, Wacek, Ernst Berger[1]
 
-
+Handle RequestTooLargeError on GAE[1] - http://stackoverflow.com/questions/6898736/upload-file-bigger-than-40mb-to-google-app-engine
 Ribbon1.cs -> Should Encoding.ASCII.GetBytes - should it rather encode to UTF, to ensure correct processing to foreign email addresses and passwords[2]
 Register - already used email notification[2]
 The prototype queries all BAPI datatypes when /display - maybe it makes sense to optimize this[2]
@@ -61,8 +84,7 @@ Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just en
 an argument to saveArrayToExcel() method.[2]
 Create samples for all URLs in case users have no access yet[2]
 
-
-Remove Utils class[3]
+Implement full permissions functionality[3]
 fromExcelToObject - see if it's possible to store all data as list of lists[3]
 Implement all code in the asynchronous manner[3]
 Do we need confirmation every single time a data is updated or only for several items?[3]
@@ -80,6 +102,15 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+When trying to download a wrong BAPIID - "Please connect to Internet"[1]
+Check all data types are represented as actual data types in tests.[1]
+Blueberry ID should be more visible than other data - red color[1]
+Have one confirmation for 'Update' only.[1]
+Close TaskPane after Publishing. First check whether a new one wouldn't be created in case the old one is hidden[1].
+Disallow to create a Publish Task Pane twice.[1]
+Make changes to the information display according to the user email address[1]
+Remove the user from BlueberryTaskPane - get the user from GlobalVariables - LoggedInUser[1]
+When publishing it asks to connect to Internet, even though the connection exists[1]
 Try to input incorrect Blueberry ID[1]
 Empty BlueberryID validation[1]
 Write error hanlder for 500[1]
@@ -123,3 +154,6 @@ https://github.com/dound/gae-sessions
 
 Debugging JS:
 https://developer.chrome.com/devtools/docs/javascript-debugging
+
+ExcelDNA:
+http://excel-dna.net/

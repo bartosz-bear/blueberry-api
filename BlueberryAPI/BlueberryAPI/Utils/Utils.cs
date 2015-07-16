@@ -105,7 +105,7 @@ namespace ExcelAddIn1.Utils
     class BlueberryHTTPResponse
     {
         public delegate dynamic handleResponseDelegate(params object[] args);
-        public delegate dynamic handleReponseExceptionsDelegate();
+        public delegate dynamic handleReponseExceptionsDelegate(params object[] args);
 
         private HttpWebRequest httpWebRequest;
         public HttpWebRequest HttpWebRequestParams
@@ -207,16 +207,8 @@ namespace ExcelAddIn1.Utils
             }
             catch (WebException ex)
             {
-                if ((ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                    || ex.Status == WebExceptionStatus.ConnectFailure
-                    || ex.Status == WebExceptionStatus.NameResolutionFailure)
-                {
-                    return handleExceptions();    
-                }
-                else
-                {
-                    throw;
-                }
+                object[] exceptionArgs = new object[2] {ex.Status.ToString(), ex.Message};
+                return handleExceptions(exceptionArgs);
             }
         }
     }

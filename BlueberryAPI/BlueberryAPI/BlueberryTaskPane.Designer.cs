@@ -35,8 +35,6 @@
             this.DescriptionTextBox = new System.Windows.Forms.TextBox();
             this.OrganizationLabel = new System.Windows.Forms.Label();
             this.OrganizationTextBox = new System.Windows.Forms.TextBox();
-            this.DataOwnerLabel = new System.Windows.Forms.Label();
-            this.DataOwnerTextBox = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -94,26 +92,9 @@
             this.OrganizationTextBox.Size = new System.Drawing.Size(122, 20);
             this.OrganizationTextBox.TabIndex = 5;
             // 
-            // DataOwnerLabel
-            // 
-            this.DataOwnerLabel.AutoSize = true;
-            this.DataOwnerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(236)))), ((int)(((byte)(251)))));
-            this.DataOwnerLabel.Location = new System.Drawing.Point(9, 175);
-            this.DataOwnerLabel.Name = "DataOwnerLabel";
-            this.DataOwnerLabel.Size = new System.Drawing.Size(62, 13);
-            this.DataOwnerLabel.TabIndex = 6;
-            this.DataOwnerLabel.Text = "Data owner";
-            // 
-            // DataOwnerTextBox
-            // 
-            this.DataOwnerTextBox.Location = new System.Drawing.Point(12, 191);
-            this.DataOwnerTextBox.Name = "DataOwnerTextBox";
-            this.DataOwnerTextBox.Size = new System.Drawing.Size(122, 20);
-            this.DataOwnerTextBox.TabIndex = 7;
-            // 
             // PublishButton
             // 
-            this.PublishButton.Location = new System.Drawing.Point(12, 217);
+            this.PublishButton.Location = new System.Drawing.Point(12, 178);
             this.PublishButton.Name = "PublishButton";
             this.PublishButton.Size = new System.Drawing.Size(75, 23);
             this.PublishButton.TabIndex = 8;
@@ -131,8 +112,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
             this.Controls.Add(this.PublishButton);
-            this.Controls.Add(this.DataOwnerTextBox);
-            this.Controls.Add(this.DataOwnerLabel);
             this.Controls.Add(this.OrganizationTextBox);
             this.Controls.Add(this.OrganizationLabel);
             this.Controls.Add(this.DescriptionTextBox);
@@ -179,14 +158,7 @@
             get { return OrganizationTextBox; }
             set { OrganizationTextBox = value; }
         }
-        private System.Windows.Forms.Label DataOwnerLabel;
-        private System.Windows.Forms.TextBox DataOwnerTextBox;
 
-        public System.Windows.Forms.TextBox PublishingDataOwnerTextBox
-        {
-            get { return DataOwnerTextBox; }
-            set { DataOwnerTextBox = value; }
-        }
         private System.Windows.Forms.Button PublishButton;
         private System.Windows.Forms.ErrorProvider errorProvider1;
     }

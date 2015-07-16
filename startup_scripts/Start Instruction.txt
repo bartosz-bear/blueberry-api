@@ -16,7 +16,7 @@
 
 OPTIONAL:
 http://localhost:8000/datastore
-http://localhost:8080/display
+http://localhost:8080/
 
 DEPLOY TO GAE PROD:
   a. Start powershell

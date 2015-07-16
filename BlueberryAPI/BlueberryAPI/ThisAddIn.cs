@@ -18,8 +18,8 @@ namespace ExcelAddIn1
     public class GlobalVariables
     {
         public static Dictionary<string, string> sessionData;
-        //public static string blueberryAPIurl = "http://localhost.:8080/";
-        public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
+        public static string blueberryAPIurl = "http://localhost.:8080/";
+        //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
     }
 
     public partial class ThisAddIn

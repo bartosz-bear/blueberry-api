@@ -171,7 +171,7 @@ class Data(remote.Service):
                    'data_types']
 
     published_args_values = ['i.bapi_id',
-                             'i.user.email()',
+                             'i.user',
                              'i.name',
                              'i.workbook_path',
                              'i.workbook',
@@ -193,7 +193,7 @@ class Data(remote.Service):
 
     fetched_args_values = ['i.bapi_id',
                            'i.name',
-                           'i.user.email()',
+                           'i.user',
                            'i.workbook_path',
                            'i.workbook',
                            'i.worksheet',
@@ -234,22 +234,12 @@ class Data(remote.Service):
         Check if a requested ID was already used by a different user than the requesting one.
         """
         is_id_used = PublishConfigurations.query(ndb.AND(PublishConfigurations.bapi_id == request.bapi_id,
-                                                 PublishConfigurations.user != User(request.user))).count()
-
-        logging.info('STAAAAAAAAAAAAAART')
-        logging.info(is_id_used)
-        logging.info('request_bapi_id', request.bapi_id)
-        logging.info('request_user', request.user)
-        #aaa = PublishConfigurations.query(PublishConfigurations.bapi_id == request.bapi_id, PublishConfigurations.user != User(request.user))
-        #logging.info(aaa)
+                                                 PublishConfigurations.user != request.user)).count()
 
         if is_id_used > 0:
             response = True
         else:
             response = False
-
-        logging.info('ENNNNNNNNNNNNNNNNND')
-        logging.info(response)
 
         return IsIDUsedResponse(response=response)
 
@@ -277,13 +267,6 @@ class Scalar(remote.Service):
         Fetch method receives a request from a client and returns a BAPI Scalar.
         """
 
-
-
-        #logging.info("Aint' work")
-        #return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
-
-        #pdb.set_trace()
-
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
         if not apis_funcs.is_ID_valid(request, class_):
@@ -306,11 +289,6 @@ class List(remote.Service):
         """
         Publish method receives a request with a List and saves it to a Datastore.
         """
-
-        #this_module = sys.modules[__name__]
-        #class_ = getattr(this_module, 'BAPI' + request.data_type)
-        #apis_funcs.publish_and_collect(request, class_)
-
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
         apis_funcs.publish_and_collect(request, class_)
@@ -392,7 +370,6 @@ class Table(remote.Service):
         """
         Fetch method receives a request from a client and returns a BAPI Table.
         """
-
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
 

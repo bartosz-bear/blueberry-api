@@ -14,6 +14,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Ciloci.Flee;
 using System.Windows.Forms;
 using ExcelAddIn1.Utils;
+using PublishingValidators = ExcelAddIn1.Controllers.Validators.PublishingValidators;
 
 namespace ExcelAddIn1.Controllers.Helpers
 {
@@ -105,7 +106,7 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// 3) type of data (Scalar, List etc). The last key points to a JSON serialized object fetched from
         /// the Excel range which was passed as argument.
         /// </returns>
-        public static Dictionary<string, dynamic> measureData(Excel.Range xlRange, String xlDataType="noType")
+        public static Dictionary<string, dynamic> measureData(Excel.Range xlRange, String xlDataType = "noType")
         {
             int xlRowsCount;
             int xlColumnsCount;
@@ -123,7 +124,7 @@ namespace ExcelAddIn1.Controllers.Helpers
             {
                 dataInfo.Add("data_type", xlDataType);
             }
-            
+
             dataInfo.Add("data", fromExcelToObject(xlRowsCount, xlColumnsCount, dataInfo["data_type"], xlRange));
             return dataInfo;
         }
@@ -175,6 +176,12 @@ namespace ExcelAddIn1.Controllers.Helpers
             Excel.Range xlStartRange;
             Excel.Range xlEndRange;
             Excel.Range xlRange;
+
+            xlRange = (Excel.Range)xlWorkSheet.Range[xlDestinationCell];
+            
+            // THIS FUNCTION WILL BE RESPONSIBLE TO UPDATING DATA ACCORDING TO USER CHOICE - EXTEND DATA STRUCTURE OR NOT
+            
+            /*
             xlStartRange = (Excel.Range)xlWorkSheet.Range[xlDestinationCell];
 
             switch (xlType)
@@ -195,8 +202,9 @@ namespace ExcelAddIn1.Controllers.Helpers
                     xlEndRange = xlStartRange;
                     break;
             }
-
+ 
             xlRange = (Excel.Range)xlWorkSheet.Range[xlStartRange, xlEndRange];
+            */
             return xlRange;
         }
 
@@ -207,13 +215,21 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// <returns></returns>
         public static Boolean isPublishRangeEmpty(Excel.Range xlRange)
         {
-            if (xlRange.Value2 == null)
+            switch (xlRange.Count)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                case 1:
+                    {
+                        if (xlRange.Value2 == null) { return true; };
+                        return false;
+                    }
+                default:
+                    {
+                        foreach (var cellValue in xlRange.Value2)
+                        {
+                            if (cellValue != null) { return false; }
+                        }
+                        return true;
+                    }
             }
         }
 
@@ -272,7 +288,7 @@ namespace ExcelAddIn1.Controllers.Helpers
             BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
             return (bool)httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(isIDUsedHandleResponse),
-                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(isIDUsedReturnResponse));
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(isIDUsedHandleExceptions));
         }
 
         private static dynamic isIDUsedHandleResponse(object[] args)
@@ -284,7 +300,7 @@ namespace ExcelAddIn1.Controllers.Helpers
             return isIDUsedResponse["response"];
         }
 
-        private static dynamic isIDUsedReturnResponse()
+        private static dynamic isIDUsedHandleExceptions(object[] args)
         {
             MessageBox.Show("Please connect to Internet.");
             return false;
@@ -309,7 +325,8 @@ namespace ExcelAddIn1.Controllers.Helpers
 
             foreach (string i in items)
             {
-                if (regexItem.IsMatch(i)) {
+                if (regexItem.IsMatch(i))
+                {
                     continue;
                 }
                 else
@@ -340,7 +357,7 @@ namespace ExcelAddIn1.Controllers.Helpers
             string xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
             string xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
             string xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
-            string xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
+            string xlDataOwner = GlobalVariables.sessionData["loggedUser"];
 
             OrderedDictionary errorMessages = new OrderedDictionary();
 
@@ -348,7 +365,7 @@ namespace ExcelAddIn1.Controllers.Helpers
             errorMessages.Add("isAnyBlueberryTaskPaneFieldEmpty", "One of the input forms ('Name', 'Description', 'Organization', 'Data Owner')" +
                                                                     " is empty. Please complete all fields before submitting.");
             errorMessages.Add("areInputsSpecialCharactersFree", "'Name' and 'Organization' should not have any of the following characters: '/*-+@&$#%.,\\\"'" +
-                                                                " and it should be less than 80 characters.");           
+                                                                " and it should be less than 80 characters.");
             errorMessages.Add("isIDUsed", "This 'Name' has already been used within this 'Organization' by a different user. Please change one or both of" +
                                           " them and try again.");
 
@@ -372,5 +389,80 @@ namespace ExcelAddIn1.Controllers.Helpers
             return "Pass";
         }
 
+        public static bool blueberryTaskPaneExists()
+        {
+            string currentWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook.Name;
+            foreach (var i in Globals.ThisAddIn.CustomTaskPanes)
+            {
+                if (i.Title == "Publish" + currentWorkbook)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool blueberryTaskPaneVisible()
+        {
+            string currentWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook.Name;
+            foreach (var i in Globals.ThisAddIn.CustomTaskPanes)
+            {
+                if (i.Title == "Publish" + currentWorkbook && i.Visible)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static void showBlueberryTaskPane()
+        {
+            string currentWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook.Name;
+            foreach (var i in Globals.ThisAddIn.CustomTaskPanes)
+            {
+                if (i.Title == "Publish" + currentWorkbook && !i.Visible)
+                {
+                    i.Visible = true;
+                }
+            }
+        }
+
+        public static bool validateUpdateRanges(Dictionary<string, dynamic> publishedData)
+        {
+            Excel.Workbook xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
+            int publishedDataItemsCount = publishedData["ids"].Count;
+            for (int i = 0; i < publishedDataItemsCount; i++)
+            {
+                Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
+                var a = publishedData["worksheets"][i];
+                Excel.Range xlRange = PublishingHelpers.specifyRange(xlWorkSheet, (string)publishedData["destination_cells"][i], (string)publishedData["data_types"][i]);
+                PublishingValidators validator = new PublishingValidators(xlRange);
+                string validationResult = validator.validatePublishingInputs(new List<string> { "isPublishRangeEmpty" });
+                if (validationResult != "Pass") { return false; }
+            }
+            return true;
+        }
+
+        public static string publishSeveral(Dictionary<string, dynamic> publishedData)
+        {
+            int publishedDataItemsCount = publishedData["ids"].Count;
+            for (int i = 0; i < publishedDataItemsCount; i++)
+            {
+                Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
+                singleResult.Add("bapi_id", publishedData["ids"][i]);
+                singleResult.Add("user", publishedData["users"][i]);
+                singleResult.Add("name", publishedData["names"][i]);
+                singleResult.Add("description", publishedData["descriptions"][i]);
+                singleResult.Add("organization", publishedData["organizations"][i]);
+                singleResult.Add("workbook_path", publishedData["workbook_paths"][i]);
+                singleResult.Add("workbook", publishedData["workbooks"][i]);
+                singleResult.Add("worksheet", publishedData["worksheets"][i]);
+                singleResult.Add("destination_cell", publishedData["destination_cells"][i]);
+                singleResult.Add("data_type", publishedData["data_types"][i]);
+                Publishing.publishData(singleResult);
+            }
+            return "Data has been published.";
+        }
     }
 }

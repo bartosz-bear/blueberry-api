@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using PublishingHelpers = ExcelAddIn1.Controllers.Helpers.PublishingHelpers;
+using PublishingValidators = ExcelAddIn1.Controllers.Validators.PublishingValidators;
 using BlueberryRibbon = ExcelAddIn1.BlueberryRibbon;
 using ExcelAddIn1.Utils;
 
@@ -60,11 +61,11 @@ namespace ExcelAddIn1.Controllers
                 xlPath = xlWorkBook.Path;
                 xlWorkbookName = xlWorkBook.Name;
                 xlWorksheetName = xlWorkSheet.Name;
-                xlDestinationCell = xlRange.Cells[1, 1].Address;
+                xlDestinationCell = xlRange.Cells.Address;
                 xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
                 xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
                 xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
-                xlDataOwner = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDataOwnerTextBox.Text;
+                xlDataOwner = GlobalVariables.sessionData["loggedUser"];
                 dataFromExcel = PublishingHelpers.measureData(xlRange);
                 xlType = dataFromExcel["data_type"];
                 xlID = xlOrganization.Replace(" ", "_") + "." + xlName.Replace(" ", "_") + "." + xlType;
@@ -118,6 +119,7 @@ namespace ExcelAddIn1.Controllers
 
             dynamic response = httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(publishDataHandleResponse),
                 new BlueberryHTTPResponse.handleReponseExceptionsDelegate(publishDataReturnResponse));
+
         }
 
         private static dynamic publishDataHandleResponse(object[] args)
@@ -126,11 +128,11 @@ namespace ExcelAddIn1.Controllers
             StreamReader streamReader = (StreamReader)args[0];
             string result = streamReader.ReadToEnd();
             Dictionary<string, dynamic> deserializedResult = serializer.Deserialize<Dictionary<string, dynamic>>(result);
-            MessageBox.Show(deserializedResult["response"]);
+            //MessageBox.Show(deserializedResult["response"]);
             return false;
         }
 
-        private static dynamic publishDataReturnResponse()
+        private static dynamic publishDataReturnResponse(object[] args)
         {
             return true;
         }
@@ -180,7 +182,7 @@ namespace ExcelAddIn1.Controllers
             return deserializedResult;
         }
 
-        private static dynamic getPublishedHandleExceptions()
+        private static dynamic getPublishedHandleExceptions(object[] args)
         {
             MessageBox.Show("Please connect to Internet.");
             return new Dictionary<string, dynamic>();

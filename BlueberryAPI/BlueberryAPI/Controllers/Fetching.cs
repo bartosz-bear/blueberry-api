@@ -56,7 +56,7 @@ namespace ExcelAddIn1.Controllers
                 xlWorksheetName = xlWorkSheet.Name;
                 xlDestinationCell = xlRange.Address;
                 xlBlueberryID = Globals.Ribbons.Ribbon1.IDBox.Text;
-                xlDataOwner = "bartosz.piechnik@ch.abb.com";
+                xlDataOwner = GlobalVariables.sessionData["loggedUser"];
                 xlFetchConfiguration = Globals.Ribbons.Ribbon1.FetchConfigurationCheckBox.Checked;
 
                 fetchingData.Add("bapi_id", xlBlueberryID);
@@ -106,9 +106,34 @@ namespace ExcelAddIn1.Controllers
             return streamReader.ReadToEnd();
         }
 
-        private static dynamic fetchDataHandleExceptions()
+        private static dynamic fetchDataHandleExceptions(object[] args)
         {
-            MessageBox.Show("Please connect to Internet.");
+            switch ((string)args[0])
+            {
+                case "ProtocolError":
+                    {
+                        if ((string)args[1] == "The remote server returned an error: (500) Internal Server Error.")
+                        {
+                            MessageBox.Show("Blueberry ID doesn't exist.");
+                        }
+                        break;
+                    }
+                case "ConnectFailure":
+                    {
+                        MessageBox.Show("Please connect to Internet.");
+                        break;
+                    }
+                case "NameResolutionFailure":
+                    {
+                        MessageBox.Show("Please connect to Internet.");
+                        break;
+                    }
+                default:
+                    {
+                        MessageBox.Show("Something went wrong. Please investigate.");
+                        break;
+                    }
+            }
             return "";
         }
 
@@ -155,7 +180,7 @@ namespace ExcelAddIn1.Controllers
             return serializer.Deserialize<Dictionary<string, dynamic>>(result);
         }
 
-        private static dynamic getFetchedHandleExceptions()
+        private static dynamic getFetchedHandleExceptions(object[] args)
         {
             MessageBox.Show("Please connect to Internet.");
             return new Dictionary<string, dynamic>();

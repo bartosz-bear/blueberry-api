@@ -14,7 +14,7 @@ class BAPIScalar(ndb.Model):
     """
     bapi_id = ndb.StringProperty()
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     last_updated = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
@@ -28,7 +28,7 @@ class BAPIList(ndb.Model):
     """
     bapi_id = ndb.StringProperty()
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     last_updated = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
@@ -42,7 +42,7 @@ class BAPIDictionary(ndb.Model):
     """
     bapi_id = ndb.StringProperty()
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     last_updated = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
@@ -56,7 +56,7 @@ class BAPITable(ndb.Model):
     """
     bapi_id = ndb.StringProperty()
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     last_updated = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
@@ -68,7 +68,7 @@ class FetchConfigurations(ndb.Model):
     Stores configuration for for Data Fetch.
     """
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     organization = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=True)
     bapi_id = ndb.StringProperty(required=True)
@@ -84,7 +84,7 @@ class PublishConfigurations(ndb.Model):
     Stores configuration for for Data Fetch.
     """
     name = ndb.StringProperty()
-    user = ndb.UserProperty(default=DEFAULT_USER)
+    user = ndb.StringProperty(required=True)
     organization = ndb.StringProperty(required=True)
     description = ndb.StringProperty(required=True)
     bapi_id = ndb.StringProperty(required=True)
