@@ -63,14 +63,24 @@ def publish_and_collect(request, class_):
                               destination_cell=request.destination_cell,
                               data_type=data_type
                               ).put()
+        return_string = 'Data has been uploaded.'
     else:
         # It's not the first 'Publish', therefore fetch info about this ID from the database.
         logging.info(class_)
-        item = class_.query(class_.bapi_id == request.bapi_id).get()
-        name = item.name
-        user = item.user
-        description = item.description
-        organization = item.organization
+        try:
+            item = class_.query(class_.bapi_id == request.bapi_id).get()
+            name = item.name
+            user = item.user
+            description = item.description
+            organization = item.organization
+            return_string = 'Data has been uploaded.'
+        except AttributeError:
+            name = request.name
+            user = request.user
+            description = request.description
+            organization = request.organization
+            bapi_id = request.bapi_id
+            return_string = 'Data did not exist, but has been uploaded.'
 
     class_(name=name,
            user=user,
@@ -78,6 +88,8 @@ def publish_and_collect(request, class_):
            organization=organization,
            bapi_id=request.bapi_id,
            data=pickle.dumps(request.data)).put()
+
+    return return_string
 
 
 def query_and_configure(request, class_, data_type):
@@ -106,12 +118,7 @@ def query_and_configure(request, class_, data_type):
                             description=queried_list.description
                             ).put()
 
-
-
     queried_list_pickled = pickle.loads(queried_list.data)
-
-    logging.info('Checking pickled data: ')
-    logging.info(queried_list_pickled)
 
     return [queried_list, queried_list_pickled]
 
@@ -143,8 +150,6 @@ def is_ID_valid(request, class_):
     Validates whether the BAPI ID exists.
     :return:
     """
-    jan = class_.query(class_.bapi_id == request.bapi_id).count()
-    logging.info(jan)
     if class_.query(class_.bapi_id == request.bapi_id).count() > 0:
         return True
     else:

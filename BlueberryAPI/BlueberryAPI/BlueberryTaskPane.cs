@@ -49,7 +49,7 @@ namespace ExcelAddIn1
             //string validationResult = PublishingHelpers.validatePublishingInputs();
             if (validationResult == "Pass")
             {
-                Publishing.publishData();
+                string responseText = Publishing.publishData();
                 MessageBox.Show("Data has been published.");
             }
             else

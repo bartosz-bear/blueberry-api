@@ -447,6 +447,7 @@ namespace ExcelAddIn1.Controllers.Helpers
         public static string publishSeveral(Dictionary<string, dynamic> publishedData)
         {
             int publishedDataItemsCount = publishedData["ids"].Count;
+            string returnString = "Data has been uploaded.";
             for (int i = 0; i < publishedDataItemsCount; i++)
             {
                 Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
@@ -460,9 +461,10 @@ namespace ExcelAddIn1.Controllers.Helpers
                 singleResult.Add("worksheet", publishedData["worksheets"][i]);
                 singleResult.Add("destination_cell", publishedData["destination_cells"][i]);
                 singleResult.Add("data_type", publishedData["data_types"][i]);
-                Publishing.publishData(singleResult);
+                string response = Publishing.publishData(singleResult);
+                if (response == "Data did not exist, but has been uploaded.") { returnString = "One or some of the uploaded data was not existing, however all data was sucessfully uploaded."; }
             }
-            return "Data has been published.";
+            return returnString;
         }
     }
 }

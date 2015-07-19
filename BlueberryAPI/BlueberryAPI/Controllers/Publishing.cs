@@ -33,7 +33,7 @@ namespace ExcelAddIn1.Controllers
         /// for the first time or it has already been published. If singleResult is null then data is
         /// published for the first time.
         /// </param>
-        public static void publishData(Dictionary<string, dynamic> singleResult = null)
+        public static string publishData(Dictionary<string, dynamic> singleResult = null)
         {
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
@@ -118,8 +118,9 @@ namespace ExcelAddIn1.Controllers
             BlueberryHTTPResponse httpResponse = new BlueberryHTTPResponse(httpWebRequest, data, httpResponseArgs);
 
             dynamic response = httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(publishDataHandleResponse),
-                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(publishDataReturnResponse));
+                new BlueberryHTTPResponse.handleReponseExceptionsDelegate(publishDataHandleExceptions));
 
+            return response;
         }
 
         private static dynamic publishDataHandleResponse(object[] args)
@@ -129,12 +130,12 @@ namespace ExcelAddIn1.Controllers
             string result = streamReader.ReadToEnd();
             Dictionary<string, dynamic> deserializedResult = serializer.Deserialize<Dictionary<string, dynamic>>(result);
             //MessageBox.Show(deserializedResult["response"]);
-            return false;
+            return deserializedResult["response"];
         }
 
-        private static dynamic publishDataReturnResponse(object[] args)
+        private static dynamic publishDataHandleExceptions(object[] args)
         {
-            return true;
+            return "Something went on the server side. Please contact the administrator'";
         }
 
         /// <summary>

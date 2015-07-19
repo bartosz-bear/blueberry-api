@@ -257,9 +257,8 @@ class Scalar(remote.Service):
 
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
-        apis_funcs.publish_and_collect(request, class_)
 
-        return PublishResponse(response='Data has been uploaded.')
+        return PublishResponse(response=apis_funcs.publish_and_collect(request, class_))
 
     @remote.method(FetchRequest, FetchResponse)
     def fetch(self, request):
@@ -291,9 +290,8 @@ class List(remote.Service):
         """
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
-        apis_funcs.publish_and_collect(request, class_)
 
-        return PublishResponse(response='Data has been uploaded.')
+        return PublishResponse(response=apis_funcs.publish_and_collect(request, class_))
 
     @remote.method(FetchRequest, FetchResponse)
     def fetch(self, request):
@@ -307,7 +305,6 @@ class List(remote.Service):
         queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 
         evaluated_items = [eval(x) for x in fetch_args_values]
-        logging.info(evaluated_items)
         return FetchResponse(**{x: y for x, y in zip(fetch_args_keys, evaluated_items)})
 
 
@@ -321,16 +318,10 @@ class Dictionary(remote.Service):
         """
         Publish method receives a request with a List and saves it to a Datastore.
         """
-
-        #this_module = sys.modules[__name__]
-        #class_ = getattr(this_module, 'BAPI' + request.data_type)
-        #apis_funcs.publish_and_collect(request, class_)
-
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
-        apis_funcs.publish_and_collect(request, class_)
 
-        return PublishResponse(response='Data has been uploaded.')
+        return PublishResponse(response=apis_funcs.publish_and_collect(request, class_))
 
     @remote.method(FetchRequest, FetchResponse)
     def fetch(self, request):
@@ -358,12 +349,10 @@ class Table(remote.Service):
         """
         Publish method receives a request with a Table and saves it to a Datastore.
         """
-
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
-        apis_funcs.publish_and_collect(request, class_)
 
-        return PublishResponse(response='Data has been uploaded.')
+        return PublishResponse(response=apis_funcs.publish_and_collect(request, class_))
 
     @remote.method(FetchRequest, FetchResponse)
     def fetch(self, request):
@@ -373,7 +362,7 @@ class Table(remote.Service):
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
 
-        queried_data = apis_funcs.query_and_configure(request, class_, data_type)
+        queried_data = apis_funcs.query_and_configure(request, class_, data_type)[2]
 
         evaluated_items = [eval(x) for x in fetch_args_values]
         logging.info(evaluated_items)

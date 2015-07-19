@@ -22,7 +22,7 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// method saveArrayToExcel() which is responsible only for the actual load to excel.
         /// </summary>
         /// <param name="result"></param>
-        public static void saveToExcel(string result)
+        public static void saveToExcel(Dictionary<string, dynamic> fetchedData)
         {
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
@@ -33,7 +33,6 @@ namespace ExcelAddIn1.Controllers.Helpers
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
 
             var jsonSerializer = new JavaScriptSerializer();
-            Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(result);
             String[] splitWords = fetchedData["bapi_id"].Split('.');
             string xlType = splitWords[2];
             string serializedData = fetchedData["data"][0];
@@ -164,20 +163,44 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// <param name="fetchedData">fetchedData represents a response from request to Blueberry cloud.
         /// If they key "info" returns "Incorrect BAPI ID" it indicates that the Blueberry ID was not found in Blueberry cloud.</param>
         /// <returns></returns>
-        public static bool validateIDPostFetch(string fetchedData)
+        public static bool validateIDPostFetch(Dictionary<string, dynamic> fetchedData, string senderLabel)
         {
             // Validate whether the BAPI ID was found in Bluberry cloud datastore
-            var jsonSerializer = new JavaScriptSerializer();
-            Dictionary<string, dynamic> responseData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(fetchedData);
             
-            if (responseData.ContainsKey("info")) {
-                if ((string)responseData["info"] == "Incorrect BAPI ID")
+            //var jsonSerializer = new JavaScriptSerializer();
+            //Dictionary<string, dynamic> responseData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(fetchedData);
+
+
+            if (fetchedData.ContainsKey("info"))
+            {
+                if (senderLabel == "Download")
                 {
                     MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
                     return false;
                 }
+
+                else if (senderLabel == "Refresh")
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+            /*
+            if (fetchedData.ContainsKey("info")) {
+                if ((string)fetchedData["info"] == "Incorrect BAPI ID")
+                {
+                    MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
+                    return false;
+                }
+                else if ((string)fetchedData["info"] == "One or more data points which you are trying to fetch doesn't exist anymore.")
+                {
+                    
+                }
             }
             return true;
+             */ 
         }
 
     }

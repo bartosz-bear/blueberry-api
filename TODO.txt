@@ -1,54 +1,5 @@
-TESTS:
-Publish and Download
-  Scalar
-    1) A selected cell is empty[PASS]
-    2) One of the items in 'Publish' task pane is not entered[PASS]
-    3) Name or ID already exists[but created by a different user][PASS]
-    4) Enter different data types (int, double, string, dates, time, formulas)[PASS]
-    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
-  
-  List
-    1) Selected cells are empty[PASS]
-    2) One of the items in 'Publish' task pane is not entered[PASS]
-    3) Name or ID already exists[but created by a different user][PASS]
-    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
-    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
-    6) Massive list(over 50000 rows)[PASS]
-
-  Dictionary
-    1) Selected cells are empty[PASS]
-    2) One of the items in 'Publish' task pane is not entered[PASS]
-    3) Name or ID already exists[but created by a different user][PASS]
-    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
-    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
-    6) Massive dict(over 30000 rows)[PASS][FAIL on bigger range - RequestTooLargeError on GAE side for bigger arrays]
-
-  Table
-    1) Selected cells are empty[PASS]
-    2) One of the items in 'Publish' task pane is not entered[PASS]
-    3) Name or ID already exists[but created by a different user][PASS]
-    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS][FAIL for TEST 8 - Missing Values. AttributeError: 'NoneType' object has no attribute 'name'
-    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
-    6) Massive table(over 20k rows in 3 columns)[PASS]  
-
-Update and Refresh(possibly seperate tests)
-
-  Scalar
-    1) Cell value is of different type[PASS]
-    2) Cell is empty[PASS]
-    3) 
-
 MAKE TESTS FOR ALL THINGS LIKE: There is a Publish/Fetch configuration but data is missing in the db.
 
-GENERAL:
-1) Enter Update or Refresh when there is nothing to be Updated or Refreshed
-2) None of the functionalities should be available unless the user is logged in
-
-
-PROD:
-- the application doesn't display anything if there is no items in the datastore[1]
-
-What is going to happen when trying to 'Update' or 'Refresh' when there is no items in the datastore[1]
 Allow deletion of items on Blueberry[1]
 Handle situation when a sheet in a workbook was deleted and 'Refresh' has no destination place[1]
 Record demo and put it on the landing page[1]
@@ -63,7 +14,12 @@ Set up testing framework[1]
 Write unit tests to existing code[1]
 Create accounts in Prod for BP, MW, OL, Wacek, Ernst Berger[1]
 
-Handle RequestTooLargeError on GAE[1] - http://stackoverflow.com/questions/6898736/upload-file-bigger-than-40mb-to-google-app-engine
+Provide notification for 'Refresh' if there is nothing to be refreshed[2]
+Check if everything works fine also in xls type of file[2]
+When updating Table(and most likely the same problem exists for Dict) if there is no data in the first column, then it would return 'No data in the range'[2]
+Update seetings[we need a seperate settings mode to set up: refresh on item level, sheet, workbook, workbooks.
+Also needs settings to define whether update should for the same range or extension][2]
+Handle RequestTooLargeError on GAE[2] - http://stackoverflow.com/questions/6898736/upload-file-bigger-than-40mb-to-google-app-engine
 Ribbon1.cs -> Should Encoding.ASCII.GetBytes - should it rather encode to UTF, to ensure correct processing to foreign email addresses and passwords[2]
 Register - already used email notification[2]
 The prototype queries all BAPI datatypes when /display - maybe it makes sense to optimize this[2]
@@ -84,6 +40,7 @@ Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just en
 an argument to saveArrayToExcel() method.[2]
 Create samples for all URLs in case users have no access yet[2]
 
+Notifications to the subscribers that certain BlueberryID is going to be deleted[2]
 Implement full permissions functionality[3]
 fromExcelToObject - see if it's possible to store all data as list of lists[3]
 Implement all code in the asynchronous manner[3]
@@ -102,6 +59,11 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
+What is going to happen when trying to 'Update' or 'Refresh' when there is no items in the datastore[1]
+Notification in case data which was being updated was not existing in the datastore[1]
+The application doesn't display anything if there is no items in the datastore[1]
+Enter Update or Refresh when there is nothing to be Updated or Refreshed
+None of the functionalities should be available unless the user is logged in
 When trying to download a wrong BAPIID - "Please connect to Internet"[1]
 Check all data types are represented as actual data types in tests.[1]
 Blueberry ID should be more visible than other data - red color[1]

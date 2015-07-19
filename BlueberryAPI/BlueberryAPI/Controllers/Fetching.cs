@@ -31,7 +31,7 @@ namespace ExcelAddIn1.Controllers
         /// <param name="singleResult">If data is fetched for the first time then this parameter is null,
         /// otherwise it will be a single record from FetchConfigurations class.</param>
         /// <returns></returns>
-        public static string fetchData(Dictionary<string, dynamic> singleResult = null)
+        public static Dictionary<string, dynamic> fetchData(Dictionary<string, dynamic> singleResult = null)
         {
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
@@ -97,13 +97,16 @@ namespace ExcelAddIn1.Controllers
             return httpResponse.sendHTTPRequest(new BlueberryHTTPResponse.handleResponseDelegate(fetchDataHandleResponse),
                 new BlueberryHTTPResponse.handleReponseExceptionsDelegate(fetchDataHandleExceptions));
 
+
         }
 
         private static dynamic fetchDataHandleResponse(object[] args)
         {
             var serializer = new JavaScriptSerializer();
             StreamReader streamReader = (StreamReader)args[0];
-            return streamReader.ReadToEnd();
+            var jsonSerializer = new JavaScriptSerializer();
+            Dictionary<string, dynamic> fetchedData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(streamReader.ReadToEnd());
+            return fetchedData;
         }
 
         private static dynamic fetchDataHandleExceptions(object[] args)
@@ -134,7 +137,7 @@ namespace ExcelAddIn1.Controllers
                         break;
                     }
             }
-            return "";
+            return new Dictionary<string, dynamic> { };
         }
 
         /// <summary>

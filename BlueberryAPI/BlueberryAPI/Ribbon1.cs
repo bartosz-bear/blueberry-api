@@ -72,7 +72,9 @@ namespace ExcelAddIn1
         {
             if (!UserManagement.userLogged()) { return; }
             Dictionary<string, dynamic> publishedData = Publishing.getPublished();
+            if (publishedData.Count == 0) { MessageBox.Show("No data was published from this workbook therefore, there is nothing to be updated."); return; }
             if (!PublishingHelpers.validateUpdateRanges(publishedData)) { MessageBox.Show("One or some of the ranges to be updated are empty"); return; }
+
 
             try
             {
@@ -86,12 +88,14 @@ namespace ExcelAddIn1
 
         private void Fetch_Click(object sender, RibbonControlEventArgs e)
         {
+            RibbonButton senderObject = (RibbonButton)sender;
+            string senderLabel = senderObject.Label;
             if (!UserManagement.userLogged()) { return; }
             if (FetchingHelpers.validateIDpreFetch())
             {
-                string fetchedData = Fetching.fetchData();
-                if (fetchedData.Length == 0) { return; }
-                if (FetchingHelpers.validateIDPostFetch(fetchedData))
+                Dictionary<string, dynamic> fetchedData = Fetching.fetchData();
+                if (fetchedData.Count == 0) { return; }
+                if (FetchingHelpers.validateIDPostFetch(fetchedData, senderLabel))
                 {
                     FetchingHelpers.saveToExcel(fetchedData);
                 }
@@ -100,6 +104,9 @@ namespace ExcelAddIn1
 
         private void Refresh_Click(object sender, RibbonControlEventArgs e)
         {
+            RibbonButton senderObject = (RibbonButton)sender;
+            string senderLabel = senderObject.Label;
+            string errorMessage = "";
             if (!UserManagement.userLogged()) { return; }
             try
             {
@@ -116,11 +123,21 @@ namespace ExcelAddIn1
                     singleResult.Add("workbook", fetchedData["workbooks"][i]);
                     singleResult.Add("worksheet", fetchedData["worksheets"][i]);
                     singleResult.Add("destination_cell", fetchedData["destination_cells"][i]);
-                    FetchingHelpers.saveToExcel(Fetching.fetchData(singleResult));
+                    Dictionary<string, dynamic> toBeSaved = Fetching.fetchData(singleResult);
+                    if (FetchingHelpers.validateIDPostFetch(toBeSaved, senderLabel))
+                    {
+                        FetchingHelpers.saveToExcel(toBeSaved);
+                    }
+                    else
+                    {
+                        errorMessage = "One or more data points which you are trying to fetch doesn't exist anymore.";
+                    }
                 }
+                if (errorMessage != "") { MessageBox.Show(errorMessage); }
             }
             catch (KeyNotFoundException ex)
             {
+                MessageBox.Show("There was no data downloaded in this worksheet yet.");
                 return;
             }
         }
