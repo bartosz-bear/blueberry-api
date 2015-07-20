@@ -444,6 +444,58 @@ namespace ExcelAddIn1.Controllers.Helpers
             return true;
         }
 
+        public static Dictionary<string, dynamic> selectValidUpdateWorksheets(Dictionary<string, dynamic> publishedData)
+        {
+            ArrayList publishedSheets = publishedData["worksheets"];
+            Microsoft.Office.Interop.Excel.Sheets worksheets = Globals.ThisAddIn.Application.ActiveWorkbook.Sheets;
+            ArrayList worksheetsArray = new ArrayList() { };
+            foreach (Excel.Worksheet w in worksheets)
+            {
+                worksheetsArray.Add(w.Name);
+            }
+            foreach (string publishedSheet in publishedSheets.ToArray())
+            {
+                if (!worksheetsArray.Contains(publishedSheet))
+                {
+                    publishedData = removeMissingSheets(publishedData, publishedSheet);
+                }
+            }
+            return publishedData;
+        }
+
+        private static Dictionary<string, dynamic> removeMissingSheets(Dictionary<string, dynamic> publishedData, string missingSheet)
+        {
+
+            List<string> keys = new List<string>();
+            foreach (KeyValuePair<string, dynamic> kvp in publishedData)
+            {
+                keys.Add(kvp.Key);
+            }
+            List<int> itemsToRemove = new List<int>();
+            for (int i = 0; i < publishedData["worksheets"].Count; i++)
+            {
+                if (publishedData["worksheets"][i] == missingSheet)
+                {
+                    itemsToRemove.Add(i);
+                }
+            }
+
+            OrderedDictionary orderedDictionary = (OrderedDictionary)Utils.Utils.toOrderedDictionary(publishedData);
+
+            for (int j = 0; j < itemsToRemove.Count; j++)
+            {
+                for (int k = 0; k < keys.Count; k++)
+                {
+                    ArrayList tempList = (ArrayList)orderedDictionary[keys[k]];
+                    tempList.RemoveAt(itemsToRemove[j]);
+                    orderedDictionary[keys[k]] = tempList;
+                }
+            }
+
+            return (Dictionary<string, dynamic>)Utils.Utils.toDictionary(orderedDictionary);
+
+        } 
+
         public static string publishSeveral(Dictionary<string, dynamic> publishedData)
         {
             int publishedDataItemsCount = publishedData["ids"].Count;
@@ -462,7 +514,7 @@ namespace ExcelAddIn1.Controllers.Helpers
                 singleResult.Add("destination_cell", publishedData["destination_cells"][i]);
                 singleResult.Add("data_type", publishedData["data_types"][i]);
                 string response = Publishing.publishData(singleResult);
-                if (response == "Data did not exist, but has been uploaded.") { returnString = "One or some of the uploaded data was not existing, however all data was sucessfully uploaded."; }
+                if (response == "Data did not exist, but has been uploaded.") { returnString = "One or some of the uploaded data was not existing. All existing data have been sucessfully uploaded."; }
             }
             return returnString;
         }

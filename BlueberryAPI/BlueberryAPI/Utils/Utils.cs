@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -215,6 +216,28 @@ namespace ExcelAddIn1.Utils
 
     class Utils
     {
+
+        public static OrderedDictionary toOrderedDictionary (Dictionary<string, dynamic> dictionaryToBeConverted) {
+
+            OrderedDictionary orderedDictionary = new OrderedDictionary();
+            foreach (KeyValuePair<string, dynamic> kvp in dictionaryToBeConverted)
+            {
+                orderedDictionary.Add(kvp.Key, kvp.Value);
+            }
+            return orderedDictionary;
+        }
+
+        public static Dictionary<string, dynamic> toDictionary (OrderedDictionary orderedDictionaryToBeConverted) {
+            Dictionary<string, dynamic> dictionary = new Dictionary<string, dynamic>();
+            List<string> keys = orderedDictionaryToBeConverted.Keys.Cast<string>().ToList();
+            List<dynamic> values = orderedDictionaryToBeConverted.Values.Cast<dynamic>().ToList();
+            for (int i = 0; i < orderedDictionaryToBeConverted.Keys.Count; i++)
+            {
+                dictionary.Add(keys[i], values[i]);
+            }
+            return dictionary;
+        }
+
         public static dynamic CallStaticMethod(string typeName, string methodName)
         {
             var type = Type.GetType(typeName);

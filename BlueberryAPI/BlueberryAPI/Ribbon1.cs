@@ -74,7 +74,7 @@ namespace ExcelAddIn1
             Dictionary<string, dynamic> publishedData = Publishing.getPublished();
             if (publishedData.Count == 0) { MessageBox.Show("No data was published from this workbook therefore, there is nothing to be updated."); return; }
             if (!PublishingHelpers.validateUpdateRanges(publishedData)) { MessageBox.Show("One or some of the ranges to be updated are empty"); return; }
-
+            publishedData = PublishingHelpers.selectValidUpdateWorksheets(publishedData);
 
             try
             {
