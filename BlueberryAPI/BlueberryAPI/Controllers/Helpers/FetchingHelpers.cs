@@ -30,7 +30,8 @@ namespace ExcelAddIn1.Controllers.Helpers
             Excel.Range xlEndRange;
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets[fetchedData["worksheet"]];
+                //();
 
             var jsonSerializer = new JavaScriptSerializer();
             String[] splitWords = fetchedData["bapi_id"].Split('.');

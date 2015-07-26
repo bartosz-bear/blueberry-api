@@ -15,6 +15,7 @@ using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools;
+using Helpers = ExcelAddIn1.Controllers.Helpers.Helpers;
 using Publishing = ExcelAddIn1.Controllers.Publishing;
 using Fetching = ExcelAddIn1.Controllers.Fetching;
 using FetchingHelpers = ExcelAddIn1.Controllers.Helpers.FetchingHelpers;
@@ -73,8 +74,8 @@ namespace ExcelAddIn1
             if (!UserManagement.userLogged()) { return; }
             Dictionary<string, dynamic> publishedData = Publishing.getPublished();
             if (publishedData.Count == 0) { MessageBox.Show("No data was published from this workbook therefore, there is nothing to be updated."); return; }
-            if (!PublishingHelpers.validateUpdateRanges(publishedData)) { MessageBox.Show("One or some of the ranges to be updated are empty"); return; }
-            publishedData = PublishingHelpers.selectValidUpdateWorksheets(publishedData);
+            if (!Helpers.validateRanges(publishedData)) { MessageBox.Show("One or some of the ranges to be updated are empty"); return; }
+            publishedData = Helpers.selectValidWorksheets(publishedData);
 
             try
             {
@@ -111,6 +112,7 @@ namespace ExcelAddIn1
             try
             {
                 Dictionary<string, dynamic> fetchedData = Fetching.getFetched();
+                fetchedData = Helpers.selectValidWorksheets(fetchedData);
                 int fetchDataItemsCount = fetchedData["names"].Count;
                 for (int i = 0; i < fetchDataItemsCount; i++)
                 {

@@ -43,6 +43,7 @@ namespace ExcelAddIn1.Controllers.Validators
                 this.errorMessages = new OrderedDictionary();
                 validatorsArguments = new OrderedDictionary();
                 this.errorMessages.Add("isPublishRangeEmpty", "Range which you are trying to publish is empty. Choose some data and try again.");
+                this.errorMessages.Add("isPublishingRangeACellError", "Range which you are trying to publish is a single cell error. If this is a single cell, this type of data is not acceptable.");
                 this.errorMessages.Add("isAnyBlueberryTaskPaneFieldEmpty", "One of the input forms ('Name', 'Description', 'Organization', 'Data Owner')" +
                                                                         " is empty. Please complete all fields before submitting.");
                 this.errorMessages.Add("isIDUsed", "This 'Name' has already been used within this 'Organization' by a different user. Please change one or both of" +
@@ -50,6 +51,7 @@ namespace ExcelAddIn1.Controllers.Validators
                 this.errorMessages.Add("areInputsSpecialCharactersFree", "'Name' and 'Organization' should not have any of the following characters: '/*-+@&$#%.,\\\"'" +
                                                                     " and it should be less than 80 characters.");
                 validatorsArguments.Add("isPublishRangeEmpty", new object[1] { xlRange });
+                validatorsArguments.Add("isPublishingRangeACellError", new object[1] { xlRange });
                 validatorsArguments.Add("isAnyBlueberryTaskPaneFieldEmpty", new object[4] { xlName, xlDescription, xlOrganization, xlDataOwner });
                 validatorsArguments.Add("isIDUsed", new object[4] { xlName, xlOrganization, xlDataOwner, xlRange });
                 validatorsArguments.Add("areInputsSpecialCharactersFree", new object[4] { xlName, xlDescription, xlOrganization, xlDataOwner });
@@ -69,7 +71,7 @@ namespace ExcelAddIn1.Controllers.Validators
             /// <summary>
             /// It's a validation method to make sure that the user is not publishing an empty data.
             /// </summary>
-            /// <param name="xlRange"></param>
+            /// <param name="xlRange">It's a selected range in the spreadsheet.</param>
             /// <returns></returns>
             private Boolean isPublishRangeEmpty(Excel.Range xlRange)
             {
@@ -89,6 +91,28 @@ namespace ExcelAddIn1.Controllers.Validators
                             return true;
                         }
                 }
+            }
+
+            /// <summary>
+            /// It's a validation method to check if the selected range contains a cell error. It's only applicaple to 'Scalar' type value.
+            /// </summary>
+            /// <param name="xlRange">It's a selected range in the spreadsheet.</param>
+            /// <returns></returns>
+            private Boolean isPublishingRangeACellError(Excel.Range xlRange)
+            {
+
+                if (xlRange.Count == 1)
+                {
+                    if (xlRange.Value2.GetType() == typeof(int))
+                    {
+                        int tempInt = xlRange.Value2;
+                        if (Utils.ExcelCellErrors.Errors.Contains<int>(tempInt))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
             }
 
             /*

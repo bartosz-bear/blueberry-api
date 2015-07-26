@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
 using Ciloci.Flee;
 using System.Windows.Forms;
@@ -36,11 +37,18 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// <returns>Returns serialized JSON object which represents an Excel range.</returns>
         public static dynamic fromExcelToObject(int rowsCount, int columnsCount, string dataType, Excel.Range xlRange)
         {
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter> { new CustomIntConverter() }
+            };
+            //var rangeArray = PublishingHelpers.errorsToNulls(xlRange);
+            var rangeArray = xlRange.Value2; 
             switch (dataType)
             {
                 case "Scalar":
-                    var jsonScalarSerializer = new JavaScriptSerializer();
-                    var jsonScalar = jsonScalarSerializer.Serialize(xlRange.Value2);
+                    //var jsonScalarSerializer = new JavaScriptSerializer();
+                    //var jsonScalar = jsonScalarSerializer.Serialize(rangeArray);
+                    string jsonScalar = JsonConvert.SerializeObject(rangeArray);
                     return jsonScalar;
 
                 case "List":
@@ -49,11 +57,12 @@ namespace ExcelAddIn1.Controllers.Helpers
                     {
                         for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
                         {
-                            publishingList.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                            publishingList.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
                         }
                     }
-                    var jsonListSerializer = new JavaScriptSerializer();
-                    var jsonList = jsonListSerializer.Serialize(publishingList);
+                    //var jsonListSerializer = new JavaScriptSerializer();
+                    //var jsonList = jsonListSerializer.Serialize(publishingList);
+                    string jsonList = JsonConvert.SerializeObject(publishingList);
                     return jsonList;
 
                 case "Dictionary":
@@ -64,13 +73,13 @@ namespace ExcelAddIn1.Controllers.Helpers
                         List<object> sublist = new List<object>();
                         for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
                         {
-                            sublist.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                            sublist.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
                         }
                         publishingDictionary.Add(sublist);
                     }
-
-                    var jsonDictSerializer = new JavaScriptSerializer();
-                    var jsonDict = jsonDictSerializer.Serialize(publishingDictionary);
+                    string jsonDict = JsonConvert.SerializeObject(publishingDictionary);
+                    //var jsonDictSerializer = new JavaScriptSerializer();
+                    //var jsonDict = jsonDictSerializer.Serialize(publishingDictionary);
                     return jsonDict;
 
                 case "Table":
@@ -81,12 +90,13 @@ namespace ExcelAddIn1.Controllers.Helpers
                         List<object> sublist = new List<object>();
                         for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
                         {
-                            sublist.Add((dynamic)(xlRange.Cells[currentRowsCount, currentColumnsCount] as Excel.Range).Value2);
+                            sublist.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
                         }
                         publishingTable.Add(sublist);
                     }
-                    var jsonTableSerializer = new JavaScriptSerializer();
-                    var jsonTable = jsonTableSerializer.Serialize(publishingTable);
+                    //var jsonTableSerializer = new JavaScriptSerializer();
+                    //var jsonTable = jsonTableSerializer.Serialize(publishingTable);
+                    string jsonTable = JsonConvert.SerializeObject(publishingTable);
                     return jsonTable;
 
                 default:
@@ -206,6 +216,82 @@ namespace ExcelAddIn1.Controllers.Helpers
             xlRange = (Excel.Range)xlWorkSheet.Range[xlStartRange, xlEndRange];
             */
             return xlRange;
+        }
+
+        public class TupleList<T1, T2> : List<Tuple<T1, T2>>
+        {
+            public void Add(T1 item, T2 item2)
+            {
+                Add(new Tuple<T1, T2>(item, item2));
+            }
+        }
+
+        public static dynamic errorsToNulls(Excel.Range xlRange)
+        {
+            TupleList<int, int> cellCoordinates = new TupleList<int, int> {};
+
+            int xlRowsCount = xlRange.Rows.Count;
+            int xlColumnsCount = xlRange.Columns.Count;
+
+            if (xlRowsCount == 1 && xlColumnsCount == 1)
+            {
+
+            }
+            
+            for (int i = 1; i <= xlRowsCount; i++)
+            {
+                for (int j = 1; j <= xlColumnsCount; j++)
+                {
+                    if (xlRange.Value2[i, j] != null) 
+                    {
+                        if (xlRange.Value2[i,j].GetType() == typeof(int))
+                        {
+                            int tempValue = xlRange.Value2[i, j];
+                            if (Utils.ExcelCellErrors.Errors.Contains<int>(tempValue))
+                            {
+                                cellCoordinates.Add(i, j);
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*
+                foreach (var value in xlRange.Value2)
+                {
+                    if (value.GetType() == typeof(int))
+                    {
+                        int tempValue = value;
+                        if (Utils.ExcelCellErrors.Errors.Contains<int>(tempValue))
+                        {
+                            var aa = xlRange.CurrentArray;
+                            cellCoordinates.Add(value[0], value[1]);
+                        }
+                    }
+                }
+            */
+
+            var tempArray = xlRange.Value2;
+
+            foreach (var cc in cellCoordinates) {
+                tempArray[cc.Item1, cc.Item2] = null;
+            }
+
+            /*
+            var t = xlRange.Value2;
+            t[2, 2] = 55;
+
+            xlRange.Value2[1, 1] = "\0";
+            xlRange.Value2[2, 2] = 44;
+            xlRange.Cells[2, 2] = 44;
+
+            xlRange.Value2 = t;
+
+             */
+
+            //xlRange.Value2 = tempArray;
+
+            return tempArray;
         }
 
         /// <summary>
@@ -426,75 +512,6 @@ namespace ExcelAddIn1.Controllers.Helpers
                 }
             }
         }
-
-        public static bool validateUpdateRanges(Dictionary<string, dynamic> publishedData)
-        {
-            Excel.Workbook xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
-            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-            int publishedDataItemsCount = publishedData["ids"].Count;
-            for (int i = 0; i < publishedDataItemsCount; i++)
-            {
-                Dictionary<string, dynamic> singleResult = new Dictionary<string, dynamic>();
-                var a = publishedData["worksheets"][i];
-                Excel.Range xlRange = PublishingHelpers.specifyRange(xlWorkSheet, (string)publishedData["destination_cells"][i], (string)publishedData["data_types"][i]);
-                PublishingValidators validator = new PublishingValidators(xlRange);
-                string validationResult = validator.validatePublishingInputs(new List<string> { "isPublishRangeEmpty" });
-                if (validationResult != "Pass") { return false; }
-            }
-            return true;
-        }
-
-        public static Dictionary<string, dynamic> selectValidUpdateWorksheets(Dictionary<string, dynamic> publishedData)
-        {
-            ArrayList publishedSheets = publishedData["worksheets"];
-            Microsoft.Office.Interop.Excel.Sheets worksheets = Globals.ThisAddIn.Application.ActiveWorkbook.Sheets;
-            ArrayList worksheetsArray = new ArrayList() { };
-            foreach (Excel.Worksheet w in worksheets)
-            {
-                worksheetsArray.Add(w.Name);
-            }
-            foreach (string publishedSheet in publishedSheets.ToArray())
-            {
-                if (!worksheetsArray.Contains(publishedSheet))
-                {
-                    publishedData = removeMissingSheets(publishedData, publishedSheet);
-                }
-            }
-            return publishedData;
-        }
-
-        private static Dictionary<string, dynamic> removeMissingSheets(Dictionary<string, dynamic> publishedData, string missingSheet)
-        {
-
-            List<string> keys = new List<string>();
-            foreach (KeyValuePair<string, dynamic> kvp in publishedData)
-            {
-                keys.Add(kvp.Key);
-            }
-            List<int> itemsToRemove = new List<int>();
-            for (int i = 0; i < publishedData["worksheets"].Count; i++)
-            {
-                if (publishedData["worksheets"][i] == missingSheet)
-                {
-                    itemsToRemove.Add(i);
-                }
-            }
-
-            OrderedDictionary orderedDictionary = (OrderedDictionary)Utils.Utils.toOrderedDictionary(publishedData);
-
-            for (int j = 0; j < itemsToRemove.Count; j++)
-            {
-                for (int k = 0; k < keys.Count; k++)
-                {
-                    ArrayList tempList = (ArrayList)orderedDictionary[keys[k]];
-                    tempList.RemoveAt(itemsToRemove[j]);
-                    orderedDictionary[keys[k]] = tempList;
-                }
-            }
-
-            return (Dictionary<string, dynamic>)Utils.Utils.toDictionary(orderedDictionary);
-
-        } 
 
         public static string publishSeveral(Dictionary<string, dynamic> publishedData)
         {

@@ -7,8 +7,17 @@ from models import FetchConfigurations, PublishConfigurations
 import pickle
 import logging
 import pdb
+import json
 
 from collections import OrderedDict
+
+CELL_ERRORS = [-2146826281,
+              -2146826246,
+              -2146826259,
+              -2146826288,
+              -2146826252,
+              -2146826265,
+              -2146826273]
 
 def create_a_dict_for_fetch(request, queried_data):
     """
@@ -43,6 +52,17 @@ def publish_and_collect(request, class_):
     """
     Check if the ID was already published. If not, then create a Publish Configuration.
     """
+
+    request_data = json.loads(request.data.pop())
+
+    request.data.append(json.dumps(errors_to_nulls(request_data)))
+
+    #request_data = json.dumps(request_data)
+
+    #request_data = messages.FieldList(RequestData.data, request_data)
+
+    #pdb.set_trace()
+
     is_published = PublishConfigurations.query(PublishConfigurations.bapi_id == request.bapi_id).count()
     if is_published == 0:
         # In case this is the first 'Publish' for this id, create a 'PublishConfiguration'.
@@ -87,7 +107,7 @@ def publish_and_collect(request, class_):
            description=description,
            organization=organization,
            bapi_id=request.bapi_id,
-           data=pickle.dumps(request.data)).put()
+           data=json.dumps(request.data)).put()
 
     return return_string
 
@@ -102,6 +122,7 @@ def query_and_configure(request, class_, data_type):
     # Query one BAPI data structures.
     queried_list = class_.query(
         class_.bapi_id == request.bapi_id).order(-class_.last_updated).get()
+
 
     # Check if the 'Fetch' request is a one-off or a repetitive request.
     # In case it's a repetitive, save it to the Datastore.
@@ -118,7 +139,8 @@ def query_and_configure(request, class_, data_type):
                             description=queried_list.description
                             ).put()
 
-    queried_list_pickled = pickle.loads(queried_list.data)
+    queried_list_pickled = json.loads(queried_list.data)
+    #queried_list_pickled = queried_list.data
 
     return [queried_list, queried_list_pickled]
 
@@ -155,3 +177,23 @@ def is_ID_valid(request, class_):
     else:
         return False
 
+def errors_to_nulls(request_data):
+    """
+    Iterates over a list of list which corresponds to data sent from excel, and replaces all error cells with null.
+    :param request_data:
+    :return:
+    """
+    cell_coordinates = []
+
+    for r in range(len(request_data)):
+        for c in range(len(request_data[0])):
+            current_item = request_data[r][c]
+            if type(current_item) == int:
+                if current_item in CELL_ERRORS:
+                    cell_coordinates.append((r, c))
+
+    new_request_data = request_data
+    for co in cell_coordinates:
+        new_request_data[co[0]][co[1]] = None
+
+    return new_request_data

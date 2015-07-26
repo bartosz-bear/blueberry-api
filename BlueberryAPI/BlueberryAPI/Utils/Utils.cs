@@ -14,6 +14,8 @@ using AopAlliance.Intercept;
 using System.Net;
 using System.IO;
 using Dynamitey;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ExcelAddIn1.Utils
 {
@@ -304,6 +306,55 @@ namespace ExcelAddIn1.Utils
             object s = mi.Invoke(o, null);
             return s;
 
+        }
+    }
+
+    static class ExcelCellErrors
+    {
+        private static int[] errors = {-2146826281,
+                               -2146826246,
+                               -2146826259,
+                               -2146826288,
+                               -2146826252,
+                               -2146826265,
+                               -2146826273};
+
+        public static int[] Errors
+        {
+            get {return errors;}
+        }
+
+    }
+
+    class CustomIntConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(int));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteJson(JsonWriter writer, dynamic value, JsonSerializer serializer)
+        {
+
+            JValue jsonValue = (JValue)value;
+
+            if (jsonValue.Type == JTokenType.Float)
+            {
+                jsonValue.Value<double>();
+            }
+            else if (jsonValue.Type == JTokenType.Integer)
+            {
+                jsonValue.Value<int>();
+            }
+
+            jsonValue = serializer.Serialize(writer, value);
+
+            throw new FormatException();
         }
     }
 }

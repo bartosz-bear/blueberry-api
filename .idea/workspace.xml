@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea364494-a488-46d7-b0da-14c04ed0c63c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Blueberry API.csproj" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Blueberry API.csproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/BlueberryTaskPane.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/FetchingHelpers.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/FetchingHelpers.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/PublishingHelpers.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Helpers/PublishingHelpers.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Validators/PublishingValidators.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Controllers/Validators/PublishingValidators.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Ribbon1.cs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TODO.txt" afterPath="$PROJECT_DIR$/TODO.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Utils/Utils.cs" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/Utils/Utils.cs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blueberry-api/apis.py" afterPath="$PROJECT_DIR$/blueberry-api/apis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blueberry-api/apis_funcs.py" afterPath="$PROJECT_DIR$/blueberry-api/apis_funcs.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/packages.config" afterPath="$PROJECT_DIR$/BlueberryAPI/BlueberryAPI/packages.config" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="apiquitous.iws" />
@@ -81,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apis.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="apis.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/apis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5841808" vertical-offset="3001" max-vertical-offset="6239">
-              <caret line="274" column="0" selection-start-line="274" selection-start-column="0" selection-end-line="274" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="4964" max-vertical-offset="6596">
+              <caret line="292" column="0" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -104,7 +112,7 @@
       <file leaf-file-name="publish_configurations.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/blueberry-api/templates/publish_configurations.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="578" max-vertical-offset="969">
+            <state vertical-scroll-proportion="0.0" vertical-offset="432" max-vertical-offset="969">
               <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
               <folding />
             </state>
@@ -121,12 +129,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="apis_funcs.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="apis_funcs.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2057" max-vertical-offset="2771">
-              <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.176" vertical-offset="798" max-vertical-offset="3468">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+              <folding>
+                <element signature="e#24#67#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -180,16 +190,16 @@
         <option value="$PROJECT_DIR$/blueberry-api/templates/browse.html" />
         <option value="$PROJECT_DIR$/blueberry-api/templates/publish_configurations.html" />
         <option value="$PROJECT_DIR$/blueberry-api/templates/fetch_configurations.html" />
-        <option value="$PROJECT_DIR$/blueberry-api/apis_funcs.py" />
         <option value="$PROJECT_DIR$/blueberry-api/apis.py" />
+        <option value="$PROJECT_DIR$/blueberry-api/apis_funcs.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1672" />
-    <option name="y" value="33" />
-    <option name="width" value="1696" />
-    <option name="height" value="1066" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -217,7 +227,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -336,6 +345,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -544,14 +554,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1672" y="33" width="1696" height="1066" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14636752" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41013268" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31401476" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.73735726" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -559,12 +569,12 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3257329" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39956802" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -582,9 +592,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19791667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39956802" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39956802" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -623,7 +633,7 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="4" />
+      <option name="time" value="7" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -638,7 +648,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="2737">
           <caret line="45" column="104" selection-start-line="45" selection-start-column="104" selection-end-line="45" selection-end-column="104" />
-          <folding />
+          <folding>
+            <element signature="e#24#67#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -955,26 +967,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueberry-api/templates/publish_configurations.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="71" max-vertical-offset="969">
-          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2142">
           <caret line="18" column="38" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/blueberry-api/users.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2618" max-vertical-offset="3349">
-          <caret line="154" column="16" selection-start-line="154" selection-start-column="16" selection-end-line="154" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -987,19 +983,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
+    <entry file="file://$PROJECT_DIR$/blueberry-api/templates/publish_configurations.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1403" max-vertical-offset="2635">
-          <caret line="121" column="0" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="432" max-vertical-offset="969">
+          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blueberry-api/users.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2618" max-vertical-offset="3349">
+          <caret line="154" column="16" selection-start-line="154" selection-start-column="16" selection-end-line="154" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blueberry-api/apis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5841808" vertical-offset="3001" max-vertical-offset="6239">
-          <caret line="274" column="0" selection-start-line="274" selection-start-column="0" selection-end-line="274" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4096" max-vertical-offset="6341">
+          <caret line="292" column="0" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/blueberry-api/apis_funcs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.176" vertical-offset="798" max-vertical-offset="3468">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#67#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

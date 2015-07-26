@@ -301,6 +301,8 @@ class List(remote.Service):
 
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
+        if not apis_funcs.is_ID_valid(request, class_):
+            return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
 
         queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 
@@ -331,6 +333,8 @@ class Dictionary(remote.Service):
 
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
+        if not apis_funcs.is_ID_valid(request, class_):
+            return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
 
         queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 
@@ -361,8 +365,10 @@ class Table(remote.Service):
         """
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
+        if not apis_funcs.is_ID_valid(request, class_):
+            return FetchResponse(bapi_id="BAPI Info Message", data=[u'1', u'2'], info="Incorrect BAPI ID")
 
-        queried_data = apis_funcs.query_and_configure(request, class_, data_type)[2]
+        queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 
         evaluated_items = [eval(x) for x in fetch_args_values]
         logging.info(evaluated_items)

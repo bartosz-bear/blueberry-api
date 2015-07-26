@@ -34,15 +34,21 @@ namespace ExcelAddIn1
         private void PublishButton_Click(object sender, EventArgs e)
         {
             if (!UserManagement.userLogged()) { return; }
+            
             Excel.Workbook xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             Excel.Worksheet xlWorkSheet  = (Excel.Worksheet)xlWorkBook.ActiveSheet;
             Excel.Range xlRange = (Excel.Range)xlWorkSheet.Application.Selection;
+                        
+            if (xlRange.Count > 100000) { MessageBox.Show("Publishing range must not contain more than 100,000 cells."); return; }
+            
             string xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
             string xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
             string xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
             string xlDataOwner = GlobalVariables.sessionData["loggedUser"];
+            
             PublishingValidators validator = new PublishingValidators(xlRange, xlName, xlDescription, xlOrganization, xlDataOwner);
             string validationResult = validator.validatePublishingInputs(new List<string> {"isPublishRangeEmpty",
+                                                                         "isPublishingRangeACellError",
                                                                          "isAnyBlueberryTaskPaneFieldEmpty",
                                                                          "areInputsSpecialCharactersFree",
                                                                          "isIDUsed"});

@@ -147,6 +147,10 @@
     <Reference Include="Dynamitey">
       <HintPath>..\packages\Dynamitey.1.0.2.0\lib\net40\Dynamitey.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Spring.Aop">
       <HintPath>..\packages\Spring.Aop.2.0.1\lib\net45\Spring.Aop.dll</HintPath>
     </Reference>
@@ -205,6 +209,7 @@
     </Compile>
     <Compile Include="Controllers\Fetching.cs" />
     <Compile Include="Controllers\Helpers\FetchingHelpers.cs" />
+    <Compile Include="Controllers\Helpers\Helpers.cs" />
     <Compile Include="Controllers\Helpers\PublishingHelpers.cs" />
     <Compile Include="Controllers\Publishing.cs" />
     <Compile Include="Controllers\Validators\PublishingValidators.cs" />
