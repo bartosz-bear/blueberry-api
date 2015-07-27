@@ -27,3 +27,6 @@ DEPLOY TO GAE PROD:
 PROD:
 https://appengine.google.com
 blueberry-api.appspot.com/Sorting.get_published
+
+FTP SERVER:
+ftp://s1.laohost.net/domains/blueberry-api.pl/public_ftp

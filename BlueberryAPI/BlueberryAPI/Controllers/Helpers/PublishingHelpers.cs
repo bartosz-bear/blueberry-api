@@ -37,71 +37,30 @@ namespace ExcelAddIn1.Controllers.Helpers
         /// <returns>Returns serialized JSON object which represents an Excel range.</returns>
         public static dynamic fromExcelToObject(int rowsCount, int columnsCount, string dataType, Excel.Range xlRange)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings
+            var rangeArray = xlRange.Value2;
+            List<List<object>> publishingMatrix = new List<List<object>>();
+            if (dataType == "Scalar")
             {
-                Converters = new List<JsonConverter> { new CustomIntConverter() }
-            };
-            //var rangeArray = PublishingHelpers.errorsToNulls(xlRange);
-            var rangeArray = xlRange.Value2; 
-            switch (dataType)
+                List<object> innerList = new List<object>();   
+                innerList.Add(rangeArray);
+                publishingMatrix.Add(innerList);
+            }
+            else
             {
-                case "Scalar":
-                    //var jsonScalarSerializer = new JavaScriptSerializer();
-                    //var jsonScalar = jsonScalarSerializer.Serialize(rangeArray);
-                    string jsonScalar = JsonConvert.SerializeObject(rangeArray);
-                    return jsonScalar;
-
-                case "List":
-                    ArrayList publishingList = new ArrayList();
+                int columnsCountCopy = columnsCount;
+                for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
+                {
+                    List<object> sublist = new List<object>();
                     for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
                     {
-                        for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
-                        {
-                            publishingList.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
-                        }
+                        sublist.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
                     }
-                    //var jsonListSerializer = new JavaScriptSerializer();
-                    //var jsonList = jsonListSerializer.Serialize(publishingList);
-                    string jsonList = JsonConvert.SerializeObject(publishingList);
-                    return jsonList;
-
-                case "Dictionary":
-                    List<List<object>> publishingDictionary = new List<List<object>>();
-                    int columnsCountCopyForDict = columnsCount;
-                    for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
-                    {
-                        List<object> sublist = new List<object>();
-                        for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
-                        {
-                            sublist.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
-                        }
-                        publishingDictionary.Add(sublist);
-                    }
-                    string jsonDict = JsonConvert.SerializeObject(publishingDictionary);
-                    //var jsonDictSerializer = new JavaScriptSerializer();
-                    //var jsonDict = jsonDictSerializer.Serialize(publishingDictionary);
-                    return jsonDict;
-
-                case "Table":
-                    List<List<object>> publishingTable = new List<List<object>>();
-                    int columnsCountCopy = columnsCount;
-                    for (int currentColumnsCount = 1; currentColumnsCount <= columnsCount; currentColumnsCount++)
-                    {
-                        List<object> sublist = new List<object>();
-                        for (int currentRowsCount = 1; currentRowsCount <= rowsCount; currentRowsCount++)
-                        {
-                            sublist.Add((dynamic)(rangeArray[currentRowsCount, currentColumnsCount]));
-                        }
-                        publishingTable.Add(sublist);
-                    }
-                    //var jsonTableSerializer = new JavaScriptSerializer();
-                    //var jsonTable = jsonTableSerializer.Serialize(publishingTable);
-                    string jsonTable = JsonConvert.SerializeObject(publishingTable);
-                    return jsonTable;
-
-                default:
-                    return "Other";
+                    publishingMatrix.Add(sublist);
+                }
             }
+            string serializedMatrix = JsonConvert.SerializeObject(publishingMatrix);
+            return serializedMatrix;
+            
         }
 
         /// <summary>

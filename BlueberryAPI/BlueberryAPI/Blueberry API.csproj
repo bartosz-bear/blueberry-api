@@ -31,17 +31,17 @@
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>C:\Users\chbapie\Desktop\Bartosz\blueberry-api\publish_files\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <ApplicationVersion>1.0.0.3</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateInterval>7</UpdateInterval>
+    <UpdateInterval>3</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <ProductName>BlueberryAPI</ProductName>
-    <PublisherName />
-    <SupportUrl />
+    <ProductName>Blueberry API</ProductName>
+    <PublisherName>Blueberry API</PublisherName>
+    <SupportUrl>http://blueberry-api.appspot.com/</SupportUrl>
     <FriendlyName>BlueberryAPI</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
@@ -314,8 +314,8 @@
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\15.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
-        <Host Name="Excel" GeneratedCodeNamespace="ExcelAddIn1" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+        <Host Name="Excel" GeneratedCodeNamespace="ExcelAddIn1" PublishedHash="69C324AB27932AA2FBF2B7EA72250886FF164DE6" IconIndex="0">
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" PublishedHash="A8F7B3560453F585C14D8F3907235883C7468D3E" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>

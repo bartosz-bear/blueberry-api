@@ -4,6 +4,11 @@ Implement real life examples[1]
 Allow deletion of items on Blueberry[1]
 There is a problem when there are two Blueberry Task Panes open. Data is sent only from one[1]
 Record demo and put it on the landing page[1]
+Implement favourites in Bluebbery tab - eg. Budget rates, FX Rates[1]
+Other people TOP 10 used[1]
+"Taskpane has been deleted or is otherwise no longer valid."[1]
+Sometimes lists say that they are uploade but nothing is uploaded on the server side - current_item = request_data[r][c][1]
+Make all data items a list of lists[1]
 
 Sort all data according to Last Updated[1]
 Create an installer[1]
@@ -11,6 +16,10 @@ Set up testing framework[1]
 Write unit tests to existing code[1]
 Create accounts in Prod for BP, MW, OL, Wacek, Ernst Berger[1]
 
+Implement counter: how many times a certain data was requested[2]
+Show other people who are using this data feed[2]
+Show all BAPI IDs used in the current workbook[2]
+Implement sign certificate - https://msdn.microsoft.com/en-us/library/bb772086.aspx#signing [2]
 Provide notification for 'Refresh' if there is nothing to be refreshed[2]
 Check if everything works fine also in xls type of file[2]
 When updating Table(and most likely the same problem exists for Dict) if there is no data in the first column, then it would return 'No data in the range'[2]
@@ -59,63 +68,13 @@ Analyze all possible variants of reading code for publishing
 ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREADY START TESTING WITH DEPLOYED SOLUTION - USERS.
 
 DONE:
-Perform tests on real files and data[1]
-Handle cellErrors[1]
-Analyze different error types and check how they are represented in Blueberry API http://stackoverflow.com/questions/2424718/how-to-know-if-a-cell-has-an-error-in-the-formula-in-c-sharp [1]
-Check maximum size of range before publishing[1]
-When clicking "Refresh", it downloads data to the current workbook regardless whether initial download was in the current worksheet or some other worksheet[1]
-Handle situation when a sheet in a workbook was deleted and 'Refresh' has no destination place[1]
-Handle situation when a sheet in a workbook was deleted and 'Update'  has no destination place[1]
-What is going to happen when trying to 'Update' or 'Refresh' when there is no items in the datastore[1]
-Notification in case data which was being updated was not existing in the datastore[1]
-The application doesn't display anything if there is no items in the datastore[1]
-Enter Update or Refresh when there is nothing to be Updated or Refreshed
-None of the functionalities should be available unless the user is logged in
-When trying to download a wrong BAPIID - "Please connect to Internet"[1]
-Check all data types are represented as actual data types in tests.[1]
-Blueberry ID should be more visible than other data - red color[1]
-Have one confirmation for 'Update' only.[1]
-Close TaskPane after Publishing. First check whether a new one wouldn't be created in case the old one is hidden[1].
-Disallow to create a Publish Task Pane twice.[1]
-Make changes to the information display according to the user email address[1]
-Remove the user from BlueberryTaskPane - get the user from GlobalVariables - LoggedInUser[1]
-When publishing it asks to connect to Internet, even though the connection exists[1]
-Try to input incorrect Blueberry ID[1]
-Empty BlueberryID validation[1]
-Write error hanlder for 500[1]
-Pop up when uploading '{response:} - make it more user friendly[1]
-When some of the items 'Publish' task pane are not filled up, its still possible to make a request[1]
-Remove 'needs to contain a digit" in 'Publish taskpane'[1]
-Sometimes when trying to log-in the system hangs with Stream postStream = request.GetRequestStream() - WebException problem[1]
-Notification that the user should be logged in before sending publish/download/etc in Excel add-in[1]
-Deploy to production[1]
-Make the home page[http://blueberry-api.appspot.com/][1]
-Think whether checking the user_agent[None in case of Excel is a good method to validate the source][3]
-Clean up all scripts and unecessary stuff in HTML[2]
-Replace all CDNs in HTML[2]
-Create a common JS file[2]
-Use jijnja2 inheritance to avoid multiple html editing for different html pages[2]
-Implement handler for wrong username or password[1]
-Implement users management in Excel Add-in[1]
-Implement users management on GAE[1]
-Document existing code[1]
-Display dates correctly -2H
-Currently the /Display only shows lists -> it should show all data types[1]
-Change the name of the platform to RC Bay[1]
-Implement a button to open the Blueberry Platform
-Rethink the Publish concept - Update one data structure only/update all data structures in the workbook[1]
-Think about xlID in 'Publishing' the same formatting as for xlName be aplied for xlOrganization?[1]
-Think about all possible scenarios when think can go wrong and test them[1]
-A very long string is entered in 'Description'
-One of the items in 'Publish' task pane is not entered
-When the list is imported it is pasted in a format [1,33,5,44,3]
-When you click 'Publish' on BlueberryTaskPane, the same operations are performed twice[1]
-Organize folders for the existing code
-Set up documentation application SandCastle.
-Finilize Dictionary data structure
-Table data structure
-Fix the git to make sure that all files are always pushed to bitbucket[3]
-Fix add-in loading problem[2]
+
+Office365 Developer:
+https://msdn.microsoft.com/office/office365/HowTo/setup-development-environment
+https://apisandbox.msdn.microsoft.com/
+
+User photo REST API:
+https://msdn.microsoft.com/en-us/office/office365/api/photo-rest-operations
 
 Useful links:
 http://gosurob.com/post/20024043690/gaewebapp2accounts

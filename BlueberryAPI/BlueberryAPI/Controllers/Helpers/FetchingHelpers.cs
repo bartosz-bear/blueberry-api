@@ -47,56 +47,14 @@ namespace ExcelAddIn1.Controllers.Helpers
                 xlStartRange = (Excel.Range)xlWorkSheet.Application.Selection;
             }
 
-            //Depending on the BAPI data type, data will be saved in a different way.
-            switch (xlType)
+            List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedData);
+            Int32 numOfListsInATable = bapiData.Count - 1;
+            for (var i = 0; i <= numOfListsInATable; i++)
             {
-                case "Scalar":
-                    {
-                        List<object> bapiData = new List<object>(); 
-                        bapiData.Add(jsonSerializer.Deserialize<object>(serializedData));
-                        //bapiData.Add(serializedData);
-                        saveArrayToExcel(bapiData, xlWorkSheet, xlStartRange, 0);
-                        break;
-                    }
-                case "List":
-                    {
-                        List<object> bapiData = jsonSerializer.Deserialize<List<object>>(serializedData);
-                        saveArrayToExcel(bapiData, xlWorkSheet, xlStartRange, 0);
-                        break;
-                    }
-                case "Dictionary":
-                    {
-                        List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedData);
-                        Int32 numOfListsInATable = bapiData.Count - 1;
-                        for (var i = 0; i <= numOfListsInATable; i++)
-                        {
-                            List<object> currentBAPIDataArray = bapiData[i];
-                            int offset = i;
-                            saveArrayToExcel(currentBAPIDataArray, xlWorkSheet, xlStartRange, offset);
-                        }
-
-                        break;
-
-                    }
-                case "Table":
-                    {
-                        List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedData);
-                        Int32 numOfListsInATable = bapiData.Count - 1;
-                        for (var i = 0; i <= numOfListsInATable; i++)
-                        {
-                            List<object> currentBAPIDataArray = bapiData[i];
-                            int offset = i;
-                            saveArrayToExcel(currentBAPIDataArray, xlWorkSheet, xlStartRange, offset);
-                        }
-
-                            break;
-                    }
-                default:
-                    {
-                        break;
-                    }
+                List<object> currentBAPIDataArray = bapiData[i];
+                int offset = i;
+                saveArrayToExcel(currentBAPIDataArray, xlWorkSheet, xlStartRange, offset);
             }
-
         }
 
         /// <summary>
@@ -168,10 +126,6 @@ namespace ExcelAddIn1.Controllers.Helpers
         {
             // Validate whether the BAPI ID was found in Bluberry cloud datastore
             
-            //var jsonSerializer = new JavaScriptSerializer();
-            //Dictionary<string, dynamic> responseData = jsonSerializer.Deserialize<Dictionary<string, dynamic>>(fetchedData);
-
-
             if (fetchedData.ContainsKey("info"))
             {
                 if (senderLabel == "Download")
@@ -187,21 +141,6 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
 
             return true;
-
-            /*
-            if (fetchedData.ContainsKey("info")) {
-                if ((string)fetchedData["info"] == "Incorrect BAPI ID")
-                {
-                    MessageBox.Show("You have entered an incorrect Blueberry ID. Check the ID and try again.");
-                    return false;
-                }
-                else if ((string)fetchedData["info"] == "One or more data points which you are trying to fetch doesn't exist anymore.")
-                {
-                    
-                }
-            }
-            return true;
-             */ 
         }
 
     }
