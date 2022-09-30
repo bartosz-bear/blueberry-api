@@ -1,0 +1,150 @@
+<!doctype html>
+  <head  >
+
+    {% include 'templates/head.html' %}
+
+  </head>
+
+  <body ng-app="blueberry-angular-app" ng-controller="MainController as main" >
+
+    {% include 'templates/header.html' %}
+
+        <div class="container">
+
+          <h2>Available pipelines</h2><br>
+          <p>Here you can see your pipelines.</p><br>
+
+
+
+          <div id="container_for_pipelines">
+
+          <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Pipelines</div>
+                        <div class="panel-body">
+                            <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for p in pipelines %}
+                              <tr>
+                                <td>{{ p.name }}</td>
+                                <td><button id={{ p.name }} type="button" class="btn btn-danger btn-sm" onclick="editPipeline(this.id)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button></td>
+                                <td><button id={{ p.name }} type="button" class="btn btn-danger btn-sm" onclick="deletePipeline(this.id)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+
+          <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Add a new pipeline</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <form class="form">
+                                    <input id="inputPipelineName" class="form-control" type="text" name="pipeline_name" placeholder="Enter Pipeline Name"><br>
+                                </form>
+
+                            </div>
+                            <button class="btn btn-primary" onclick="addPipeline()">Add pipeline</button>
+
+
+
+                        </div>
+                </div>
+          </div><hr><br>
+
+          </div>
+
+          <!-- Task -->
+          <div class="col-md-12"  id="editPipelineDiv" style="display:none">
+                <div class="panel panel-primary">
+                    <div id="editPipelineTextDiv" class="panel-heading">Add a new task</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <form class="form">
+                                    <input id="inputBlueberryID" class="form-control" type="text" name="task_name" placeholder="Input Data ID" ng-model="main.bapi_id"><br>
+                                    <select id="taskType" class="form-control">
+                                        <option value="select">Select</option>
+                                        <option value="filter">Filter</option>
+                                        <option value="sort">Sort</option>
+                                        <option value="merge">Merge</option>
+                                    </select>
+                                </form>
+
+
+
+                            </div>
+                            <button class="btn btn-primary" ng-click="main.showConfDiv(); main.fetchData()" on-click="">Configure task</button>
+
+
+
+                        </div>
+                </div>
+          </div>
+
+          <!-- select Task -->
+          <div class="col-md-12"  id="selectConf" style="display:none">
+                <div class="panel panel-primary">
+                    <div id="selectConfDivText" class="panel-heading">Configure a 'select' task</div>
+                        <div class="panel-body">
+
+                            <div class="bapi_data">
+
+                                <h4>Input data:</h4>
+
+                                <div id="example_container"><div id="example"></div></div>
+
+                            </div><br>
+
+                            <div id="headers">
+                            <h4>Headers:</h4>
+
+                            <div id="bapiDataHeadersDiv" class="checkbox" ng-repeat="h in main.hotTableHeaders track by $index">
+                                <label><input type="checkbox" value="{[{ h }]}" checked>{[{ h }]}</label>
+                            </div>
+                            </div>
+
+                            <button class="btn btn-primary" ng-click="main.selectColumns()">Select columns</button>
+                            <!--<button class="btn btn-primary" ng-click="main.testPost2()">Test post</button>-->
+
+                            <hr>
+                            <button class="btn btn-primary" onclick="showBlueberryData()">Add task</button>
+
+
+
+                        </div>
+                </div>
+          </div>
+
+          <!-- filter Task -->
+          <div class="col-md-12"  id="filterConf" style="display:none">
+                <div class="panel panel-primary">
+                    <div id="filterConfDivText" class="panel-heading">Configure a 'filter' task</div>
+                        <div class="panel-body">
+
+                            <div class="bapi_data"></div><br>
+
+
+                            <button class="btn btn-primary" onclick="showBlueberryData()">Add task</button>
+
+
+
+                        </div>
+                </div>
+          </div>
+
+        </div>
+
+</body>
+
+</html>

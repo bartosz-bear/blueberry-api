@@ -28,7 +28,7 @@
             </thead>
             <tbody>
 
-            {% for d in data %}
+            {% for d in data|sort(true, attribute='last_updated') %}
               <tr>
                 <td>{{ d.name }}</td>
                 <td style="color:red">{{ d.bapi_id }}</td>

@@ -8,6 +8,7 @@ using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools;
 using Microsoft.Office.Tools.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
+using Fetching = ExcelAddIn1.Controllers.Fetching;
 
 
 namespace ExcelAddIn1
@@ -19,7 +20,9 @@ namespace ExcelAddIn1
     {
         public static Dictionary<string, string> sessionData;
         public static string blueberryAPIurl = "http://localhost.:8080/";
+        //public static string blueberryAPIurl = "http://platform.riskcontrol.ch/";
         //public static string blueberryAPIurl = "http://blueberry-api.appspot.com/";
+        public static List<string> favoriteIDs;
     }
 
     public partial class ThisAddIn
@@ -28,7 +31,7 @@ namespace ExcelAddIn1
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-
+            
         }
       
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

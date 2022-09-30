@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+  <head>
+
+    {% include 'templates/head.html' %}
+
+  </head>
+
+  <body>
+
+    {% include 'templates/header.html' %}
+
+        <div class="container">
+
+          <h2>Add-in Configurations</h2><br>
+          <p>Here you can see all configurations related to your Add-in.</p><br>
+
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Your favorite IDs</div>
+                        <div class="panel-body">
+                            <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Names</th>
+                                <th>Data ID</th>
+                                <th>Remove</th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for id in ids %}
+                              <tr>
+                                <td>{{ id.name }}</td>
+                                <td>{{ id.bapi_id }}</td>
+                                <td><button id={{ id.bapi_id}} type="button" class="btn btn-danger btn-sm" onclick="removeFavorite(this.id)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Add a new favourite to your Add-in</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                            <form class="form">
+                                    <input id="inputID" class="form-control" type="text" name="bapi_id" placeholder="Enter Data ID"><br>
+                            </form>
+                                <button class="btn btn-primary" onclick="addFavorite()">Add favorite</button>
+                            </div>
+
+
+                        </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+</body>
+
+</html>

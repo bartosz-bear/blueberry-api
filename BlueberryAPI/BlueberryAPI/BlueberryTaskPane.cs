@@ -44,6 +44,7 @@ namespace ExcelAddIn1
             string xlName = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingNameTextBox.Text;
             string xlDescription = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingDescriptionTextBox.Text;
             string xlOrganization = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.PublishingOrganizationTextBox.Text;
+            bool xlHasHeaders = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.hasHeadersCheckBox.Checked;
             string xlDataOwner = GlobalVariables.sessionData["loggedUser"];
             
             PublishingValidators validator = new PublishingValidators(xlRange, xlName, xlDescription, xlOrganization, xlDataOwner);

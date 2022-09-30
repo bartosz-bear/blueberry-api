@@ -1,0 +1,23 @@
+        private void BAPINameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Determine if the TextBox has a digit character.
+            string text = PublishingNameTextBox.Text;
+            bool hasDigit = false;
+            foreach (char letter in text)
+            {
+                if (char.IsDigit(letter))
+                {
+                    hasDigit = true;
+                    break;
+                }
+            }
+            // Call SetError or Clear on the ErrorProvider.
+            if (!hasDigit)
+            {
+                errorProvider1.SetError(BAPINameTextBox, "Needs to contain a digit");
+            }
+            else
+            {
+                errorProvider1.Clear();
+            }
+        }

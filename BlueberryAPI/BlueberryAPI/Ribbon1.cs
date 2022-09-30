@@ -34,6 +34,7 @@ namespace ExcelAddIn1
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
+
         }
 
         private void ThisDocument_Startup(object sender, System.EventArgs e)
@@ -165,7 +166,7 @@ namespace ExcelAddIn1
 
         private void GoToWebPlatformButton_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://blueberry-api.appspot.com");
+            System.Diagnostics.Process.Start(ExcelAddIn1.GlobalVariables.blueberryAPIurl);
         }
 
         private void LogInButton_Click(object sender, RibbonControlEventArgs e)
@@ -209,6 +210,14 @@ namespace ExcelAddIn1
                 usernameBox.Visible = false;
                 passwordBox.Visible = false;
                 LogOutButton.Visible = true;
+
+                List<ArrayList> favoriteIDsAndNames = Fetching.getFavorites();
+
+                //Fetching.createFavoriteButtons(favoriteIDsAndNames[1], favoriteIDsAndNames[0], this);
+                Fetching.populateFavoritesButtonsLabels(favoriteIDsAndNames[1], this);
+                Fetching.populateFavoritesButtonsDescriptions(favoriteIDsAndNames[0], this);
+                Fetching.hideUnusedFavoriteButtons(favoriteIDsAndNames[1], this);
+                this.FavoriteGroup.Visible = true;
             }
             
             usernameBox.Text = "";
@@ -263,15 +272,48 @@ namespace ExcelAddIn1
                     throw;
                 }
             }
+
+            Fetching.clearFavoritesButtons(this.FavoritesDropdown.Buttons.Count(), this);
+            Fetching.showAllFavoriteButtons(this);
+            this.FavoriteGroup.Visible = false;
+            
         }
 
 
         private void TestButton_Click(object sender, RibbonControlEventArgs e)
         {
-            ProxyFactory factory = new ProxyFactory(new Utils.ServiceCommand());
-            factory.AddAdvice(new Utils.ConsoleLoggingAroundAdvice());
-            Utils.ICommand command = (Utils.ICommand)factory.GetProxy();
-            command.Execute("This is the argument");
+            //ProxyFactory factory = new ProxyFactory(new Utils.ServiceCommand());
+            //factory.AddAdvice(new Utils.ConsoleLoggingAroundAdvice());
+            //Utils.ICommand command = (Utils.ICommand)factory.GetProxy();
+            //command.Execute("This is the argument");
+        }
+
+        private void FavoriteButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            RibbonButton senderObject = (RibbonButton)sender;
+            string senderLabel = senderObject.Label;
+            string senderDescription = senderObject.Description;
+            Globals.Ribbons.Ribbon1.IDBox.Text = senderDescription;
+            Globals.Ribbons.Ribbon1.FetchConfigurationCheckBox.Checked = false;
+            if (!UserManagement.userLogged()) { return; }
+            Dictionary<string, dynamic> fetchedData = Fetching.fetchData();
+            if (fetchedData.Count == 0) { return; }
+            if (FetchingHelpers.validateIDPostFetch(fetchedData, senderDescription))
+            {
+                FetchingHelpers.saveToExcel(fetchedData);
+            }
+            Globals.Ribbons.Ribbon1.IDBox.Text = "";
+            /*
+            switch (((Button)sender).Name)
+            {
+                // find a way to disambiguate.
+            }
+             */ 
+        }
+
+        private void ConfigurationsButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start(ExcelAddIn1.GlobalVariables.blueberryAPIurl + "addin_configurations");
         }
 
     }

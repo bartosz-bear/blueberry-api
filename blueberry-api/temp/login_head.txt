@@ -1,0 +1,49 @@
+{% block head %}
+
+    <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Blueberry API">
+    <meta name="author" content="Bartosz Piechnik">
+    <link rel="icon" href="images/favicon.ico">
+
+    <title>Log in template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
+
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-json/2.5.1/jquery.json.min.js"></script>
+    <![endif]-->
+    <style type="text/css"></style>
+
+    </head>
+
+{% endblock %}
+
+
+- url: /js
+  static_dir: static/js
+- url: /css
+  static_dir: static/css
+- url: /bootstrap
+  static_dir: static/bootstrap
+- url: /images
+  static_dir: static/images
+- url: /base_files
+  static_dir: base_files

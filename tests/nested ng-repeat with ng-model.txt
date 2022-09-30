@@ -1,0 +1,7 @@
+          <table>
+            <tbody>
+                <tr class="list-group" ng-repeat="v in main.fetchedData" size="55">
+                    <td ng-repeat="a in v"><p ng-model="main.fetchedData[$parent.$index][$index]">{[{ a }]}</p></td>
+                </tr>
+            </tbody>
+          </table>

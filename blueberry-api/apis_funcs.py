@@ -1,15 +1,14 @@
-__author__ = 'CHBAPIE'
+__author__ = 'Bartosz Piechnik'
 
-from google.appengine.api.users import User
-
-from models import FetchConfigurations, PublishConfigurations
-
-import pickle
-import logging
-import pdb
 import json
+import pickle
 
 from collections import OrderedDict
+from google.appengine.api.users import User
+from models import FetchConfigurations, PublishConfigurations
+
+import logging
+import pdb
 
 CELL_ERRORS = [-2146826281,
               -2146826246,
@@ -32,7 +31,8 @@ def create_a_dict_for_fetch(request, queried_data):
                     'user',
                     'workbook',
                     'workbook_path',
-                    'worksheet']
+                    'worksheet',
+                    'headers_list']
     items = [request.bapi_id,
              queried_data[0].description,
              request.destination_cell,
@@ -41,7 +41,8 @@ def create_a_dict_for_fetch(request, queried_data):
              request.user,
              request.workbook,
              request.workbook_path,
-             request.worksheet]
+             request.worksheet,
+             queried_data[2]]
     for i, j in zip(request_keys, items):
         FetchResponseDictionary[i] = j
 
@@ -54,14 +55,7 @@ def publish_and_collect(request, class_):
     """
 
     request_data = json.loads(request.data.pop())
-
     request.data.append(json.dumps(errors_to_nulls(request_data)))
-
-    #request_data = json.dumps(request_data)
-
-    #request_data = messages.FieldList(RequestData.data, request_data)
-
-    #pdb.set_trace()
 
     is_published = PublishConfigurations.query(PublishConfigurations.bapi_id == request.bapi_id).count()
     if is_published == 0:
@@ -107,6 +101,7 @@ def publish_and_collect(request, class_):
            description=description,
            organization=organization,
            bapi_id=request.bapi_id,
+           headers=json.dumps(request.headers_list),
            data=json.dumps(request.data)).put()
 
     return return_string
@@ -140,9 +135,9 @@ def query_and_configure(request, class_, data_type):
                             ).put()
 
     queried_list_pickled = json.loads(queried_list.data)
-    #queried_list_pickled = queried_list.data
+    queried_list_headers = json.loads(queried_list.headers)
 
-    return [queried_list, queried_list_pickled]
+    return [queried_list, queried_list_pickled, queried_list_headers]
 
 
 def query_configurations(request, published_args_keys, published_args_values, class_):

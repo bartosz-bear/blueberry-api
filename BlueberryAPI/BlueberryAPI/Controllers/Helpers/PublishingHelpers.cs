@@ -494,5 +494,61 @@ namespace ExcelAddIn1.Controllers.Helpers
             }
             return returnString;
         }
+
+        public static List<string> getHeaders(string serializedBAPIData, string dataType, bool xlHasHeaders)
+        {
+            var jsonSerializer = new JavaScriptSerializer();
+            List<List<object>> bapiData = jsonSerializer.Deserialize<List<List<object>>>(serializedBAPIData);
+            List<string> headersList = new List<string>();
+            switch (dataType)
+            {
+                case "Scalar":
+                    headersList.Add("Column 1");
+                    break;
+                case "List":
+                    if (xlHasHeaders)
+                    {
+                        headersList.Add((string)bapiData[0][0]);
+                    }
+                    else
+                    {
+                        headersList.Add("Column 1");
+                    }
+                    break;
+                default:
+                    if (xlHasHeaders)
+                    {
+                        for (int r = 0; r < bapiData.Count; r++)
+                        {
+                            var tempHeader = bapiData[r][0];
+                            if (tempHeader != null)
+                            {
+                                if (tempHeader is string)
+                                {
+                                    headersList.Add((string)tempHeader);
+                                }
+                                else
+                                {
+                                    headersList.Add(tempHeader.ToString());
+                                }
+                            }
+                            else
+                            {
+                                int tempInt = r + 1;
+                                headersList.Add("Empty header " + (tempInt.ToString()));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int r = 1; r < bapiData.Count + 1; r++)
+                        {
+                            headersList.Add("Column " + r.ToString());
+                        }
+                    }
+                    break;
+            }
+            return headersList;
+        }
     }
 }

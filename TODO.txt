@@ -1,27 +1,26 @@
 MAKE TESTS FOR ALL THINGS LIKE: There is a Publish/Fetch configuration but data is missing in the db.
 
-Implement real life examples[1]
-Allow deletion of items on Blueberry[1]
+select_columns microservice[1]
+filter microservice[1]
+merge or vlookup microservice[1]
+Allow deletion of items on Blueberry - Publish and Remove configurations[1]
 There is a problem when there are two Blueberry Task Panes open. Data is sent only from one[1]
 Record demo and put it on the landing page[1]
-Implement favourites in Bluebbery tab - eg. Budget rates, FX Rates[1]
-Other people TOP 10 used[1]
 "Taskpane has been deleted or is otherwise no longer valid."[1]
-Sometimes lists say that they are uploade but nothing is uploaded on the server side - current_item = request_data[r][c][1]
-Make all data items a list of lists[1]
+Think about secret_key which lives in display.py and configurations.py. Should it be removed from there[1]
 
-Sort all data according to Last Updated[1]
-Create an installer[1]
+Names: Excel add-in, domain.appspot, Blueberry ID on the tab, Name next to Favicon[1]
 Set up testing framework[1]
-Write unit tests to existing code[1]
-Create accounts in Prod for BP, MW, OL, Wacek, Ernst Berger[1]
+Write white box unit tests to existing code[1]
+Create black box unit tests with the users[1]
+Create accounts in Prod for BP, MW, OL, Wacek, Ernst Berger, Renato Novais[1]
 
+Other people TOP 10 used[2]
 Implement counter: how many times a certain data was requested[2]
 Show other people who are using this data feed[2]
 Show all BAPI IDs used in the current workbook[2]
 Implement sign certificate - https://msdn.microsoft.com/en-us/library/bb772086.aspx#signing [2]
 Provide notification for 'Refresh' if there is nothing to be refreshed[2]
-Check if everything works fine also in xls type of file[2]
 When updating Table(and most likely the same problem exists for Dict) if there is no data in the first column, then it would return 'No data in the range'[2]
 Update seetings[we need a seperate settings mode to set up: refresh on item level, sheet, workbook, workbooks.
 Also needs settings to define whether update should for the same range or extension][2]
@@ -46,6 +45,7 @@ Refactor FetchingHelpers.saveToExcel() - switch cases may not be nessary(just en
 an argument to saveArrayToExcel() method.[2]
 Create samples for all URLs in case users have no access yet[2]
 
+Sort Fetch and Publish by last_update, currenly lacks the attributes[3]
 Change the max value of maxJSONLength to 2 147 483 647 [http://stackoverflow.com/questions/1151987/can-i-set-an-unlimited-length-for-maxjsonlength-in-web-config/1151993#1151993][3]
 Formal analysis of each important function and class[3]
 When Updating or Refreshing, in case a sheet is missing, the program silently processses it but doesn't show any notification that something was missing. Maybe there should be a notification.[3]
@@ -69,6 +69,26 @@ ALL THIS SHOULD BE DONE BY END OF JUNE. AT THE BEGINING OF JULY YOU SHOULD ALREA
 
 DONE:
 
+Implement favourites in Bluebbery tab - eg. Budget rates, FX Rates[2]
+Include angular.js to manage functionalities[2]
+Real life example - 'Update report'[1]
+Real life example - 'Common list[1]
+Start Amazon EC2 instance[1]
+anaconda on Ec2[1]
+nginx on EC2[1]
+gunicorn on EC2[1]
+Flask on EC2[1]
+publishData from Favorite[1]
+Implement addFavorite[1]
+removeFavorite[2]
+Check if everything works fine also in xls type of file[1]
+Make all data items a list of lists[1]
+Sort 'Browse' according to Last Updated[1]
+Create an installer[1]
+
+Sizing of Ribbon items:
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd316927(v=vs.85).aspx
+
 Office365 Developer:
 https://msdn.microsoft.com/office/office365/HowTo/setup-development-environment
 https://apisandbox.msdn.microsoft.com/
@@ -86,7 +106,17 @@ https://developer.chrome.com/devtools/docs/javascript-debugging
 ExcelDNA:
 http://excel-dna.net/
 
+Simple Form bootstrap:
+http://simple-form-bootstrap.plataformatec.com.br/
+
+EDITABLE JS GRID:
+http://handsontable.com/
+https://handsontable.github.io/ngHandsontable/
+http://www.editablegrid.net/en/
+http://ui-grid.info/
+http://vitalets.github.io/angular-xeditable/#editable-column
+
 Programmers:
-Mike Rosenblum - C# developer, 12 years at Wall Street, several years at UBS
+Mike Rosenblum - C# developer, 12 years at Wall Street Systems, several years at UBS
 https://www.linkedin.com/pub/mike-rosenblum/20/201/80
 http://stackoverflow.com/users/10429/mike-rosenblum

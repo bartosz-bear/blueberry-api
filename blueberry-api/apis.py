@@ -1,19 +1,20 @@
+__author__ = 'Bartosz Piechnik'
+
+import sys
+import pickle
+import models
+import apis_funcs
+
 from protorpc import messages
 from protorpc import message_types
 from protorpc import remote
 from protorpc.wsgi import service
-
 from google.appengine.api.users import User
 from google.appengine.ext import ndb
+from models import BAPIList, BAPIScalar, BAPIDictionary, BAPITable, FetchConfigurations, PublishConfigurations, FavoriteIDs
 
-import models
-from models import BAPIList, BAPIScalar, BAPIDictionary, BAPITable, FetchConfigurations, PublishConfigurations
-import apis_funcs
-
-import logging
-import pickle
-import sys
 import pdb
+import logging
 
 fetch_args_keys = ['bapi_id',
                       'description',
@@ -23,7 +24,8 @@ fetch_args_keys = ['bapi_id',
                       'user',
                       'workbook',
                       'workbook_path',
-                      'worksheet']
+                      'worksheet',
+                      'headers_list']
 
 fetch_args_values = ['request.bapi_id',
                'queried_data[0].description',
@@ -33,7 +35,8 @@ fetch_args_values = ['request.bapi_id',
                'request.user',
                'request.workbook',
                'request.workbook_path',
-               'request.worksheet']
+               'request.worksheet',
+               'queried_data[2]']
 
 
 class PublishRequest(messages.Message):
@@ -51,7 +54,7 @@ class PublishRequest(messages.Message):
     destination_cell = messages.StringField(9)
     bapi_id = messages.StringField(10)
     data_type = messages.StringField(11)
-
+    headers_list = messages.StringField(12, repeated=True)
 
 class PublishResponse(messages.Message):
     """
@@ -88,7 +91,8 @@ class FetchResponse(messages.Message):
     worksheet = messages.StringField(7)
     destination_cell = messages.StringField(8)
     data = messages.StringField(9, repeated=True)
-    info = messages.StringField(10)
+    headers_list = messages.StringField(10, repeated=True)
+    info = messages.StringField(11)
 
 
 class GetPublishedRequest(messages.Message):
@@ -152,6 +156,33 @@ class IsIDUsedResponse(messages.Message):
     than the one which has sent the request.
     """
     response = messages.BooleanField(1)
+
+
+class FavoriteIDRequest(messages.Message):
+    """
+    Request object which delivers data needed to get favorite BAPI IDs for a particular user.
+    """
+    user = messages.StringField(1)
+
+
+class FavoriteIDResponse(messages.Message):
+    """
+    Resonse object which returns a list of favorite BAPI IDs for a particular user.
+    """
+    favorite_ids = messages.StringField(1, repeated=True)
+    favorite_names = messages.StringField(2, repeated=True)
+
+
+class FavoriteID(remote.Service):
+    """
+    A RPC Service which handles all requested related to management of favorite BAPI IDs.
+    """
+    @remote.method(FavoriteIDRequest, FavoriteIDResponse)
+    def get_favorite_ids(self, request):
+        favorite_ids_entities = FavoriteIDs.query(FavoriteIDs.user == request.user)
+        favorite_ids = [i.bapi_id for i in favorite_ids_entities.iter()]
+        favorite_names = [i.name for i in favorite_ids_entities.iter()]
+        return FavoriteIDResponse(favorite_ids=favorite_ids, favorite_names=favorite_names)
 
 
 class Data(remote.Service):
@@ -323,6 +354,8 @@ class Dictionary(remote.Service):
         data_type = request.bapi_id.split('.')[2]
         class_ = getattr(models, 'BAPI' + data_type)
 
+        pdb.set_trace()
+
         return PublishResponse(response=apis_funcs.publish_and_collect(request, class_))
 
     @remote.method(FetchRequest, FetchResponse)
@@ -339,7 +372,7 @@ class Dictionary(remote.Service):
         queried_data = apis_funcs.query_and_configure(request, class_, data_type)
 
         evaluated_items = [eval(x) for x in fetch_args_values]
-        logging.info(evaluated_items)
+        logging.info(queried_data)
         return FetchResponse(**{x: y for x, y in zip(fetch_args_keys, evaluated_items)})
 
 
@@ -378,5 +411,6 @@ app = service.service_mappings([('/Data.*', Data),
                                 ('/Scalar.*', Scalar),
                                 ('/List.*', List),
                                 ('/Dictionary.*', Dictionary),
-                                ('/Table.*', Table)
+                                ('/Table.*', Table),
+                                ('/FavoriteID.*', FavoriteID)
                                 ])

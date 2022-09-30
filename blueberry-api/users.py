@@ -1,16 +1,16 @@
-__author__ = 'CHBAPIE'
+__author__ = 'Bartosz Piechnik'
 
 import os
 import sys
-import json
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lib'))
 
-from webob.multidict import MultiDict
+import json
 import webapp2
+
+from webob.multidict import MultiDict
 from webapp2_extras import sessions, auth
 from webapp2_extras import jinja2 as jinja2
 from wtforms import Form, TextField, PasswordField, validators
-
 from models import BAPIUser
 
 import pdb
@@ -185,8 +185,18 @@ class LogoutHandler(BaseHandler):
         self.redirect('/login')
 
 
+class Authentication(BaseHandler):
+    """
+    Authenticates an RPC call.
+    """
+    @login_required
+    def post(self):
+        return self.response.write('OK')
+
+
 app = webapp2.WSGIApplication([
     ('/register', RegisterHandler),
     ('/login', LoginHandler),
-    ('/logout', LogoutHandler)
+    ('/logout', LogoutHandler),
+    ('/authenticate', Authentication)
 ], debug=True, config=config)

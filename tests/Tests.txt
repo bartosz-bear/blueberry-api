@@ -1,0 +1,58 @@
+TESTS:
+Publish and Download
+  Scalar
+    1) A selected cell is empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+  
+  List
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive list(over 50000 rows)[PASS]
+
+  Dictionary
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS]
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive dict(over 30000 rows)[PASS][FAIL on bigger range - RequestTooLargeError on GAE side for bigger arrays]
+
+  Table
+    1) Selected cells are empty[PASS]
+    2) One of the items in 'Publish' task pane is not entered[PASS]
+    3) Name or ID already exists[but created by a different user][PASS]
+    4) Enter different data types (int, double, string, dates, time, formulas, mixed, missing values)[PASS][FAIL for TEST 8 - Missing Values. AttributeError: 'NoneType' object has no attribute 'name'
+    5) Enter special characters to BlueberryTaskPane (, . ! ... _ space "")[PASS]
+    6) Massive table(over 20k rows in 3 columns)[PASS]  
+
+Update and Refresh(possibly seperate tests)
+
+  Scalar
+    1) Cell value is of different type[PASS]
+    2) Cell is empty[PASS]
+
+  List
+    1) Cell values are of different type[PASS]
+    2) All cells are empty[PASS]
+    3) One of new cells is empty[PASS]
+
+  Dictionary
+    1) Cell values are of different type[PASS]
+    2) All cells are empty[PASS]
+    3) One of new cells is empty[PASS]
+
+  Table
+    1) Cell values are of different type[PASS]
+    2) All cells are empty[PASS]
+    3) One of new cells is empty[PASS]
+
+OTHER:
+Test for different cellErorr types[PASS]
+Test for horizontal and vertical merged cells[PASS]
+Pivot data[PASS]

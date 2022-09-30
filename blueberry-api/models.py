@@ -1,8 +1,8 @@
+import webapp2_extras.appengine.auth.models as auth_models
+
 from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api.users import User
-
-import webapp2_extras.appengine.auth.models as auth_models
 
 DEFAULT_USER = User('bartosz.piechnik@ch.abb.com')
 
@@ -19,7 +19,7 @@ class BAPIScalar(ndb.Model):
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
     data = ndb.BlobProperty()
-
+    headers = ndb.BlobProperty()
 
 class BAPIList(ndb.Model):
     """
@@ -33,7 +33,7 @@ class BAPIList(ndb.Model):
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
     data = ndb.BlobProperty()
-
+    headers = ndb.BlobProperty()
 
 class BAPIDictionary(ndb.Model):
     """
@@ -47,7 +47,7 @@ class BAPIDictionary(ndb.Model):
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
     data = ndb.BlobProperty()
-
+    headers = ndb.BlobProperty()
 
 class BAPITable(ndb.Model):
     """
@@ -61,7 +61,7 @@ class BAPITable(ndb.Model):
     description = ndb.StringProperty()
     organization = ndb.StringProperty()
     data = ndb.BlobProperty()
-
+    headers = ndb.BlobProperty()
 
 class FetchConfigurations(ndb.Model):
     """
@@ -93,6 +93,26 @@ class PublishConfigurations(ndb.Model):
     worksheet = ndb.StringProperty(required=True)
     destination_cell = ndb.StringProperty(required=True)
     data_type = ndb.StringProperty(required=True)
+
+
+class FavoriteIDs(ndb.Model):
+    """
+    It's a list of favourites BAPI IDs per user.
+    """
+    user = ndb.StringProperty(required=True)
+    bapi_id = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    created = ndb.DateTimeProperty(auto_now_add=True)
+
+
+class Pipeline(ndb.Model):
+    """
+    Model to store all Pipeline configurations.
+    """
+    user = ndb.StringProperty(required=True)
+    name = ndb.StringProperty(required=True)
+    input_bapi_id = ndb.StringProperty()
+    pipes = ndb.BlobProperty()
 
 
 # Is this class really necessary?

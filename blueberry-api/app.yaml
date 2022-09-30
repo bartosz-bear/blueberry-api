@@ -21,6 +21,14 @@ handlers:
   script: display.application
 - url: /fetch_configurations
   script: display.application
+- url: /add-in_configurations
+  script: display.application
+- url: /pipelines
+  script: display.application
+- url: /add-in/add_favorite
+  script: add-in.application
+- url: /add-in/remove_favorite
+  script: add-in.application
 - url: /Data.*
   script: apis.app
 - url: /Scalar.*
@@ -31,15 +39,27 @@ handlers:
   script: apis.app
 - url: /Table.*
   script: apis.app
+- url: /FavoriteID.*
+  script: apis.app
 - url: /login
   script: users.app
 - url: /logout
   script: users.app
 - url: /register
   script: users.app
-
+- url: /authenticate
+  script: users.app
+- url: /pipelines.*
+  script: pipeline.application
 - url: /Sorting.*
   script: micro_services.app
+- url: /MicroService/SelectColumns.*
+  script: micro_services.app
+- url: /proxy/select_headers
+  script: proxy.application
+
+- url: /google04255ab34ea37a58.html
+  script: display.application
 
 
 libraries:
@@ -48,4 +68,6 @@ libraries:
 - name: pycrypto
   version: latest
 - name: webapp2
+  version: latest
+- name: numpy
   version: latest

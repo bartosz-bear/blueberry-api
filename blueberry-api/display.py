@@ -1,19 +1,18 @@
-__author__ = 'CHBAPIE'
+__author__ = 'Bartosz Piechnik'
 
 import os
 import pickle
-from datetime import timedelta
-
 import webapp2
 import jinja2
-
 import models
+
+from datetime import timedelta
 from google.appengine.ext import ndb
 from google.appengine.ext.db import Query
-from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations, BAPIUser
 from google.appengine.api.users import User, get_current_user
-from users import BaseHandler, login_required
 from constants import BAPI_DATA_TYPES
+from models import BAPIScalar, BAPIList, BAPIDictionary, BAPITable, PublishConfigurations, FetchConfigurations, BAPIUser, FavoriteIDs, Pipeline
+from users import BaseHandler, login_required
 
 import pdb
 import logging
@@ -157,11 +156,50 @@ class FetchConfigurationsPage(BaseHandler):
         self.response.write(template.render(template_values))
 
 
+class AddinConfigurations(BaseHandler):
+    """
+    Configuration page for Blueberry API Add-in settings.
+    """
+    @login_required
+    def get(self):
+        user_email = BAPIUser.get_by_id(self.user['user_id']).email
+        ids = FavoriteIDs.query(FavoriteIDs.user == user_email)
+
+        template_values = {'ids':ids}
+        template = JINJA_ENVIRONMENT.get_template('templates/add-in_configurations.html')
+        self.response.write(template.render(template_values))
+
+
+class Verification(BaseHandler):
+    """
+    This class is responsible for Google App Engine verification required for custom domain use.
+    """
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('templates/google04255ab34ea37a58.html')
+        self.response.write(template.render({}))
+
+
+class Pipelines(BaseHandler):
+    """
+    Displays piplines.html
+    """
+    def get(self):
+        user_email = BAPIUser.get_by_id(self.user['user_id']).email
+        pipelines = Pipeline.query(Pipeline.user == user_email)
+        template_values = {'pipelines':pipelines}
+
+        template = JINJA_ENVIRONMENT.get_template('templates/pipelines.html')
+        self.response.write(template.render(template_values))
+
+
 application = webapp2.WSGIApplication([
     ('/', IndexPage),
     ('/display', MainPage),
     ('/browse', BrowsePage),
     ('/publish_configurations', PublishConfigurationsPage),
-    ('/fetch_configurations', FetchConfigurationsPage)
+    ('/fetch_configurations', FetchConfigurationsPage),
+    ('/add-in_configurations', AddinConfigurations),
+    ('/google04255ab34ea37a58.html', Verification),
+    ('/pipelines', Pipelines)
 ], debug=True, config=config)
 

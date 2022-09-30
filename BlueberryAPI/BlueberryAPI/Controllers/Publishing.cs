@@ -48,10 +48,14 @@ namespace ExcelAddIn1.Controllers
             String xlOrganization;
             String xlDataOwner;
             String xlID;
+            bool xlHasHeaders;
+            ArrayList publishingList;
+            List<string> xlHeaders;
 
             xlWorkBook = (Excel.Workbook)Globals.ThisAddIn.Application.ActiveWorkbook;
             xlWorkSheet = (Excel.Worksheet)xlWorkBook.ActiveSheet;
-            ArrayList publishingList = new ArrayList();
+            publishingList = new ArrayList();
+            xlHeaders = new List<string>();
             Dictionary<string, dynamic> dataFromExcel = new Dictionary<string, dynamic>();
 
             if (singleResult == null)
@@ -69,7 +73,8 @@ namespace ExcelAddIn1.Controllers
                 dataFromExcel = PublishingHelpers.measureData(xlRange);
                 xlType = dataFromExcel["data_type"];
                 xlID = xlOrganization.Replace(" ", "_") + "." + xlName.Replace(" ", "_") + "." + xlType;
-
+                xlHasHeaders = Globals.Ribbons.Ribbon1.publishBlueberryTaskPane.hasHeadersCheckBox.Checked;
+                xlHeaders = PublishingHelpers.getHeaders(dataFromExcel["data"], xlType, xlHasHeaders);
             }
             else
             {
@@ -84,6 +89,7 @@ namespace ExcelAddIn1.Controllers
                 xlDescription = singleResult["description"];
                 xlOrganization = singleResult["organization"];
                 xlDataOwner = singleResult["user"];
+                xlHeaders = singleResult["headers_list"];
 
                 // Use specifyRange() and measureData() methods to retrieve the full Excel Range of data. 
                 xlRange = PublishingHelpers.specifyRange(xlWorkSheet, xlDestinationCell, xlType);
@@ -105,6 +111,7 @@ namespace ExcelAddIn1.Controllers
             publishingData.Add("organization", xlOrganization);
             publishingData.Add("user", xlDataOwner);
             publishingData.Add("bapi_id", xlID);
+            publishingData.Add("headers_list", xlHeaders);
 
             // Serialize and send data via HTTP POST request
             var jsonSerializer = new JavaScriptSerializer();

@@ -14,16 +14,37 @@
             </li>
 
             <li>
-                <a href="/publish_configurations" class="inactive-navbar-nav-li">
-                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Publish Configurations
+                <a href="/pipelines" class="inactive-navbar-nav-li">
+                <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Pipelines
                 </a>
             </li>
 
-              <li>
-                <a href="/fetch_configurations" class="inactive-navbar-nav-li">
-                <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Fetch Configurations
-                </a>
-              </li>
+
+            <li role="presentation" class="inactive-navbar-nav-li dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-th" aria-hidden="true"></span> Configurations
+                    </a>
+                  <ul class="dropdown-menu">
+                        <li>
+                            <a href="/publish_configurations" class="inactive-navbar-nav-li">
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Publish Configurations
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/fetch_configurations" class="inactive-navbar-nav-li">
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span> Fetch Configurations
+                            </a>
+                        </li>
+
+                        <li role="separator" class="divider"></li>
+
+                        <li>
+                            <a href="/add-in_configurations" class="inactive-navbar-nav-li">
+                            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Add-in Configurations
+                            </a>
+                        </li>
+                  </ul>
+            </li>
           </ul>
           <ul class="nav navbar-nav" style="float:right">
               <li class="navbar-right"><a id="login-logout" onclick="logout()">Log in</a></li>

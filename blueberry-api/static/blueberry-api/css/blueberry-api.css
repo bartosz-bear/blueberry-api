@@ -7,3 +7,18 @@
     background: #04235A;
     color: #AEECFB;
 }
+
+.dropdown-menu {
+    background: #04235A;
+    color: #AEECFB;
+}
+
+.dropdown-menu > li > a {
+  color: #9d9d9d;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background: #04235A;
+  color: white;
+}

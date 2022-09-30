@@ -37,6 +37,7 @@
             this.OrganizationTextBox = new System.Windows.Forms.TextBox();
             this.PublishButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.hasHeadersCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,7 +95,7 @@
             // 
             // PublishButton
             // 
-            this.PublishButton.Location = new System.Drawing.Point(12, 178);
+            this.PublishButton.Location = new System.Drawing.Point(12, 201);
             this.PublishButton.Name = "PublishButton";
             this.PublishButton.Size = new System.Drawing.Size(75, 23);
             this.PublishButton.TabIndex = 8;
@@ -106,11 +107,23 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // hasHeadersCheckBox
+            // 
+            this.hasHeadersCheckBox.AutoSize = true;
+            this.hasHeadersCheckBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(236)))), ((int)(((byte)(251)))));
+            this.hasHeadersCheckBox.Location = new System.Drawing.Point(12, 178);
+            this.hasHeadersCheckBox.Name = "hasHeadersCheckBox";
+            this.hasHeadersCheckBox.Size = new System.Drawing.Size(86, 17);
+            this.hasHeadersCheckBox.TabIndex = 9;
+            this.hasHeadersCheckBox.Text = "Has headers";
+            this.hasHeadersCheckBox.UseVisualStyleBackColor = true;
+            // 
             // BlueberryTaskPane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(4)))), ((int)(((byte)(35)))), ((int)(((byte)(90)))));
+            this.Controls.Add(this.hasHeadersCheckBox);
             this.Controls.Add(this.PublishButton);
             this.Controls.Add(this.OrganizationTextBox);
             this.Controls.Add(this.OrganizationLabel);
@@ -161,5 +174,6 @@
 
         private System.Windows.Forms.Button PublishButton;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        internal System.Windows.Forms.CheckBox hasHeadersCheckBox;
     }
 }
