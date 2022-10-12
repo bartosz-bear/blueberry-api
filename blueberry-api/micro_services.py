@@ -108,7 +108,7 @@ class Sorting(remote.Service):
         all previously defined BAPI data.
         """
         bapi_id = request.bapi_id
-        bapi_id_after_processing = bapi_id + "end_tag" + "kurwa"
+        bapi_id_after_processing = bapi_id + "end_tag" + "finish"
         bapi_id_after_processing = str(bapi_id_after_processing)
 
         return bapi_id_after_processing
