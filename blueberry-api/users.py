@@ -18,7 +18,7 @@ import logging
 
 config = {}
 config['webapp2_extras.sessions'] = {
-    'secret_key': 'MG1VKMXtBpKG'
+    'secret_key': 'secret_key_string'
 }
 config['webapp2_extras.auth'] = {
     'user_model': BAPIUser

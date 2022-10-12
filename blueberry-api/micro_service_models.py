@@ -4,7 +4,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api.users import User
 
-DEFAULT_USER = User('bartosz.piechnik@ch.abb.com')
+DEFAULT_USER = User('bartosz.piechnik@email.com')
 
 
 class Filter(ndb.Model):

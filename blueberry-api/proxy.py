@@ -1,4 +1,4 @@
-__author__ = 'CHBAPIE'
+__author__ = 'Bartosz Piechnik'
 
 import os
 import json
@@ -25,7 +25,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 config = {}
 config['webapp2_extras.sessions'] = {
-    'secret_key': 'MG1VKMXtBpKG'
+    'secret_key': 'secret_key_string'
 }
 config['webapp2_extras.auth'] = {
     'user_model': BAPIUser
