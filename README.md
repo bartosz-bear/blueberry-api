@@ -10,7 +10,5 @@ Technology stack:
 
 DISCLAIMER:
 
-This repository is used for recruitment purposes.
-
 PYTHON: The most relevant Python files are stored in: blueberry-api/templates/ folder
 C#: The most relevant C# filess are stored in BlueberryAPI/BlueberryAPI folder
